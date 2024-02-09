@@ -1,0 +1,17 @@
+{
+    "name": "lenovo/star-wars-proj",
+    "autoload": {
+        "psr-4": {
+            "Lenovo\\StarWarsProj\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "chrezalvin",
+            "email": "67034165+chrezalvin@users.noreply.github.com"
+        }
+    ],
+    "require": {
+        "php-http/guzzle6-adapter": "^2.0"
+    }
+}
