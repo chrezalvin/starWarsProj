@@ -1,16 +1,13 @@
-<!-- base app -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <?php include './assets/bootstrap.php' ?>
-    <?php include './assets/jquery.php' ?>
-
-    <title>My Star Wars Watchers</title>
+    <title>404</title>
 </head>
 <body>
-    
+    <h1>404</h1>
+    <p>Page not found</p>
+    <a href="../View/monitor_people.php">Go to home</a>
 </body>
 </html>
