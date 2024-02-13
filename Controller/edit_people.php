@@ -1,4 +1,6 @@
 <?php
+    require '../include/session.php';
+    
     require_once '../service/people.php';
 
     try{
@@ -16,7 +18,7 @@
             $eye_color = $_POST['eye_color'];
             $birth_year = $_POST['birth_year'].$_POST['birth_year_indicator'];
             $gender = $_POST['gender'];
-            // $home_world = $_POST['home_world'];
+            $home_world = $_POST['homeworld'];
     
             $update = PeopleDatabase::update_people(
                                                 $id, 
@@ -27,9 +29,9 @@
                                                 $skin_color, 
                                                 $eye_color, 
                                                 $birth_year, 
-                                                $gender
+                                                $gender,
+                                                $home_world
                                             );
-            
         }
         else
             $errorMessage = "Invalid request method";

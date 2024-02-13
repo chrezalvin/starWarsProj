@@ -12,16 +12,40 @@
         private $m_birth_year;
         private $m_gender;
 
-        public function __construct($data){
-            $this->m_id = $data['id'];
-            $this->m_name = $data['name'];
-            $this->m_height = $data['height'];
-            $this->m_mass = $data['mass'];
-            $this->m_hair_color = $data['hair_color'];
-            $this->m_skin_color = $data['skin_color'];
-            $this->m_eye_color = $data['eye_color'];
-            $this->m_birth_year = $data['birth_year'];
-            $this->m_gender = $data['gender'];
+        public static function get_people_from_query(array $queryData): People{
+            $id = $queryData['id'];
+            $name = $queryData['name'];
+            $height = $queryData['height'];
+            $mass = $queryData['mass'];
+            $hair_color = $queryData['hair_color'];
+            $skin_color = $queryData['skin_color'];
+            $eye_color = $queryData['eye_color'];
+            $birth_year = $queryData['birth_year'];
+            $gender = $queryData['gender'];
+
+            return new People($id, $name, $height, $mass, $hair_color, $skin_color, $eye_color, $birth_year, $gender);
+        }
+
+        public function __construct(
+            int $id, 
+            string $name, 
+            int $height, 
+            int $mass, 
+            string $hair_color, 
+            string $skin_color, 
+            string $eye_color, 
+            string $birth_year, 
+            string $gender
+        ){
+            $this->m_id = $id;
+            $this->m_name = $name;
+            $this->m_height = $height;
+            $this->m_mass = $mass;
+            $this->m_hair_color = $hair_color;
+            $this->m_skin_color = $skin_color;
+            $this->m_eye_color = $eye_color;
+            $this->m_birth_year = $birth_year;
+            $this->m_gender = $gender;
         }
 
         // getter

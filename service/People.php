@@ -2,9 +2,6 @@
     require_once('../include/database.php');
     require_once('../Model/People.php');
 
-    // setup database here
-    define("TABLE_NAME", "people");
-
     class PeopleDatabase{
         private static $table = "people";
 
@@ -17,7 +14,7 @@
             $result = database()->query($query);
             $people = [];
             while($row = mysqli_fetch_assoc($result))
-                $people[] = new People($row);
+                $people[] = People::get_people_from_query($row);
             return $people;
         }
     
@@ -27,7 +24,7 @@
             $query = "SELECT * FROM $table WHERE `id` = '$id'";
             $result = database()->query($query);
             $row = mysqli_fetch_assoc($result);
-            return new People($row);
+            return People::get_people_from_query($row);
         }
 
         static function validate_person(
@@ -55,12 +52,12 @@
                 throw new Exception("Invalid birth year format.");
         }
 
-        static function update_people($id, $name, $height, $mass, $hair_color, $skin_color, $eye_color, $birth_year, $gender)
+        static function update_people($id, $name, $height, $mass, $hair_color, $skin_color, $eye_color, $birth_year, $gender, $homeworld)
         {
-            PeopleDatabase::validate_person($name, $height, $mass, $hair_color, $skin_color, $eye_color, $birth_year, $gender, "");
+            PeopleDatabase::validate_person($name, $height, $mass, $hair_color, $skin_color, $eye_color, $birth_year, $gender, $homeworld);
 
             $table = self::$table;
-            $query = "UPDATE `$table` SET `name` = '$name', `height` = '$height', `mass` = '$mass', `hair_color` = '$hair_color', `skin_color` = '$skin_color', `eye_color` = '$eye_color', `birth_year` = '$birth_year', `gender` = '$gender' WHERE `id` = $id";
+            $query = "UPDATE `$table` SET `name` = '$name', `height` = '$height', `mass` = '$mass', `hair_color` = '$hair_color', `skin_color` = '$skin_color', `eye_color` = '$eye_color', `birth_year` = '$birth_year', `gender` = '$gender', `homeworld` = '$homeworld' WHERE `id` = $id";
 
             $res = database()->query($query);
             return $res;
@@ -78,7 +75,7 @@
             $result = database()->query($query);
             $people = [];
             while($row = mysqli_fetch_assoc($result))
-                $people[] = new People($row);
+                $people[] = People::get_people_from_query($row);
             return $people;
         }
 

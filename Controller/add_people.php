@@ -1,5 +1,5 @@
 <?php
-
+    require '../include/session.php';
     require_once '../service/people.php';
 
     try{

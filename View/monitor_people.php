@@ -15,7 +15,7 @@
         </symbol>
     </svg>
 
-    <title>View People</title>
+    <title>View Character</title>
 </head>
 <body>
     <!-- prompt for error -->
@@ -23,7 +23,7 @@
         <div class="d-flex justify-content-center">
             <div class="alert alert-danger alert-dismissible w-50 my-1">
             <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
-                <?= $error ?>
+                <?= htmlspecialchars($error) ?>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         </div>
@@ -54,7 +54,7 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="name">Name</label>
-                        <input type="text" name="name" id="name" class="form-control" value="" required />
+                        <input type="text" name="name" id="name" class="form-control" placeholder="e.g: Anakin Skywalker" value="" required />
                     </div>
                     <div class="form-group">
                         <label for="height">Height</label>
@@ -66,15 +66,15 @@
                     </div>
                     <div class="form-group">
                         <label for="hair_color">Hair Color</label>
-                        <input type="text" name="hair_color" id="hair_color" class="form-control" value="brown" />
+                        <input type="text" name="hair_color" id="hair_color" class="form-control" value="n/a" />
                     </div>
                     <div class="form-group">
                         <label for="skin_color">Skin Color</label>
-                        <input type="text" name="skin_color" id="skin_color" class="form-control" value="white" />
+                        <input type="text" name="skin_color" id="skin_color" class="form-control" value="n/a" />
                     </div>
                     <div class="form-group">
                         <label for="eye_color">Eye Color</label>
-                        <input type="text" name="eye_color" id="eye_color" class="form-control" value="dark" />
+                        <input type="text" name="eye_color" id="eye_color" class="form-control" value="n/a" />
                     </div>
                     <div class="form-group">
                         <label for="birth_year">Birth Year</label>
@@ -92,6 +92,17 @@
                         <label for="gender">Gender</label>
                         <input type="text" name="gender" id="gender" class="form-control" value="male" />
                     </div>
+
+                    <div class="form-group">
+                        <label for="homeworld">Home World</label>
+                        <div class="input-group">
+                            <select name="homeworld" id="homeworld" class="form-select fw-bold">
+                                <?php foreach($allPlanetList as $planet): ?>
+                                    <option value=<?= $planet->getId() ?>><?= $planet->getName() ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <div class="d-flex justify-content-center gap-2">
@@ -104,22 +115,25 @@
         </div>
     </div>
 
-    <h1 class="text-center">People</h1>
-    <div class="d-flex justify-content-center">
-        <form action="" class="w-50 d-flex justify-content-center gap-2">
-            <div class="input-group">
-                <input
-                    type="text"
-                    name="search"
-                    class="form-control text-center"
-                    placeholder="Search for name here"
-                    value="<?= $search ?? "" ?>"
-                />
-                <button class="btn btn-outline-primary">Search</button>
-            </div>
-        </form>
-    </div>
-    <table class="table w-100 px-4">
+        <div class="d-flex justify-content-center">
+            <h1 class="text-center">Characters</h1>
+            <a href="./monitor_planet.php" class="h-100 link-underline link-underline-opacity-0">Planets</a>
+        </div>
+        <div class="d-flex justify-content-center">
+            <form action="" class="w-50 d-flex justify-content-center gap-2">
+                <div class="input-group">
+                    <input
+                        type="text"
+                        name="search"
+                        class="form-control text-center"
+                        placeholder="Search for name here"
+                        value="<?= $search ?? "" ?>"
+                    />
+                    <button class="btn btn-outline-primary">Search</button>
+                </div>
+            </form>
+        </div>
+    <table class="table w-100 px-4 mt-4">
         <tr class="text-center">
             <th>Name</th>
             <th>Height</th>
@@ -129,129 +143,141 @@
             <th>eye color</th>
             <th>birth year</th>
             <th>gender</th>
+            <th>Homeworld</th>
             <th>Action</th>
         </tr>
-        <?php foreach($people as $person): ?>
-                <div class="modal" id="modal<?= $person->getId() ?>" tabindex="-1" role="dialog">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Confirmation</h5>
-                                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <p>Are you sure you want to delete <?= $person->getName() ?>?</p>
-                                <p>This data cannot be recovered afterwards</p>
-                            </div>
-                            <div class="modal-footer">
-                                <form method="post" action="./delete_people.php">
-                                    <input type="hidden" name="deleteId" value="<?= $person->getId() ?>" />
-                                    <button type="submit" class="btn btn-danger">Yes, Delete It</button>
-                                    <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Cancel</button>
-                                </form>
+            <tbody>
+                <?php foreach($people as $person): ?>
+                        <div class="modal" id="modal<?= $person->getId() ?>" tabindex="-1" role="dialog">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Confirmation</h5>
+                                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Are you sure you want to delete <?= $person->getName() ?>?</p>
+                                        <p>This data cannot be recovered afterwards</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <form method="post" action="./delete_people.php">
+                                            <input type="hidden" name="deleteId" value="<?= $person->getId() ?>" />
+                                            <button type="submit" class="btn btn-danger">Yes, Delete It</button>
+                                            <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Cancel</button>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            
-                <div class="modal" id="modalEdit<?= $person->getId() ?>" tabindex="-1" role="dialog">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Edit</h5>
-                                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <form action="./edit_people.php" method="post">
-                                <div class="modal-body">
-                                <input type="hidden" name="id" value="<?= $person->getId() ?>" />
-                                    <div class="form-group">
-                                        <label for="name">Name</label>
-                                        <input type="text" name="name" id="name" class="form-control" value="<?= $person->getName() ?>" required/>
+                
+                        <div class="modal" id="modalEdit<?= $person->getId() ?>" tabindex="-1" role="dialog">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Edit</h5>
+                                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                        </button>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="height">Height</label>
-                                        <input type="number" name="height" id="height" class="form-control" value="<?= $person->getHeight() ?>" min="0" required/>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="mass">Mass</label>
-                                        <input type="number" name="mass" id="mass" class="form-control" value="<?= $person->getMass() ?>" min="0" required/>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="hair_color">Hair Color</label>
-                                        <input type="text" name="hair_color" id="hair_color" class="form-control" value="<?= $person->getHairColor() ?>" />
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="skin_color">Skin Color</label>
-                                        <input type="text" name="skin_color" id="skin_color" class="form-control" value="<?= $person->getSkinColor() ?>" />
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="eye_color">Eye Color</label>
-                                        <input type="text" name="eye_color" id="eye_color" class="form-control" value="<?= $person->getEyeColor() ?>" />
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="birth_year">Birth Year</label>
-                                        <div class="input-group">
-                                            <input type="number" name="birth_year" id="birth_year" class="form-control" value="<?= preg_match("/(\d+)/", $person->getBirthYear(), $matches) ? $matches[0] : "0";  ?>" min="0" />
-                                            <div class="input-group-append">
-                                                <select name="birth_year_indicator" id="birthyear" class="form-select fw-bold">
-                                                    <?php 
-                                                        $matches;
-                                                        preg_match("/(BBY|ABY)/", $person->getBirthYear(), $matches);
-                                                        $matches = $matches[0];
-                                                    ?>
-                                                    <option value="BBY" <?= $matches === "BBY" ? "selected": '' ?>>BBY</option>
-                                                    <option value="ABY" <?= $matches === "ABY" ? "selected": '' ?>>ABY</option>
-                                                </select>
+                                    <form action="./edit_people.php" method="post">
+                                        <div class="modal-body">
+                                        <input type="hidden" name="id" value="<?= $person->getId() ?>" />
+                                            <div class="form-group">
+                                                <label for="name">Name</label>
+                                                <input type="text" name="name" id="name" class="form-control" value="<?= $person->getName() ?>" required/>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="height">Height</label>
+                                                <input type="number" name="height" id="height" class="form-control" value="<?= $person->getHeight() ?>" min="0" required/>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="mass">Mass</label>
+                                                <input type="number" name="mass" id="mass" class="form-control" value="<?= $person->getMass() ?>" min="0" required/>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="hair_color">Hair Color</label>
+                                                <input type="text" name="hair_color" id="hair_color" class="form-control" value="<?= $person->getHairColor() ?>" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="skin_color">Skin Color</label>
+                                                <input type="text" name="skin_color" id="skin_color" class="form-control" value="<?= $person->getSkinColor() ?>" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="eye_color">Eye Color</label>
+                                                <input type="text" name="eye_color" id="eye_color" class="form-control" value="<?= $person->getEyeColor() ?>" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="birth_year">Birth Year</label>
+                                                <div class="input-group">
+                                                    <input type="number" name="birth_year" id="birth_year" class="form-control" value="<?= preg_match("/(\d+)/", $person->getBirthYear(), $matches) ? $matches[0] : "0";  ?>" min="0" />
+                                                    <div class="input-group-append">
+                                                        <select name="birth_year_indicator" id="birthyear" class="form-select fw-bold">
+                                                            <?php
+                                                                $matches;
+                                                                preg_match("/(BBY|ABY)/", $person->getBirthYear(), $matches);
+                                                                $matches = $matches[0];
+                                                            ?>
+                                                            <option value="BBY" <?= $matches === "BBY" ? "selected": '' ?>>BBY</option>
+                                                            <option value="ABY" <?= $matches === "ABY" ? "selected": '' ?>>ABY</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="homeworld">Home World</label>
+                                                <div class="input-group">
+                                                    <select name="homeworld" id="homeworld" class="form-select fw-bold">
+                                                        <?php foreach($allPlanetList as $planet): ?>
+                                                            <option value=<?= $planet->getId() ?> <?= $planet->getId() === $person->getHomeWorldId() ? "selected": '' ?>><?= $planet->getName() ?></option>
+                                                        <?php endforeach; ?>
+                                                    </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="gender">Gender</label>
+                                                <input type="text" name="gender" id="gender" class="form-control" value="<?= $person->getGender() ?>" />
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="gender">Gender</label>
-                                        <input type="text" name="gender" id="gender" class="form-control" value="<?= $person->getGender() ?>" />
-                                    </div>
+                                        <div class="modal-footer">
+                                            <div class="d-flex justify-content-center gap-2">
+                                                <button class="btn btn-primary" type="submit">Update</button>
+                                                <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Cancel</button>
+                                            </div>
+                                        </div>
+                                    </form>
                                 </div>
-                                <div class="modal-footer">
-                                    <div class="d-flex justify-content-center gap-2">
-                                        <button class="btn btn-primary" type="submit">Update</button>
-                                        <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Cancel</button>
-                                    </div>
-                                </div>
-                            </form>
+                            </div>
                         </div>
-                    </div>
-                </div>
-            <tr class="text-center align-middle">
-                <td><?= $person->getName() ?></td>
-                <td><?= $person->getHeight() ?></td>
-                <td><?= $person->getMass() ?></td>
-                <td><?= $person->getHairColor() ?></td>
-                <td><?= $person->getSkinColor() ?></td>
-                <td><?= $person->getEyeColor() ?></td>
-                <td><?= $person->getBirthYear() ?></td>
-                <td><?= $person->getGender() ?></td>
-                <td class="d-flex justify-content-center gap-1">
-                    <button
-                        type="button"
-                        data-bs-toggle="modal" 
-                        data-bs-target="#modalEdit<?= $person->getId() ?>"
-                        class="btn btn-warning"
-                    >Edit</button>
-                    <!-- <a href="../View/edit_people.php?id=<?= $person->getId() ?>" class="btn btn-warning">Edit</a> -->
-                    <button
-                        type="button"
-                        data-bs-toggle="modal" 
-                        data-bs-target="#modal<?= $person->getId() ?>"
-                        class="btn btn-danger"
-                    >
-                        Delete
-                    </button>
-                </td>
-            </tr>
-        <?php endforeach; ?>
+                        <tr class="text-center align-middle">
+                            <td><?= $person->getName() ?></td>
+                            <td><?= $person->getHeight() ?></td>
+                            <td><?= $person->getMass() ?></td>
+                            <td><?= $person->getHairColor() ?></td>
+                            <td><?= $person->getSkinColor() ?></td>
+                            <td><?= $person->getEyeColor() ?></td>
+                            <td><?= $person->getBirthYear() ?></td>
+                            <td><?= $person->getGender() ?></td>
+                            <td><?= $person->getHomeWorld() ?></td>
+                            <td class="d-flex justify-content-center gap-1">
+                                <button
+                                    type="button"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#modalEdit<?= $person->getId() ?>"
+                                    class="btn btn-warning"
+                                >Edit</button>
+                                <button
+                                    type="button"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#modal<?= $person->getId() ?>"
+                                    class="btn btn-danger"
+                                >
+                                    Delete
+                                </button>
+                            </td>
+                        </tr>
+                <?php endforeach; ?>
+            </tbody>
     </table>
 </body>
 </html>
