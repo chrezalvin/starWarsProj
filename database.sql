@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 13, 2024 at 03:03 AM
+-- Generation Time: Feb 13, 2024 at 07:09 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -79,6 +79,25 @@ INSERT INTO `people` (`id`, `name`, `height`, `mass`, `hair_color`, `skin_color`
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `people_vehicle_lookup`
+--
+
+CREATE TABLE `people_vehicle_lookup` (
+  `vehicles_id` int(11) NOT NULL,
+  `people_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `people_vehicle_lookup`
+--
+
+INSERT INTO `people_vehicle_lookup` (`vehicles_id`, `people_id`) VALUES
+(10, 14),
+(11, 14);
+
+-- --------------------------------------------------------
+
+--
 -- Stand-in structure for view `people_view`
 -- (See below for the actual view)
 --
@@ -120,7 +139,7 @@ CREATE TABLE `planets` (
 --
 
 INSERT INTO `planets` (`name`, `rotation_period`, `orbital_period`, `id`, `diameter`, `climate`, `gravity`, `terrain`, `surface_water`, `population`) VALUES
-('Dummy', 0, 0, 0, 0, 'n/a', 'n/a', 'n/a', 0, 0),
+('Dummy', NULL, NULL, 0, NULL, 'n/a', 'n/a', 'n/a', NULL, NULL),
 ('Tatooine', 23, 304, 1, 10465, 'arid', '1 standard', 'desert', 1, 200000),
 ('Alderaan', 24, 364, 2, 12500, 'temperate', '1 standard', 'grasslands, mountains', 40, 2000000000),
 ('Yavin IV', 24, 4818, 3, 10200, 'temperate, tropical', '1 standard', 'jungle, rainforests', 8, 1000),
@@ -183,8 +202,24 @@ CREATE TABLE `vehicles` (
   `passengers` int(11) DEFAULT NULL,
   `vehicle_class` varchar(100) DEFAULT NULL,
   `cost_in_credits` int(11) DEFAULT NULL,
-  `consumables` varchar(100) DEFAULT NULL
+  `consumables` varchar(100) DEFAULT NULL,
+  `cargo_capacity` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `vehicles`
+--
+
+INSERT INTO `vehicles` (`id`, `name`, `model`, `manufacturer`, `length`, `max_atmosphering_speed`, `crew`, `passengers`, `vehicle_class`, `cost_in_credits`, `consumables`, `cargo_capacity`) VALUES
+(1, 'TIE Bomber', 'TIE/sa bomber', 'Sienar Fleet Systems', 7, 850, 1, NULL, 'space/planetary bomber', NULL, '2 days', NULL),
+(4, 'AT-AT', 'All Terrain Armored Transport', 'Kuat Drive Yards, Imperial Department of Military Research', 20, 60, 5, 40, 'assault walker', NULL, NULL, 1000),
+(5, 'AT-ST', 'All Terrain Scout Transport', 'Kuat Drive Yards, Imperial Department of Military Research', 2, 90, 2, NULL, 'walker', NULL, 'none', 200),
+(6, 'Storm IV Twin-Pod cloud car', 'Storm IV Twin-Pod', 'Bespin Motors', 7, 1500, 2, NULL, 'repulsorcraft', 75000, '1 day', 10),
+(7, 'Sail barge', 'Modified Luxury Sail Barge', 'Ubrikkian Industries Custom Vehicle Division', 30, NULL, NULL, 500, 'sail barge', 285000, 'Live food tanks', 200000),
+(8, 'Bantha-II cargo skiff', 'Bantha-II', 'Ubrikkian Industries', 9.5, 250, 5, 16, 'repulsorcraft cargo skiff', 8000, '1 Day', 135000),
+(9, 'TIE/IN interceptor', 'Twin Ion Engine Interceptor', 'Sienar Fleet Systems', 9, 1250, 1, NULL, 'starfighter', NULL, '2 days', 75),
+(10, 'Imperial Speeder Bike', '74-Z speeder bike', 'Aratech Repulsor Compan', 3, 360, 1, 1, 'speeder', 8000, '1 day', 4),
+(11, 'Snowspeeder', 't-47 airspeeder', 'Incom corporation', 4, 650, 2, NULL, 'airspeeder', NULL, NULL, 10);
 
 -- --------------------------------------------------------
 
@@ -220,6 +255,13 @@ ALTER TABLE `films`
 ALTER TABLE `people`
   ADD PRIMARY KEY (`id`),
   ADD KEY `homeworld` (`homeworld`);
+
+--
+-- Indexes for table `people_vehicle_lookup`
+--
+ALTER TABLE `people_vehicle_lookup`
+  ADD KEY `v_id_fk` (`vehicles_id`),
+  ADD KEY `p_id_fk` (`people_id`);
 
 --
 -- Indexes for table `planets`
@@ -259,7 +301,7 @@ ALTER TABLE `people`
 -- AUTO_INCREMENT for table `planets`
 --
 ALTER TABLE `planets`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -271,7 +313,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `vehicles`
 --
 ALTER TABLE `vehicles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- Constraints for dumped tables
@@ -282,6 +324,13 @@ ALTER TABLE `vehicles`
 --
 ALTER TABLE `people`
   ADD CONSTRAINT `homeworld_fk` FOREIGN KEY (`homeworld`) REFERENCES `planets` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `people_vehicle_lookup`
+--
+ALTER TABLE `people_vehicle_lookup`
+  ADD CONSTRAINT `p_id_fk` FOREIGN KEY (`people_id`) REFERENCES `people` (`id`),
+  ADD CONSTRAINT `v_id_fk` FOREIGN KEY (`vehicles_id`) REFERENCES `vehicles` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
