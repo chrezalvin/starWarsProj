@@ -1,16 +1,6 @@
 <?php require_once '../Controller/monitor_planet.php' ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <?php include '../assets/jquery.php' ?>
-    <?php include '../assets/bootstrap.php' ?>
-
-    <title>Monitor Planet</title>
-</head>
+<?php $top_title = "Monitor Planet"; include '../include/top.php' ?>
 <body>
         <!-- prompt for error -->
         <?php if($error != null): ?>
@@ -44,7 +34,7 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form action="./edit_planet.php" method="post">
+                    <form action="./add_planet.php" method="post">
                         <div class="modal-body">
                         <div class="form-group">
                             <label for="name">Name</label>
@@ -94,7 +84,7 @@
 
                         <div class="modal-footer">
                             <div class="d-flex justify-content-center gap-2">
-                                <button class="btn btn-primary" type="submit">Update</button>
+                                <button class="btn btn-primary" type="submit">Create</button>
                                 <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Cancel</button>
                             </div>
                         </div>
@@ -104,9 +94,10 @@
         </div>
 
 
-    <div class="d-flex justify-content-center">
+    <div class="d-flex justify-content-center align-items-center gap-2">
         <a href="./monitor_people.php" class="h-100 link-underline link-underline-opacity-0">Characters</a>
         <h1 class="text-center">Planets</h1>
+        <a href="./monitor_vehicle.php" class="h-100 link-underline link-underline-opacity-0">Vehicles</a>
     </div>
     <div class="d-flex justify-content-center">
         <form action="" class="w-50 d-flex justify-content-center gap-2">
@@ -197,17 +188,17 @@
 
                                 <div class="form-group">
                                     <label for="climate">Climate</label>
-                                    <input type="text" name="climate" id="climate" class="form-control" value="<?= $planet->getClimate() ?? "n/a" ?>"/>
+                                    <input type="text" name="climate" id="climate" class="form-control" value="<?= $planet->getClimate() ?>"/>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="gravity">Gravity</label>
-                                    <input type="text" name="gravity" id="gravity" class="form-control" value="<?= $planet->getGravity() ?? "n/a" ?>"/>
+                                    <input type="text" name="gravity" id="gravity" class="form-control" value="<?= $planet->getGravity() ?>"/>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="terrain">Terrain</label>
-                                    <input type="text" name="terrain" id="terrain" class="form-control" value="<?= $planet->getTerrain() ?? "n/a" ?>"/>
+                                    <input type="text" name="terrain" id="terrain" class="form-control" value="<?= $planet->getTerrain() ?>"/>
                                 </div>
 
                                 <div class="form-group">
@@ -236,9 +227,9 @@
                 <td><?= $planet->getRotationPeriod()  ?? "n/a" ?></td>
                 <td><?= $planet->getOrbitalPeriod() ?? "n/a" ?></td>
                 <td><?= $planet->getDiameter() ?? "n/a" ?></td>
-                <td><?= $planet->getClimate() ?? "n/a" ?></td>
+                <td><?= $planet->getClimate() ?? "unknown" ?></td>
                 <td><?= $planet->getGravity() ?? "n/a" ?></td>
-                <td><?= $planet->getTerrain() ?? "n/a" ?></td>
+                <td><?= $planet->getTerrain() ?? "unknown" ?></td>
                 <td><?= $planet->getSurfaceWater() ?? "n/a" ?></td>
                 <td><?= $planet->getPopulation() ?? "n/a" ?></td>
                 <td class="d-flex justify-content-center gap-1">

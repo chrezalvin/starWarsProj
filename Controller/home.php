@@ -3,6 +3,7 @@
     require_once '../service/people.php';
     require_once '../service/PeopleView.php';
     require_once '../service/Planet.php';
+    require_once '../Model/FormInput.php';
 
     $deleteId = $_GET['deleteId'] ?? null;
     $search = $_GET['search'] ?? null;

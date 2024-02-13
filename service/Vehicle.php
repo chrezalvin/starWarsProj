@@ -27,22 +27,39 @@
             return database()->query($query);
         }
 
-        static function edit_vehicle_by_id(Vehicle $vehicle): bool{
+        static function edit_vehicle_by_id(
+            int $id,
+            string $name,
+            string | null $model,
+            string | null $manufacturer,
+            int | null $cost_in_credits,
+            int | null $length,
+            int | null $max_atmosphering_speed,
+            int | null $crew,
+            int | null $passengers,
+            int | null $cargo_capacity,
+            string | null $consumables,
+            string | null $vehicle_class
+        ): bool{
             $table = self::$table;
-            $id = $vehicle->getId();
-            $name = $vehicle->getName();
-            $model = $vehicle->getModel();
-            $manufacturer = $vehicle->getManufacturer();
-            $cost_in_credits = $vehicle->getCostInCredits();
-            $length = $vehicle->getLength();
-            $max_atmosphering_speed = $vehicle->getMaxAtmospheringSpeed();
-            $crew = $vehicle->getCrew();
-            $passengers = $vehicle->getPassengers();
-            $cargo_capacity = $vehicle->getCargoCapacity();
-            $consumables = $vehicle->getConsumables();
-            $vehicle_class = $vehicle->getVehicleClass();
 
-            $query = "UPDATE $table SET name = '$name', model = '$model', manufacturer = '$manufacturer', cost_in_credits = $cost_in_credits, length = $length, max_atmosphering_speed = $max_atmosphering_speed, crew = $crew, passengers = $passengers, cargo_capacity = $cargo_capacity, consumables = '$consumables', vehicle_class = '$vehicle_class' WHERE id = $id";
+            // turn null -> 'null' and sanitize the inputs
+            $query = "UPDATE $table SET 
+                `name` = ".($name ? "'".htmlspecialchars($name)."'" : "null").", 
+                `model` = ".($model ? "'".htmlspecialchars($model)."'" : "null").", 
+                `manufacturer` = ".($manufacturer ? "'".htmlspecialchars($manufacturer)."'" : "null").", 
+                `cost_in_credits` = ".($cost_in_credits ? "'".htmlspecialchars($cost_in_credits)."'" : "null").", 
+                `length` = ".($length ? "'".htmlspecialchars($length)."'" : "null").", 
+                `max_atmosphering_speed` = ".($max_atmosphering_speed ? "'".htmlspecialchars($max_atmosphering_speed)."'" : "null").", 
+                `crew` = ".($crew ? "'".htmlspecialchars($crew)."'" : "null").", 
+                `passengers` = ".($passengers ? "'".htmlspecialchars($passengers)."'" : "null").", 
+                `cargo_capacity` = ".($cargo_capacity ? "'".htmlspecialchars($cargo_capacity)."'" : "null").", 
+                `consumables` = ".($consumables ? "'".htmlspecialchars($consumables)."'" : "null").", 
+                `vehicle_class` = ".($vehicle_class ? "'".htmlspecialchars($vehicle_class)."'" : "null")." 
+                WHERE `id` = $id";
+
+            echo($query);
+
             return database()->query($query);
         }
 
@@ -60,9 +77,23 @@
             string | null $vehicle_class,
         ): bool{
             $table = self::$table;
-            
 
-            $query = "INSERT INTO $table (name, model, manufacturer, cost_in_credits, length, max_atmosphering_speed, crew, passengers, cargo_capacity, consumables, vehicle_class) VALUES ('$name', '$model', '$manufacturer', $cost_in_credits, $length, $max_atmosphering_speed, $crew, $passengers, $cargo_capacity, '$consumables', '$vehicle_class')";
+            // turn null -> 'null' and sanitize the inputs
+            $query = "INSERT INTO $table (`name`, `model`, `manufacturer`, `cost_in_credits`, `length`, `max_atmosphering_speed`, `crew`, `passengers`, `cargo_capacity`, `consumables`, `vehicle_class`) VALUES (
+                ".($name ? "'".htmlspecialchars($name)."'" : "null").", 
+                ".($model ? "'".htmlspecialchars($model)."'" : "null").", 
+                ".($manufacturer ? "'".htmlspecialchars($manufacturer)."'" : "null").", 
+                ".($cost_in_credits ? "'".htmlspecialchars($cost_in_credits)."'" : "null").", 
+                ".($length ? "'".htmlspecialchars($length)."'" : "null").", 
+                ".($max_atmosphering_speed ? "'".htmlspecialchars($max_atmosphering_speed)."'" : "null").", 
+                ".($crew ? "'".htmlspecialchars($crew)."'" : "null").", 
+                ".($passengers ? "'".htmlspecialchars($passengers)."'" : "null").", 
+                ".($cargo_capacity ? "'".htmlspecialchars($cargo_capacity)."'" : "null").", 
+                ".($consumables ? "'".htmlspecialchars($consumables)."'" : "null").", 
+                ".($vehicle_class ? "'".htmlspecialchars($vehicle_class)."'" : "null")."
+            )";
+
+            echo ($query);
             return database()->query($query);
         }
     }

@@ -57,7 +57,17 @@
             PeopleDatabase::validate_person($name, $height, $mass, $hair_color, $skin_color, $eye_color, $birth_year, $gender, $homeworld);
 
             $table = self::$table;
-            $query = "UPDATE `$table` SET `name` = '$name', `height` = '$height', `mass` = '$mass', `hair_color` = '$hair_color', `skin_color` = '$skin_color', `eye_color` = '$eye_color', `birth_year` = '$birth_year', `gender` = '$gender', `homeworld` = '$homeworld' WHERE `id` = $id";
+            $query = "UPDATE `$table` SET 
+                `name` = '$name', 
+                `height` = '$height', 
+                `mass` = '$mass', 
+                `hair_color` = '$hair_color', 
+                `skin_color` = '$skin_color', 
+                `eye_color` = '$eye_color', 
+                `birth_year` = '$birth_year', 
+                `gender` = '$gender', 
+                `homeworld` = '$homeworld' 
+                WHERE `id` = $id";
 
             $res = database()->query($query);
             return $res;
