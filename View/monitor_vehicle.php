@@ -58,7 +58,7 @@
 
                             <div class="form-group">
                                 <label for="length">Length</label>
-                                <input type="number" name="length" id="length" class="form-control" value=""/>
+                                <input type="number" name="length" id="length" step="0.1" class="form-control" value=""/>
                             </div>
 
                             <div class="form-group">
@@ -200,7 +200,7 @@
 
                                     <div class="form-group">
                                         <label for="length">Length</label>
-                                        <input type="number" name="length" id="length" class="form-control" value="<?= $vehicle->getLength() ?>" />
+                                        <input type="number" step="0.1" name="length" id="length" class="form-control" value="<?= $vehicle->getLength() ?>" />
                                     </div>
 
                                     <div class="form-group">

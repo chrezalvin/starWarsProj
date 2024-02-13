@@ -8,7 +8,7 @@
         $model = $_POST['model'] ?? null;
         $manufacturer = $_POST['manufacturer'] ?? null;
         $cost_in_credits = intval($_POST['cost_in_credits']) == 0 ? null : intval($_POST['cost_in_credits']);
-        $length = floatval($_POST['length']) == 0 ? null : intval($_POST['length']);
+        $length = floatval($_POST['length']) == 0 ? null : floatval($_POST['length']);
         $max_atmosphering_speed = intval($_POST['max_atmosphering_speed']) == 0 ? null : intval($_POST['max_atmosphering_speed']);
         $crew = intval($_POST['crew']) == 0 ? null : intval($_POST['crew']);
         $passengers = intval($_POST['passengers']) == 0 ? null : intval($_POST['passengers']);

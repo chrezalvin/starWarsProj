@@ -33,7 +33,7 @@
             string | null $model,
             string | null $manufacturer,
             int | null $cost_in_credits,
-            int | null $length,
+            float | null $length,
             int | null $max_atmosphering_speed,
             int | null $crew,
             int | null $passengers,
@@ -58,8 +58,6 @@
                 `vehicle_class` = ".($vehicle_class ? "'".htmlspecialchars($vehicle_class)."'" : "null")." 
                 WHERE `id` = $id";
 
-            echo($query);
-
             return database()->query($query);
         }
 
@@ -68,7 +66,7 @@
             string | null $model,
             string | null $manufacturer,
             int | null $cost_in_credits,
-            int | null $length,
+            float | null $length,
             int | null $max_atmosphering_speed,
             int | null $crew,
             int | null $passengers,
@@ -93,7 +91,6 @@
                 ".($vehicle_class ? "'".htmlspecialchars($vehicle_class)."'" : "null")."
             )";
 
-            echo ($query);
             return database()->query($query);
         }
     }

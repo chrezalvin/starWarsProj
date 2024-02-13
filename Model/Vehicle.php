@@ -5,7 +5,7 @@
         private string | null $m_model;
         private string | null $m_manufacturer;
         private int | null $m_cost_in_credits;
-        private int | null $m_length;
+        private float | null $m_length;
         private int | null $m_max_atmosphering_speed;
         private int | null $m_crew;
         private int | null $m_passengers;
@@ -36,7 +36,7 @@
             string | null $model,
             string | null $manufacturer,
             int | null $cost_in_credits,
-            int | null $length,
+            float | null $length,
             int | null $max_atmosphering_speed,
             int | null $crew,
             int | null $passengers,
@@ -79,7 +79,7 @@
             return $this->m_cost_in_credits;
         }
 
-        public function getLength(): int | null{
+        public function getLength(): float | null{
             return $this->m_length;
         }
 
