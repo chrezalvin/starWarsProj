@@ -1,9 +1,9 @@
 <?php
     require '../include/session.php';
     require_once '../service/people.php';
+    require_once '../include/FileManager.php';
 
     try{
-        $id = $_POST['id'];
         $name = $_POST['name'];
         $height = $_POST['height'];
         $mass = $_POST['mass'];
@@ -14,6 +14,17 @@
         $gender =  $_POST['gender'];
         $homeworld = $_POST['homeworld'];
 
+        $photo = $_FILES['photo'] ?? null;
+
+        $photoName = null;
+        if($photo !== null){
+            $extension = pathinfo($photo['name'], PATHINFO_EXTENSION);
+            $fileName = PeopleDatabase::get_next_id().".$extension";
+            $photoManager = new FileManager("../public/people");
+            $photoManager->savePhoto($photo, $fileName);
+            $photoName = $fileName;
+        }
+
         $add = PeopleDatabase::create_people(
             $name, 
             $height, 
@@ -23,7 +34,8 @@
             $eye_color, 
             $birth_year, 
             $gender,
-            $homeworld
+            $homeworld,
+            $photoName
         );
         
         $error = null;

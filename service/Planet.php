@@ -45,14 +45,15 @@
         static function update_planet(
             int $id, 
             string $name, 
-            int | null $rotation_period, 
-            int | null $orbital_period, 
-            int | null $diameter, 
-            string | null $climate, 
-            string | null $gravity, 
-            string | null $terrain, 
-            int | null $surface_water, 
-            int | null $population
+            ?int $rotation_period, 
+            ?int $orbital_period, 
+            ?int $diameter, 
+            ?string $climate, 
+            ?string $gravity, 
+            ?string $terrain, 
+            ?int $surface_water, 
+            ?int $population,
+            ?string $img_url
         )
         {
             PlanetDatabase::validate_planet($name);
@@ -69,7 +70,8 @@
                 `gravity` = ".($gravity ? "'".htmlspecialchars($gravity)."'" : "null").", 
                 `terrain` = ".($terrain ? "'".htmlspecialchars($terrain)."'" : "null").", 
                 `surface_water` = ".($surface_water ? "'".htmlspecialchars($surface_water)."'" : "null").", 
-                `population` = ".($population ? "'".htmlspecialchars($population)."'" : "null")." 
+                `population` = ".($population ? "'".htmlspecialchars($population)."'" : "null").",
+                `img_url` = ".($img_url ? "'".htmlspecialchars($img_url)."'" : "null")."
                 WHERE `id` = $id";
 
             return database()->query($query);
@@ -83,21 +85,22 @@
 
         static function create_planet(
             string $name, 
-            int | null $rotation_period, 
-            int | null $orbital_period, 
-            int | null $diameter, 
-            string | null $climate, 
-            string | null $gravity, 
-            string | null $terrain, 
-            int | null $surface_water, 
-            int | null $population
+            ?int $rotation_period, 
+            ?int $orbital_period, 
+            ?int $diameter, 
+            ?string $climate, 
+            ?string $gravity, 
+            ?string $terrain, 
+            ?int $surface_water, 
+            ?int $population,
+            ?string $img_url
         ){
             PlanetDatabase::validate_planet($name);
 
             $table = self::$table;
 
             // turn null -> 'null' and sanitize the inputs
-            $query = "INSERT INTO `$table` (`name`, `rotation_period`, `orbital_period`, `diameter`, `climate`, `gravity`, `terrain`, `surface_water`, `population`) VALUES (
+            $query = "INSERT INTO `$table` (`name`, `rotation_period`, `orbital_period`, `diameter`, `climate`, `gravity`, `terrain`, `surface_water`, `population`, `img_url`) VALUES (
                 ".($name ? "'".htmlspecialchars($name)."'" : "null").", 
                 ".($rotation_period ? "'".htmlspecialchars($rotation_period)."'" : "null").", 
                 ".($orbital_period ? "'".htmlspecialchars($orbital_period)."'" : "null").", 
@@ -106,7 +109,8 @@
                 ".($gravity ? "'".htmlspecialchars($gravity)."'" : "null").", 
                 ".($terrain ? "'".htmlspecialchars($terrain)."'" : "null").", 
                 ".($surface_water ? "'".htmlspecialchars($surface_water)."'" : "null").", 
-                ".($population ? "'".htmlspecialchars($population)."'" : "null").")";
+                ".($population ? "'".htmlspecialchars($population)."'" : "null").",
+                ".($img_url ? "'".htmlspecialchars($img_url)."'" : "null").")";
 
             return database()->query($query);
         }
@@ -128,5 +132,13 @@
             while($row = mysqli_fetch_assoc($result))
                 $planets[] = Planet::get_planet_from_query($row);
             return $planets;
+        }
+
+        static function get_next_id(){
+            $table = self::$table;
+            $query = "SHOW TABLE STATUS LIKE '$table'";
+            $result = database()->query($query);
+            $row = mysqli_fetch_assoc($result);
+            return $row['Auto_increment'];
         }
 }

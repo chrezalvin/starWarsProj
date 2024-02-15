@@ -28,18 +28,18 @@
         }
 
         static function validate_person(
-            $name, 
-            $height, 
-            $mass, 
-            $hair_color, 
-            $skin_color, 
-            $eye_color, 
-            $birth_year, 
+            $name,
+            $height,
+            $mass,
+            $hair_color,
+            $skin_color,
+            $eye_color,
+            $birth_year,
             $gender,
             $homeworld
         ){
             if($name == null)
-                throw new Exception("Name cannot be null"); 
+                throw new Exception("Name cannot be null");
 
             if($height == null || $height < 0)
                 throw new Exception("Height cannot be null or negative");
@@ -52,7 +52,19 @@
                 throw new Exception("Invalid birth year format.");
         }
 
-        static function update_people($id, $name, $height, $mass, $hair_color, $skin_color, $eye_color, $birth_year, $gender, $homeworld)
+        static function update_people(
+            int $id, 
+            string $name, 
+            ?int $height, 
+            ?int $mass, 
+            ?string $hair_color, 
+            ?string $skin_color, 
+            ?string $eye_color, 
+            ?string $birth_year, 
+            ?string $gender, 
+            ?string $homeworld,
+            ?string $photo
+        )
         {
             PeopleDatabase::validate_person($name, $height, $mass, $hair_color, $skin_color, $eye_color, $birth_year, $gender, $homeworld);
 
@@ -66,7 +78,8 @@
                 `eye_color` = '$eye_color', 
                 `birth_year` = '$birth_year', 
                 `gender` = '$gender', 
-                `homeworld` = '$homeworld' 
+                `homeworld` = '$homeworld',
+                `img_url` = ".($photo ? "'".htmlspecialchars($photo)."'" : "null")."
                 WHERE `id` = $id";
 
             $res = database()->query($query);
@@ -90,15 +103,16 @@
         }
 
         static function create_people(
-            $name, 
-            $height, 
-            $mass, 
-            $hair_color, 
-            $skin_color, 
-            $eye_color, 
-            $birth_year, 
-            $gender,
-            $homeworld
+            string $name, 
+            ?int $height, 
+            ?int $mass, 
+            ?string $hair_color, 
+            ?string $skin_color, 
+            ?string $eye_color, 
+            ?string $birth_year, 
+            ?string $gender,
+            ?string $homeworld,
+            ?string $photo
         ){
             PeopleDatabase::validate_person($name, $height, $mass, $hair_color, $skin_color, $eye_color, $birth_year, $gender, $homeworld);
 
@@ -112,9 +126,18 @@
             $birth_year = htmlspecialchars($birth_year);
             $gender = htmlspecialchars($gender);
             $homeworld = htmlspecialchars($homeworld);
+            $photo = htmlspecialchars($photo);
 
             $table = self::$table;
-            $query = "INSERT INTO $table (`name`, `height`, `mass`, `hair_color`, `skin_color`, `eye_color`, `birth_year`, `gender`, `homeworld`) VALUES ('$name', '$height', '$mass', '$hair_color', '$skin_color', '$eye_color', '$birth_year', '$gender', '$homeworld')";
+            $query = "INSERT INTO $table (`name`, `height`, `mass`, `hair_color`, `skin_color`, `eye_color`, `birth_year`, `gender`, `homeworld`, `img_url`) VALUES ('$name', '$height', '$mass', '$hair_color', '$skin_color', '$eye_color', '$birth_year', '$gender', '$homeworld', '$photo')";
             return database()->query($query);
+        }
+
+        static function get_next_id(){
+            $table = self::$table;
+            $query = "SHOW TABLE STATUS LIKE '$table'";
+            $result = database()->query($query);
+            $row = mysqli_fetch_assoc($result);
+            return $row['Auto_increment'];
         }
     }

@@ -2,40 +2,43 @@
     require_once('../include/database.php');
 
     class People {
-        private $m_id;
-        private $m_name;
-        private $m_height;
-        private $m_mass;
-        private $m_hair_color;
-        private $m_skin_color;
-        private $m_eye_color;
-        private $m_birth_year;
-        private $m_gender;
+        private int $m_id;
+        private string $m_name;
+        private ?int $m_height;
+        private ?int $m_mass;
+        private ?string $m_hair_color;
+        private ?string $m_skin_color;
+        private ?string $m_eye_color;
+        private ?string $m_birth_year;
+        private ?string $m_gender;
+        private ?string $m_img_url;
 
         public static function get_people_from_query(array $queryData): People{
             $id = $queryData['id'];
             $name = $queryData['name'];
-            $height = $queryData['height'];
+            $height = $queryData['height'] ;
             $mass = $queryData['mass'];
             $hair_color = $queryData['hair_color'];
             $skin_color = $queryData['skin_color'];
             $eye_color = $queryData['eye_color'];
             $birth_year = $queryData['birth_year'];
             $gender = $queryData['gender'];
+            $img_url = $queryData['img_url'];
 
-            return new People($id, $name, $height, $mass, $hair_color, $skin_color, $eye_color, $birth_year, $gender);
+            return new People($id, $name, $height, $mass, $hair_color, $skin_color, $eye_color, $birth_year, $gender, $img_url);
         }
 
         public function __construct(
             int $id, 
             string $name, 
-            int $height, 
-            int $mass, 
-            string $hair_color, 
-            string $skin_color, 
-            string $eye_color, 
-            string $birth_year, 
-            string $gender
+            ?int $height, 
+            ?int $mass, 
+            ?string $hair_color, 
+            ?string $skin_color, 
+            ?string $eye_color, 
+            ?string $birth_year, 
+            ?string $gender,
+            ?string $img_url
         ){
             $this->m_id = $id;
             $this->m_name = $name;
@@ -46,6 +49,7 @@
             $this->m_eye_color = $eye_color;
             $this->m_birth_year = $birth_year;
             $this->m_gender = $gender;
+            $this->m_img_url = $img_url;
         }
 
         // getter
@@ -85,4 +89,7 @@
             return $this->m_gender;
         }
 
+        public function getImgUrl(){
+            return $this->m_img_url;
+        }
     }

@@ -1,7 +1,6 @@
 <?php include_once '../Controller/home.php' ?>
 
 <?php $top_title = "View Characters"; include '../include/top.php' ?>
-    
 <body>
     <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
         <symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">
@@ -41,8 +40,23 @@
                     <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="./add_people.php" method="post">
+                <form 
+                    action="./add_people.php" 
+                    method="post" 
+                    enctype="multipart/form-data"
+                >
                 <div class="modal-body">
+                    <div class="form-group">
+                        <label for="image">Image</label>
+                        <input 
+                            type="file" 
+                            name="photo"
+                            accept=".png, .jpg, .jpeg"
+                            id="image"
+                            class="form-control" 
+                            size="60"    
+                        />
+                    </div>
                     <div class="form-group">
                         <label for="name">Name</label>
                         <input type="text" name="name" id="name" class="form-control" placeholder="e.g: Anakin Skywalker" value="" required />
@@ -172,9 +186,24 @@
                                         <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
-                                    <form action="./edit_people.php" method="post">
+                                    <form 
+                                        action="./edit_people.php" 
+                                        method="post"
+                                        enctype="multipart/form-data"
+                                    >
                                         <div class="modal-body">
                                         <input type="hidden" name="id" value="<?= $person->getId() ?>" />
+                                            <div class="form-group">
+                                                <label for="image">Insert New Image</label>
+                                                <input 
+                                                    type="file" 
+                                                    name="photo"
+                                                    accept=".png, .jpg, .jpeg"
+                                                    id="image"
+                                                    class="form-control" 
+                                                    size="60"    
+                                                />
+                                            </div>
                                             <div class="form-group">
                                                 <label for="name">Name</label>
                                                 <input type="text" name="name" id="name" class="form-control" value="<?= $person->getName() ?>" required/>
@@ -241,7 +270,18 @@
                             </div>
                         </div>
                         <tr class="text-center align-middle">
-                            <td><?= $person->getName() ?></td>
+                            <td class="d-flex justify-content-center flex-column align-items-center">
+                                <?php if($person->getImgUrl() !== null): ?>
+                                    <img 
+                                        src="../public/people/<?= $person->getImgUrl() ?>" 
+                                        class="img-fluid object-fit-cover"
+                                        width="60"
+                                        height="80"
+                                        alt="<?= $person->getName() ?>'s image" 
+                                    />
+                                <?php endif; ?>
+                                <?= $person->getName() ?>
+                            </td>
                             <td><?= $person->getHeight() ?></td>
                             <td><?= $person->getMass() ?></td>
                             <td><?= $person->getHairColor() ?></td>
@@ -249,26 +289,42 @@
                             <td><?= $person->getEyeColor() ?></td>
                             <td><?= $person->getBirthYear() ?></td>
                             <td><?= $person->getGender() ?></td>
-                            <td><?= $person->getHomeWorld() ?></td>
-                            <td class="d-flex justify-content-center gap-1">
-                                <button
-                                    type="button"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#modalEdit<?= $person->getId() ?>"
-                                    class="btn btn-warning"
-                                >Edit</button>
-                                <button
-                                    type="button"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#modal<?= $person->getId() ?>"
-                                    class="btn btn-danger"
-                                >
-                                    Delete
-                                </button>
+                            <td>
+                                <?= $person->getHomeWorld() ?>
+                            </td>
+                            <td>
+                                <div class="d-flex justify-content-center flex-column gap-1">
+                                    <button
+                                        type="button"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#modalEdit<?= $person->getId() ?>"
+                                        class="btn btn-warning"
+                                    >Edit</button>
+                                    <button
+                                        type="button"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#modal<?= $person->getId() ?>"
+                                        class="btn btn-danger"
+                                    >
+                                        Delete
+                                    </button>
+                                </div>
                             </td>
                         </tr>
                 <?php endforeach; ?>
             </tbody>
     </table>
 </body>
+
+<script>
+    // check for max file size (10mb)
+    document.getElementById('image')
+        .addEventListener('change', function(){
+        if(this.files[0].size > 10000000){
+            alert(`File is too big! Maximum file size is 10MB.`);
+            this.value = "";
+        }
+    });
+</script>
+
 </html>

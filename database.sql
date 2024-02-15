@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 13, 2024 at 07:09 AM
+-- Generation Time: Feb 15, 2024 at 09:27 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -58,23 +58,24 @@ CREATE TABLE `people` (
   `eye_color` varchar(45) DEFAULT NULL,
   `birth_year` varchar(45) DEFAULT NULL,
   `gender` varchar(45) DEFAULT NULL,
-  `homeworld` int(11) DEFAULT NULL
+  `homeworld` int(11) DEFAULT NULL,
+  `img_url` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `people`
 --
 
-INSERT INTO `people` (`id`, `name`, `height`, `mass`, `hair_color`, `skin_color`, `eye_color`, `birth_year`, `gender`, `homeworld`) VALUES
-(2, 'C-3PO', 167, 75, 'n/a', 'gold', 'yellow', '112BBY', 'n/a', 1),
-(7, 'R2-D2', 96, 32, 'n/a', 'white, blue', 'red', '33BBY', 'n/a', 1),
-(8, 'Darth Vader', 202, 136, 'n/a', 'white', 'yellow', '42BBY', 'male', 1),
-(9, 'Leia Organa', 150, 49, 'brown', 'light', 'brown', '19BBY', 'female', 2),
-(10, 'Owen Lars', 178, 120, 'brown, grey', 'light', 'blue', '52BBY', 'male', 1),
-(11, 'Beru Whitesun lars', 165, 75, 'brown', 'light', 'blue', '47BBY', 'female', 1),
-(12, 'R5-D4', 97, 32, 'n/a', 'white, red', 'red', '0BBY', 'n/a', 1),
-(13, 'Biggs Darklighter', 183, 84, 'black', 'light', 'brown', '24BBY', 'male', 0),
-(14, 'Luke Skywalker', 172, 77, 'blond', 'fair', 'blue', '19BBY', 'male', 0);
+INSERT INTO `people` (`id`, `name`, `height`, `mass`, `hair_color`, `skin_color`, `eye_color`, `birth_year`, `gender`, `homeworld`, `img_url`) VALUES
+(2, 'C-3PO', 167, 75, 'n/a', 'gold', 'yellow', '112BBY', 'n/a', 1, '2.png'),
+(7, 'R2-D2', 96, 32, 'n/a', 'white, blue', 'red', '33BBY', 'n/a', 1, '7.png'),
+(8, 'Darth Vader', 202, 136, 'n/a', 'white', 'yellow', '42BBY', 'male', 1, '8.png'),
+(9, 'Leia Organa', 150, 49, 'brown', 'light', 'brown', '19BBY', 'female', 2, '9.png'),
+(10, 'Owen Lars', 178, 120, 'brown, grey', 'light', 'blue', '52BBY', 'male', 1, '10.png'),
+(11, 'Beru Whitesun lars', 165, 75, 'brown', 'light', 'blue', '47BBY', 'female', 1, '11.png'),
+(12, 'R5-D4', 97, 32, 'n/a', 'white, red', 'red', '0BBY', 'n/a', 1, '12.png'),
+(13, 'Biggs Darklighter', 183, 84, 'black', 'light', 'brown', '24BBY', 'male', 0, '13.png'),
+(14, 'Luke Skywalker', 172, 77, 'blond', 'fair', 'blue', '19BBY', 'male', 0, '14.jpeg');
 
 -- --------------------------------------------------------
 
@@ -113,6 +114,8 @@ CREATE TABLE `people_view` (
 ,`gender` varchar(45)
 ,`homeworld` varchar(100)
 ,`homeworld_id` int(11)
+,`homeworld_img_url` varchar(100)
+,`img_url` varchar(100)
 );
 
 -- --------------------------------------------------------
@@ -131,20 +134,21 @@ CREATE TABLE `planets` (
   `gravity` varchar(100) DEFAULT NULL,
   `terrain` varchar(100) DEFAULT NULL,
   `surface_water` int(11) DEFAULT NULL,
-  `population` int(11) DEFAULT NULL
+  `population` int(11) DEFAULT NULL,
+  `img_url` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `planets`
 --
 
-INSERT INTO `planets` (`name`, `rotation_period`, `orbital_period`, `id`, `diameter`, `climate`, `gravity`, `terrain`, `surface_water`, `population`) VALUES
-('Dummy', NULL, NULL, 0, NULL, 'n/a', 'n/a', 'n/a', NULL, NULL),
-('Tatooine', 23, 304, 1, 10465, 'arid', '1 standard', 'desert', 1, 200000),
-('Alderaan', 24, 364, 2, 12500, 'temperate', '1 standard', 'grasslands, mountains', 40, 2000000000),
-('Yavin IV', 24, 4818, 3, 10200, 'temperate, tropical', '1 standard', 'jungle, rainforests', 8, 1000),
-('Hoth', 23, 549, 5, 7200, 'frozen', '1.1 standard', 'tundra, ice caves, mountain ranges', 100, NULL),
-('Dagobah', 23, 341, 6, 8900, 'murky', NULL, 'swamp, jungles', 8, NULL);
+INSERT INTO `planets` (`name`, `rotation_period`, `orbital_period`, `id`, `diameter`, `climate`, `gravity`, `terrain`, `surface_water`, `population`, `img_url`) VALUES
+('Dummy', NULL, NULL, 0, NULL, 'n/a', 'n/a', 'n/a', NULL, NULL, '0.png'),
+('Tatooine', 23, 304, 1, 10465, 'arid', '1 standard', 'desert', 1, 200000, '1.png'),
+('Alderaan', 24, 364, 2, 12500, 'temperate', '1 standard', 'grasslands, mountains', 40, 2000000000, '2.png'),
+('Yavin IV', 24, 4818, 3, 10200, 'temperate, tropical', '1 standard', 'jungle, rainforests', 8, 1000, '3.png'),
+('Hoth', 23, 549, 5, 7200, 'frozen', '1.1 standard', 'tundra, ice caves, mountain ranges', 100, NULL, '5.png'),
+('Dagobah', 23, 341, 6, 8900, 'murky', NULL, 'swamp, jungles', 8, NULL, '6.png');
 
 -- --------------------------------------------------------
 
@@ -164,6 +168,7 @@ CREATE TABLE `planets_view` (
 ,`surface_water` int(11)
 ,`population` int(11)
 ,`deletable` int(1)
+,`img_url` varchar(100)
 );
 
 -- --------------------------------------------------------
@@ -203,23 +208,24 @@ CREATE TABLE `vehicles` (
   `vehicle_class` varchar(100) DEFAULT NULL,
   `cost_in_credits` int(11) DEFAULT NULL,
   `consumables` varchar(100) DEFAULT NULL,
-  `cargo_capacity` int(11) DEFAULT NULL
+  `cargo_capacity` int(11) DEFAULT NULL,
+  `img_url` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `vehicles`
 --
 
-INSERT INTO `vehicles` (`id`, `name`, `model`, `manufacturer`, `length`, `max_atmosphering_speed`, `crew`, `passengers`, `vehicle_class`, `cost_in_credits`, `consumables`, `cargo_capacity`) VALUES
-(1, 'TIE Bomber', 'TIE/sa bomber', 'Sienar Fleet Systems', 7, 850, 1, NULL, 'space/planetary bomber', NULL, '2 days', NULL),
-(4, 'AT-AT', 'All Terrain Armored Transport', 'Kuat Drive Yards, Imperial Department of Military Research', 20, 60, 5, 40, 'assault walker', NULL, NULL, 1000),
-(5, 'AT-ST', 'All Terrain Scout Transport', 'Kuat Drive Yards, Imperial Department of Military Research', 2, 90, 2, NULL, 'walker', NULL, 'none', 200),
-(6, 'Storm IV Twin-Pod cloud car', 'Storm IV Twin-Pod', 'Bespin Motors', 7, 1500, 2, NULL, 'repulsorcraft', 75000, '1 day', 10),
-(7, 'Sail barge', 'Modified Luxury Sail Barge', 'Ubrikkian Industries Custom Vehicle Division', 30, NULL, NULL, 500, 'sail barge', 285000, 'Live food tanks', 200000),
-(8, 'Bantha-II cargo skiff', 'Bantha-II', 'Ubrikkian Industries', 9.5, 250, 5, 16, 'repulsorcraft cargo skiff', 8000, '1 Day', 135000),
-(9, 'TIE/IN interceptor', 'Twin Ion Engine Interceptor', 'Sienar Fleet Systems', 9, 1250, 1, NULL, 'starfighter', NULL, '2 days', 75),
-(10, 'Imperial Speeder Bike', '74-Z speeder bike', 'Aratech Repulsor Compan', 3, 360, 1, 1, 'speeder', 8000, '1 day', 4),
-(11, 'Snowspeeder', 't-47 airspeeder', 'Incom corporation', 4, 650, 2, NULL, 'airspeeder', NULL, NULL, 10);
+INSERT INTO `vehicles` (`id`, `name`, `model`, `manufacturer`, `length`, `max_atmosphering_speed`, `crew`, `passengers`, `vehicle_class`, `cost_in_credits`, `consumables`, `cargo_capacity`, `img_url`) VALUES
+(1, 'TIE Bomber', 'TIE/sa bomber', 'Sienar Fleet Systems', 7, 850, 1, NULL, 'space/planetary bomber', NULL, '2 days', NULL, '1.png'),
+(4, 'AT-AT', 'All Terrain Armored Transport', 'Kuat Drive Yards, Imperial Department of Military Research', 20, 60, 5, 40, 'assault walker', NULL, NULL, 1000, '4.png'),
+(5, 'AT-ST', 'All Terrain Scout Transport', 'Kuat Drive Yards, Imperial Department of Military Research', 2, 90, 2, NULL, 'walker', NULL, 'none', 200, '5.png'),
+(6, 'Storm IV Twin-Pod cloud car', 'Storm IV Twin-Pod', 'Bespin Motors', 7, 1500, 2, NULL, 'repulsorcraft', 75000, '1 day', 10, '6.png'),
+(7, 'Sail barge', 'Modified Luxury Sail Barge', 'Ubrikkian Industries Custom Vehicle Division', 30, NULL, NULL, 500, 'sail barge', 285000, 'Live food tanks', 200000, '7.png'),
+(8, 'Bantha-II cargo skiff', 'Bantha-II', 'Ubrikkian Industries', 9.5, 250, 5, 16, 'repulsorcraft cargo skiff', 8000, '1 Day', 135000, '8.png'),
+(9, 'TIE/IN interceptor', 'Twin Ion Engine Interceptor', 'Sienar Fleet Systems', 9, 1250, 1, NULL, 'starfighter', NULL, '2 days', 75, '9.png'),
+(10, 'Imperial Speeder Bike', '74-Z speeder bike', 'Aratech Repulsor Compan', 3, 360, 1, 1, 'speeder', 8000, '1 day', 4, '10.png'),
+(11, 'Snowspeeder', 't-47 airspeeder', 'Incom corporation', 4, 650, 2, NULL, 'airspeeder', NULL, NULL, 10, '11.png');
 
 -- --------------------------------------------------------
 
@@ -228,7 +234,7 @@ INSERT INTO `vehicles` (`id`, `name`, `model`, `manufacturer`, `length`, `max_at
 --
 DROP TABLE IF EXISTS `people_view`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `people_view`  AS SELECT `pe`.`id` AS `id`, `pe`.`name` AS `name`, `pe`.`height` AS `height`, `pe`.`mass` AS `mass`, `pe`.`hair_color` AS `hair_color`, `pe`.`skin_color` AS `skin_color`, `pe`.`eye_color` AS `eye_color`, `pe`.`birth_year` AS `birth_year`, `pe`.`gender` AS `gender`, `pl`.`name` AS `homeworld`, `pl`.`id` AS `homeworld_id` FROM (`people` `pe` join `planets` `pl`) WHERE `pe`.`homeworld` = `pl`.`id` ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `people_view`  AS SELECT `pe`.`id` AS `id`, `pe`.`name` AS `name`, `pe`.`height` AS `height`, `pe`.`mass` AS `mass`, `pe`.`hair_color` AS `hair_color`, `pe`.`skin_color` AS `skin_color`, `pe`.`eye_color` AS `eye_color`, `pe`.`birth_year` AS `birth_year`, `pe`.`gender` AS `gender`, `pl`.`name` AS `homeworld`, `pl`.`id` AS `homeworld_id`, `pl`.`img_url` AS `homeworld_img_url`, `pe`.`img_url` AS `img_url` FROM (`people` `pe` join `planets` `pl`) WHERE `pe`.`homeworld` = `pl`.`id` ;
 
 -- --------------------------------------------------------
 
@@ -237,7 +243,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `planets_view`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `planets_view`  AS SELECT `pl`.`name` AS `name`, `pl`.`rotation_period` AS `rotation_period`, `pl`.`orbital_period` AS `orbital_period`, `pl`.`id` AS `id`, `pl`.`diameter` AS `diameter`, `pl`.`climate` AS `climate`, `pl`.`gravity` AS `gravity`, `pl`.`terrain` AS `terrain`, `pl`.`surface_water` AS `surface_water`, `pl`.`population` AS `population`, if((select count(0) from `people` `pe` where `pe`.`homeworld` = `pl`.`id`) > 0,1,0) AS `deletable` FROM `planets` AS `pl` ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `planets_view`  AS SELECT `pl`.`name` AS `name`, `pl`.`rotation_period` AS `rotation_period`, `pl`.`orbital_period` AS `orbital_period`, `pl`.`id` AS `id`, `pl`.`diameter` AS `diameter`, `pl`.`climate` AS `climate`, `pl`.`gravity` AS `gravity`, `pl`.`terrain` AS `terrain`, `pl`.`surface_water` AS `surface_water`, `pl`.`population` AS `population`, if((select count(0) from `people` `pe` where `pe`.`homeworld` = `pl`.`id`) > 0,1,0) AS `deletable`, `pl`.`img_url` AS `img_url` FROM `planets` AS `pl` ;
 
 --
 -- Indexes for dumped tables
@@ -295,7 +301,7 @@ ALTER TABLE `films`
 -- AUTO_INCREMENT for table `people`
 --
 ALTER TABLE `people`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `planets`
@@ -313,7 +319,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `vehicles`
 --
 ALTER TABLE `vehicles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- Constraints for dumped tables

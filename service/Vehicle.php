@@ -30,16 +30,17 @@
         static function edit_vehicle_by_id(
             int $id,
             string $name,
-            string | null $model,
-            string | null $manufacturer,
-            int | null $cost_in_credits,
-            float | null $length,
-            int | null $max_atmosphering_speed,
-            int | null $crew,
-            int | null $passengers,
-            int | null $cargo_capacity,
-            string | null $consumables,
-            string | null $vehicle_class
+            ?string $model,
+            ?string $manufacturer,
+            ?int $cost_in_credits,
+            ?float $length,
+            ?int $max_atmosphering_speed,
+            ?int $crew,
+            ?int $passengers,
+            ?int $cargo_capacity,
+            ?string $consumables,
+            ?string $vehicle_class,
+            ?string $img_url
         ): bool{
             $table = self::$table;
 
@@ -55,29 +56,31 @@
                 `passengers` = ".($passengers ? "'".htmlspecialchars($passengers)."'" : "null").", 
                 `cargo_capacity` = ".($cargo_capacity ? "'".htmlspecialchars($cargo_capacity)."'" : "null").", 
                 `consumables` = ".($consumables ? "'".htmlspecialchars($consumables)."'" : "null").", 
-                `vehicle_class` = ".($vehicle_class ? "'".htmlspecialchars($vehicle_class)."'" : "null")." 
+                `vehicle_class` = ".($vehicle_class ? "'".htmlspecialchars($vehicle_class)."'" : "null").",
+                `img_url` = ".($img_url ? "'".htmlspecialchars($img_url)."'" : "null")." 
                 WHERE `id` = $id";
 
             return database()->query($query);
         }
 
         static function create_vehicle(
-            string | null $name,
-            string | null $model,
-            string | null $manufacturer,
-            int | null $cost_in_credits,
-            float | null $length,
-            int | null $max_atmosphering_speed,
-            int | null $crew,
-            int | null $passengers,
-            int | null $cargo_capacity,
-            string | null $consumables,
-            string | null $vehicle_class,
+            string $name,
+            ?string $model,
+            ?string $manufacturer,
+            ?int $cost_in_credits,
+            ?float $length,
+            ?int $max_atmosphering_speed,
+            ?int $crew,
+            ?int $passengers,
+            ?int $cargo_capacity,
+            ?string $consumables,
+            ?string $vehicle_class,
+            ?string $img_url,
         ): bool{
             $table = self::$table;
 
             // turn null -> 'null' and sanitize the inputs
-            $query = "INSERT INTO $table (`name`, `model`, `manufacturer`, `cost_in_credits`, `length`, `max_atmosphering_speed`, `crew`, `passengers`, `cargo_capacity`, `consumables`, `vehicle_class`) VALUES (
+            $query = "INSERT INTO $table (`name`, `model`, `manufacturer`, `cost_in_credits`, `length`, `max_atmosphering_speed`, `crew`, `passengers`, `cargo_capacity`, `consumables`, `vehicle_class`, `img_url`) VALUES (
                 ".($name ? "'".htmlspecialchars($name)."'" : "null").", 
                 ".($model ? "'".htmlspecialchars($model)."'" : "null").", 
                 ".($manufacturer ? "'".htmlspecialchars($manufacturer)."'" : "null").", 
@@ -88,9 +91,19 @@
                 ".($passengers ? "'".htmlspecialchars($passengers)."'" : "null").", 
                 ".($cargo_capacity ? "'".htmlspecialchars($cargo_capacity)."'" : "null").", 
                 ".($consumables ? "'".htmlspecialchars($consumables)."'" : "null").", 
-                ".($vehicle_class ? "'".htmlspecialchars($vehicle_class)."'" : "null")."
+                ".($vehicle_class ? "'".htmlspecialchars($vehicle_class)."'" : "null").",
+                ".($img_url ? "'".htmlspecialchars($img_url)."'" : "null")."
             )";
 
             return database()->query($query);
+        }
+
+        static function get_next_id(){
+            $table = self::$table;
+
+            $query = "SHOW TABLE STATUS LIKE '$table'";
+            $result = database()->query($query);
+            $row = mysqli_fetch_assoc($result);
+            return $row['Auto_increment'];
         }
     }

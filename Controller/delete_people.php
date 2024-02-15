@@ -1,19 +1,20 @@
 <?php
     require '../include/session.php';
     require_once '../service/people.php';
+    require_once '../include/FileManager.php';
 
     try{
+        $fileManager = new FileManager("../public/people");
         $deleteId = $_POST['deleteId'] ?? null;
-        echo("delete ID: $deleteId");
-    
-        $people = PeopleDatabase::get_all_people();
     
         $response = false;
 
         $errorMessage =  null;
     
-        if($deleteId)
+        if($deleteId){
             $response = PeopleDatabase::delete_people_by_id($deleteId);
+            $fileManager->deletePhoto(strval($deleteId));
+        }
         else
             $errorMessage = "Invalid ID";
 

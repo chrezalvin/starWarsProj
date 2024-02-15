@@ -1,6 +1,7 @@
 <?php
     require '../include/session.php';
     require_once '../service/Vehicle.php';
+    require_once '../include/FileManager.php';
 
     try{
         $name = $_POST['name'];
@@ -15,6 +16,17 @@
         $consumables = $_POST['consumables'] ?? null;
         $vehicle_class = $_POST['vehicle_class'] ?? null;
 
+        $photo = $_FILES['photo'] ?? null;
+
+        $photoName = null;
+        if($photo !== null){
+            $extension = pathinfo($photo['name'], PATHINFO_EXTENSION);
+            $fileName = VehicleDatabase::get_next_id().".$extension";
+            $photoManager = new FileManager("../public/vehicle");
+            $photoManager->savePhoto($photo, $fileName);
+            $photoName = $fileName;
+        }
+
         $error = null;
         $add = VehicleDatabase::create_vehicle(
             $name, 
@@ -27,7 +39,8 @@
             $passengers, 
             $cargo_capacity, 
             $consumables, 
-            $vehicle_class
+            $vehicle_class,
+            $photoName,
         );
 
         if(!$add)

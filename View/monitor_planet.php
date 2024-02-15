@@ -34,8 +34,23 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form action="./add_planet.php" method="post">
+                    <form 
+                        action="./add_planet.php" 
+                        method="post"
+                        enctype="multipart/form-data"
+                    >
                         <div class="modal-body">
+                            <div class="form-group">
+                            <label for="image">Image</label>
+                            <input 
+                                type="file" 
+                                name="photo"
+                                accept=".png, .jpg, .jpeg"
+                                id="image"
+                                class="form-control" 
+                                size="60"    
+                            />
+                        </div>
                         <div class="form-group">
                             <label for="name">Name</label>
                             <input type="text" name="name" id="name" class="form-control" value="" required/>
@@ -163,9 +178,20 @@
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
-                            <form action="./edit_planet.php" method="post">
+                            <form action="./edit_planet.php" method="post" enctype="multipart/form-data">
                                 <div class="modal-body">
                                 <input type="hidden" name="id" value="<?= $planet->getId() ?>" />
+                                <div class="form-group">
+                                    <label for="image">Insert New Image</label>
+                                    <input 
+                                        type="file" 
+                                        name="photo"
+                                        accept=".png, .jpg, .jpeg"
+                                        id="image"
+                                        class="form-control" 
+                                        size="60"    
+                                    />
+                                </div>
                                 <div class="form-group">
                                     <label for="name">Name</label>
                                     <input type="text" name="name" id="name" class="form-control" value="<?= $planet->getName() ?>" required/>
@@ -223,7 +249,18 @@
                 </div>
 
             <tr class="text-center align-middle">
-                <td><?= $planet->getName() ?></td>
+                <td class="d-flex justify-content-center flex-column align-items-center">
+                    <?php if($planet->getImgUrl() !== null): ?>
+                        <img 
+                            src="../public/planet/<?= $planet->getImgUrl() ?>" 
+                            class="img-fluid object-fit-cover"
+                            width="60"
+                            height="80"
+                            alt="<?= $planet->getName() ?>'s image" 
+                        />
+                    <?php endif; ?>
+                    <?= $planet->getName() ?>
+                </td>
                 <td><?= $planet->getRotationPeriod()  ?? "n/a" ?></td>
                 <td><?= $planet->getOrbitalPeriod() ?? "n/a" ?></td>
                 <td><?= $planet->getDiameter() ?? "n/a" ?></td>
@@ -232,21 +269,23 @@
                 <td><?= $planet->getTerrain() ?? "unknown" ?></td>
                 <td><?= $planet->getSurfaceWater() ?? "n/a" ?></td>
                 <td><?= $planet->getPopulation() ?? "n/a" ?></td>
-                <td class="d-flex justify-content-center gap-1">
-                    <button
-                        type="button"
-                        data-bs-toggle="modal" 
-                        data-bs-target="#modalEdit<?= $planet->getId() ?>"
-                        class="btn btn-warning"
-                    >Edit</button>
-                    <button
-                        type="button"
-                        data-bs-toggle="modal" 
-                        data-bs-target="#modal<?= $planet->getId() ?>"
-                        class="btn btn-danger <?= $planet->isDeletable() ? "disabled": "" ?>"
-                    >
-                        Delete
-                    </button>
+                <td>
+                    <div class="d-flex justify-content-center flex-column gap-1">
+                        <button
+                            type="button"
+                            data-bs-toggle="modal"
+                            data-bs-target="#modalEdit<?= $planet->getId() ?>"
+                            class="btn btn-warning"
+                        >Edit</button>
+                        <button
+                            type="button"
+                            data-bs-toggle="modal"
+                            data-bs-target="#modal<?= $planet->getId() ?>"
+                            class="btn btn-danger <?= $planet->isDeletable() ? "disabled": "" ?>"
+                        >
+                            Delete
+                        </button>
+                    </div>
                 </td>
             </tr>
         <?php endforeach; ?>

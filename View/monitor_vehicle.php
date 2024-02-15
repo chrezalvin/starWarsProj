@@ -34,8 +34,24 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form action="./add_vehicle.php" method="post">
+                    <form 
+                        action="./add_vehicle.php" 
+                        method="post"
+                        enctype="multipart/form-data"
+                    >
                         <div class="modal-body">
+                        <div class="form-group">
+                            <label for="image">Image</label>
+                            <input 
+                                type="file" 
+                                name="photo"
+                                accept=".png, .jpg, .jpeg"
+                                id="image"
+                                class="form-control" 
+                                size="60"    
+                            />
+                        </div>
+                        
                         <div class="form-group">
                             <label for="name">Name</label>
                                 <input type="text" name="name" id="name" class="form-control" value="" required/>
@@ -173,10 +189,26 @@
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
-                            <form action="./edit_vehicle.php" method="post">
+                            <form 
+                                action="./edit_vehicle.php" 
+                                method="post"
+                                enctype="multipart/form-data"
+                            >
                                 <div class="modal-body">
 
                                     <input type="hidden" name="id" value="<?= $vehicle->getId() ?>" />
+
+                                    <div class="form-group">
+                                        <label for="image">Insert New Image</label>
+                                        <input 
+                                            type="file" 
+                                            name="photo"
+                                            accept=".png, .jpg, .jpeg"
+                                            id="image"
+                                            class="form-control" 
+                                            size="60"    
+                                        />
+                                    </div>
 
                                     <div class="form-group">
                                         <label for="name">Name</label>
@@ -247,7 +279,18 @@
                 </div>
 
             <tr class="text-center align-middle">
-                <td><?= $vehicle->getName() ?></td>
+                <td class="d-flex justify-content-center flex-column align-items-center">
+                    <?php if($vehicle->getImgUrl() !== null): ?>
+                        <img 
+                            src="../public/vehicle/<?= $vehicle->getImgUrl() ?>" 
+                            class="img-fluid object-fit-cover"
+                            width="60"
+                            height="80"
+                            alt="<?= $vehicle->getName() ?>'s image" 
+                        />
+                    <?php endif; ?>
+                    <?= $vehicle->getName() ?>
+                </td>
                 <td><?= $vehicle->getModel() ?></td>
                 <td><?= $vehicle->getManufacturer() ?? "unknown" ?></td>
                 <td><?= $vehicle->getCostInCredits() ?? "n/a" ?></td>
@@ -258,21 +301,23 @@
                 <td><?= $vehicle->getCargoCapacity() ?? "n/a" ?></td>
                 <td><?= $vehicle->getConsumables() ?? "n/a" ?></td>
                 <td><?= $vehicle->getVehicleClass() ?? "unknown" ?></td>
-                <td class="d-flex justify-content-center gap-1">
-                    <button
-                        type="button"
-                        data-bs-toggle="modal" 
-                        data-bs-target="#modalEdit<?= $vehicle->getId() ?>"
-                        class="btn btn-warning"
-                    >Edit</button>
-                    <button
-                        type="button"
-                        data-bs-toggle="modal" 
-                        data-bs-target="#modal<?= $vehicle->getId() ?>"
-                        class="btn btn-danger"
-                    >
-                        Delete
-                    </button>
+                <td>
+                    <div class="d-flex justify-content-center flex-column gap-1">
+                        <button
+                            type="button"
+                            data-bs-toggle="modal"
+                            data-bs-target="#modalEdit<?= $vehicle->getId() ?>"
+                            class="btn btn-warning"
+                        >Edit</button>
+                        <button
+                            type="button"
+                            data-bs-toggle="modal"
+                            data-bs-target="#modal<?= $vehicle->getId() ?>"
+                            class="btn btn-danger"
+                        >
+                            Delete
+                        </button>
+                    </div>
                 </td>
             </tr>
         <?php endforeach; ?>

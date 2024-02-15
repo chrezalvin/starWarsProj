@@ -2,6 +2,7 @@
     require '../include/session.php';
     
     require_once '../service/people.php';
+    require_once '../include/FileManager.php';
 
     try{
         $people;
@@ -19,6 +20,18 @@
             $birth_year = $_POST['birth_year'].$_POST['birth_year_indicator'];
             $gender = $_POST['gender'];
             $home_world = $_POST['homeworld'];
+
+            $photo = $_FILES['photo'] ?? null;
+
+            $photoName = null;
+            if($photo !== null){
+                $extension = pathinfo($photo['name'], PATHINFO_EXTENSION);
+                $fileName = $id.".$extension";
+
+                $photoManager = new FileManager("../public/people");
+                $photoManager->savePhoto($photo, $fileName);
+                $photoName = $fileName;
+            }
     
             $update = PeopleDatabase::update_people(
                                                 $id, 
@@ -30,7 +43,8 @@
                                                 $eye_color, 
                                                 $birth_year, 
                                                 $gender,
-                                                $home_world
+                                                $home_world,
+                                                $photoName
                                             );
         }
         else

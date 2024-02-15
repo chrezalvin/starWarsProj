@@ -2,14 +2,15 @@
     class Planet{
         private int $m_id;
         private string $m_name;
-        private int | null $m_rotation_period;
-        private int | null $m_orbital_period;
-        private int | null $m_diameter;
-        private string | null $m_climate;
-        private string | null $m_gravity;
-        private string | null $m_terrain;
-        private int | null $m_surface_water;
-        private int | null $m_population;
+        private ?int $m_rotation_period;
+        private ?int $m_orbital_period;
+        private ?int $m_diameter;
+        private ?string $m_climate;
+        private ?string $m_gravity;
+        private ?string $m_terrain;
+        private ?int $m_surface_water;
+        private ?int $m_population;
+        private ?string $m_img_url;
 
         public static function get_planet_from_query(array $queryData): Planet{
             $id = $queryData['id'];
@@ -22,6 +23,7 @@
             $terrain = $queryData['terrain'];
             $surface_water = $queryData['surface_water'];
             $population = $queryData['population'];
+            $img_url = $queryData['img_url'];
 
             return new Planet(
                 $id, 
@@ -33,21 +35,23 @@
                 $gravity, 
                 $terrain, 
                 $surface_water, 
-                $population
+                $population,
+                $img_url
             );
         }
 
         public function __construct(
             int $id,
             string $name,
-            int | null $rotation_period,
-            int | null $orbital_period,
-            int | null $diameter,
-            string | null $climate,
-            string | null $gravity,
-            string | null $terrain,
-            int | null $surface_water,
-            int | null $population
+            ?int $rotation_period,
+            ?int $orbital_period,
+            ?int $diameter,
+            ?string $climate,
+            ?string $gravity,
+            ?string $terrain,
+            ?int $surface_water,
+            ?int $population,
+            ?string $img_url
         ){
             $this->m_id = $id;
             $this->m_name = $name;
@@ -59,6 +63,7 @@
             $this->m_terrain = $terrain;
             $this->m_surface_water = $surface_water;
             $this->m_population = $population;
+            $this->m_img_url = $img_url;
         }
 
         // getter
@@ -100,5 +105,9 @@
 
         public function getPopulation(){
             return $this->m_population;
+        }
+
+        public function getImgUrl(){
+            return $this->m_img_url;
         }
     }

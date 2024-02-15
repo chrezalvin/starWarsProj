@@ -12,6 +12,18 @@
         $terrain = $_POST['terrain'] ?? null;
         $surface_water = intval($_POST['surface_water']) == 0 ? null : intval($_POST['surface_water']);
         $population = intval($_POST['population']) == 0 ? null : intval($_POST['population']);
+
+        $photo = $_FILES['photo'] ?? null;
+
+        $photoName = null;
+        if($photo !== null){
+            $photoManager = new FileManager("../public/planet");
+            $extension = pathinfo($photo['name'], PATHINFO_EXTENSION);
+            $fileName = PlanetDatabase::get_next_id().".$extension";
+
+            $photoManager->savePhoto($photo, $fileName);
+            $photoName = $fileName;
+        }
         
         $add = PlanetDatabase::create_planet(
             $name, 
@@ -22,7 +34,8 @@
             $gravity,
             $terrain,
             $surface_water,
-            $population
+            $population,
+            $photoName
         );
         
         $error = null;

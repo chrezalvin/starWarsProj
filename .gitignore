@@ -14,6 +14,7 @@ composer.phar
 
 .DS_Store
 
+test.*
 
 /.idea
 /_ide_helper.php

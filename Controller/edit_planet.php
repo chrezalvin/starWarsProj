@@ -1,6 +1,7 @@
 <?php
     require '../include/session.php';
     require_once '../service/planet.php';
+    require_once '../include/FileManager.php';
 
     try{
         $id = $_POST['id'];
@@ -14,6 +15,19 @@
         $surface_water = intval($_POST['surface_water']) == 0 ? null : intval($_POST['surface_water']);
         $population = intval($_POST['population']) == 0 ? null : intval($_POST['population']);
 
+        $photo = $_FILES['photo'] ?? null;
+
+        $photoName = null;
+        if($photo !== null){
+            $extension = pathinfo($photo['name'], PATHINFO_EXTENSION);
+            $fileName = $id.".$extension";
+
+            $photoManager = new FileManager("../public/planet");
+            $photoManager->savePhoto($photo, $fileName);
+            $photoName = $fileName;
+        }
+
+
         $add = PlanetDatabase::update_planet(
             $id,
             $name, 
@@ -24,7 +38,8 @@
             $gravity,
             $terrain,
             $surface_water,
-            $population
+            $population,
+            $photoName
         );
         
         $error = null;

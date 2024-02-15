@@ -20,6 +20,7 @@
                 $planet->getTerrain(),
                 $planet->getSurfaceWater(),
                 $planet->getPopulation(),
+                $planet->getImgUrl(),
                 $isDeletable
             );
         }
@@ -27,23 +28,24 @@
         function __construct(
             int $id,
             string $name,
-            int | null $rotation_period,
-            int | null $orbital_period,
-            int | null $diameter,
-            string | null $climate,
-            string | null $gravity,
-            string | null $terrain,
-            int | null $surface_water,
-            int | null $population,
+            ?int $rotation_period,
+            ?int $orbital_period,
+            ?int $diameter,
+            ?string $climate,
+            ?string $gravity,
+            ?string $terrain,
+            ?int $surface_water,
+            ?int $population,
+            ?string $img_url,
             bool $isDeletable
         )
         {
-            parent::__construct($id, $name, $rotation_period, $orbital_period, $diameter, $climate, $gravity, $terrain, $surface_water, $population);
+            parent::__construct($id, $name, $rotation_period, $orbital_period, $diameter, $climate, $gravity, $terrain, $surface_water, $population, $img_url);
             $this->m_isDeletable = $isDeletable;
         }
 
         // getter
-        function isDeletable(){
+        function isDeletable(): bool{
             return $this->m_isDeletable;
         }
     }
