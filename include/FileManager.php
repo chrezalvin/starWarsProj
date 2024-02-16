@@ -12,6 +12,22 @@
         }
 
         /**
+         * check if the photo is valid
+         * @param array $photo the photo array from $_FILES
+         * @return bool true if the photo is valid, false otherwise
+         */
+        public static function isFileValid(array $photo): bool{
+            if(!isset($photo['name']) && !isset($photo['data']))
+                return false;
+
+            // cancel when file size exceeds 10MB
+            if($photo['size'] > 10000000)
+                return false;
+
+            return true;
+        }
+
+        /**
          * save the photo to the directory
          * @param array $photo the photo array from $_FILES
          * @param string $name the name of the photo (defaulted to the name of the photo from $_FILES)

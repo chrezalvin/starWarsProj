@@ -14,16 +14,16 @@
         private ?string $m_img_url;
 
         public static function get_people_from_query(array $queryData): People{
-            $id = $queryData['id'];
-            $name = $queryData['name'];
-            $height = $queryData['height'] ;
-            $mass = $queryData['mass'];
-            $hair_color = $queryData['hair_color'];
-            $skin_color = $queryData['skin_color'];
-            $eye_color = $queryData['eye_color'];
-            $birth_year = $queryData['birth_year'];
-            $gender = $queryData['gender'];
-            $img_url = $queryData['img_url'];
+            $id = $queryData['id'] ?? 0;
+            $name = $queryData['name'] ?? 'n/a';
+            $height = $queryData['height'] ?? null;
+            $mass = intval($queryData['mass']) === 0 ? null : intval($queryData['mass']);
+            $hair_color = $queryData['hair_color'] ?? null;
+            $skin_color = $queryData['skin_color'] ?? null;
+            $eye_color = $queryData['eye_color']  ?? null;
+            $birth_year = $queryData['birth_year'] ?? null;
+            $gender = $queryData['gender'] ?? null;
+            $img_url = $queryData['img_url'] ?? null;
 
             return new People($id, $name, $height, $mass, $hair_color, $skin_color, $eye_color, $birth_year, $gender, $img_url);
         }

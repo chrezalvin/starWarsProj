@@ -13,17 +13,17 @@
         private ?string $m_img_url;
 
         public static function get_planet_from_query(array $queryData): Planet{
-            $id = $queryData['id'];
-            $name = $queryData['name'];
+            $id = $queryData['id'] ?? 0;
+            $name = $queryData['name'] ?? '';
             $rotation_period = $queryData['rotation_period'];
             $orbital_period = $queryData['orbital_period'];
             $diameter = $queryData['diameter'];
             $climate = $queryData['climate'];
             $gravity = $queryData['gravity'];
             $terrain = $queryData['terrain'];
-            $surface_water = $queryData['surface_water'];
-            $population = $queryData['population'];
-            $img_url = $queryData['img_url'];
+            $surface_water = intval($queryData['surface_water']);
+            $population = intval($queryData['population']);
+            $img_url = $queryData['img_url'] ?? null;
 
             return new Planet(
                 $id, 

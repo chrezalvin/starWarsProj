@@ -14,6 +14,13 @@
         <?php endif; ?>
 
         <!-- Add Button -->
+        <div class="position-absolute start-0 m-2">
+            <a href="./api.php">
+                <button class="btn btn-primary fw-bold px-5"> API </button>
+            </a>
+        </div>
+
+        <!-- Add Button -->
         <div class="position-absolute end-0 m-2">
             <button 
                 class="btn btn-outline-success fw-bold text-warning"

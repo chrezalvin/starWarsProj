@@ -18,7 +18,7 @@
         $photo = $_FILES['photo'] ?? null;
 
         $photoName = null;
-        if($photo !== null){
+        if(FileManager::isFileValid($photo)){
             $extension = pathinfo($photo['name'], PATHINFO_EXTENSION);
             $fileName = $id.".$extension";
 
@@ -26,7 +26,6 @@
             $photoManager->savePhoto($photo, $fileName);
             $photoName = $fileName;
         }
-
 
         $add = PlanetDatabase::update_planet(
             $id,

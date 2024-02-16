@@ -1,6 +1,7 @@
 <?php
     require '../include/session.php';
     require_once '../service/Planet.php';
+    require_once '../include/FileManager.php';
 
     try{
         $name = $_POST['name'];
@@ -16,7 +17,7 @@
         $photo = $_FILES['photo'] ?? null;
 
         $photoName = null;
-        if($photo !== null){
+        if(FileManager::isFileValid($photo)){
             $photoManager = new FileManager("../public/planet");
             $extension = pathinfo($photo['name'], PATHINFO_EXTENSION);
             $fileName = PlanetDatabase::get_next_id().".$extension";

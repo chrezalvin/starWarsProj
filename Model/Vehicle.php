@@ -15,20 +15,34 @@
         private ?string $m_img_url;
 
         public static function get_vehicle_from_query(array $data){
+            $id = $data['id'] ?? 0;
+            $name = $data['name'] ?? '';
+            $model = $data['model'] ?? null;
+            $manufacturer = $data['manufacturer'] ?? null;
+            $cost_in_credits = intval($data['cost_in_credits']) == 0 ? null : intval($data['cost_in_credits']);
+            $length = floatval($data['length']) == 0 ? null : floatval($data['length']);
+            $max_atmosphering_speed = intval($data['max_atmosphering_speed']) == 0 ? null : intval($data['max_atmosphering_speed']);
+            $crew = intval($data['crew']) == 0 ? null : intval($data['crew']);
+            $passengers = intval($data['passengers']) == 0 ? null : intval($data['passengers']);
+            $cargo_capacity = intval($data['cargo_capacity']) == 0 ? null : intval($data['cargo_capacity']);
+            $consumables = $data['consumables'] ?? null;
+            $vehicle_class = $data['vehicle_class'] ?? null;
+            $img_url = $data['img_url'] ?? null;
+
             return new Vehicle(
-                $data['id'],
-                $data['name'],
-                $data['model'],
-                $data['manufacturer'],
-                $data['cost_in_credits'],
-                $data['length'],
-                $data['max_atmosphering_speed'],
-                $data['crew'],
-                $data['passengers'],
-                $data['cargo_capacity'],
-                $data['consumables'],
-                $data['vehicle_class'],
-                $data['img_url']
+                $id,
+                $name,
+                $model,
+                $manufacturer,
+                $cost_in_credits,
+                $length,
+                $max_atmosphering_speed,
+                $crew,
+                $passengers,
+                $cargo_capacity,
+                $consumables,
+                $vehicle_class,
+                $img_url
             );
         }
 

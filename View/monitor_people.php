@@ -30,6 +30,13 @@
         </button>
     </div>
 
+        <!-- Add Button -->
+        <div class="position-absolute start-0 m-2">
+            <a href="./api.php">
+                <button class="btn btn-primary fw-bold px-5"> API </button>
+            </a>
+        </div>
+
     <!-- modal for adding a person -->
     <div class="modal" id="addPerson" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
