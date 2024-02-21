@@ -78,8 +78,8 @@
                 `eye_color` = '$eye_color', 
                 `birth_year` = '$birth_year', 
                 `gender` = '$gender', 
-                `homeworld` = '$homeworld',
-                `img_url` = ".($photo ? "'".htmlspecialchars($photo)."'" : "null")."
+                `homeworld` = '$homeworld'".
+                ($photo ? ", `img_url`='".htmlspecialchars($photo)."'": "")."
                 WHERE `id` = $id";
 
             $res = database()->query($query);
@@ -139,5 +139,14 @@
             $result = database()->query($query);
             $row = mysqli_fetch_assoc($result);
             return $row['Auto_increment'];
+        }
+
+        static function get_people_by_name(string $name): People | null{
+            $table = self::$table;
+
+            $query = "SELECT * FROM $table WHERE `name` = '$name'";
+            $result = database()->query($query);
+            $row = mysqli_fetch_assoc($result);
+            return $row ? People::get_people_from_query($row) : null;
         }
     }

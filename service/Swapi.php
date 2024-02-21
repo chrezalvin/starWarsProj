@@ -5,6 +5,7 @@
     require_once('../Model/People.php');
     require_once('../Model/Planet.php');
     require_once('../Model/Vehicle.php');
+    require_once('../Model/SwapiResponseBulk.php');
 
     use Http\Discovery\Psr18Client;
 
@@ -35,11 +36,36 @@
             return $uri;
         }
 
+        private static function get_id_from_url(string $url): ?int{
+            // capture the number from url
+            $matches = [];
+            preg_match('/\d+/', $url, $matches);
+            if(count($matches) > 0)
+                return intval($matches[0]);
+            else return null;
+        }
+
+        public static function get_response_bulk(SWAPIResource $resource, int $page = 1): ?SwapiResponseBulk{
+            $request = self::$client->createRequest('GET', SWAPIDatabase::translate_uri($resource, null, $page));
+            $response = self::$client->sendRequest($request);
+
+            $json = json_decode($response->getBody()->getContents(), true);
+            try{
+                $response_bulk = SwapiResponseBulk::get_swapi_response_bulk_from_query($json);
+            }
+            catch(Exception $_){
+                return null;
+            }
+            
+            return $response_bulk;
+        }
+
         public static function get_people(int $id): People{
             $request = self::$client->createRequest('GET', SWAPIDatabase::translate_uri(SWAPIResource::PEOPLE, $id));
             $response = self::$client->sendRequest($request);
 
             $json = json_decode($response->getBody()->getContents(), true);
+            $json['id'] = self::get_id_from_url($json['url']);
             
             $people = People::get_people_from_query($json);
 
@@ -51,10 +77,10 @@
             $response = self::$client->sendRequest($request);
 
             $json = json_decode($response->getBody()->getContents(), true);
-            $people = [];
-
-            foreach($json['results'] as $person)
-                $people[] = People::get_people_from_query($person);
+            $people = array_map(function($person){
+                $person['id'] = self::get_id_from_url($person['url']);
+                return People::get_people_from_query($person);
+            }, $json['results']);
 
             return $people;
         }
@@ -64,6 +90,7 @@
             $response = self::$client->sendRequest($request);
 
             $json = json_decode($response->getBody()->getContents(), true);
+            $json['id'] = self::get_id_from_url($json['url']);
             $planet = Planet::get_planet_from_query($json);
 
             return $planet;
@@ -76,8 +103,10 @@
             $json = json_decode($response->getBody()->getContents(), true);
             $planets = [];
 
-            foreach($json['results'] as $planet)
+            foreach($json['results'] as $planet){
+                $planet['id'] = self::get_id_from_url($planet['url']);
                 $planets[] = Planet::get_planet_from_query($planet);
+            }
 
             return $planets;
         }
@@ -87,6 +116,8 @@
             $response = self::$client->sendRequest($request);
 
             $json = json_decode($response->getBody()->getContents(), true);
+            $json['id'] = self::get_id_from_url($json['url']);
+
             $vehicle = Vehicle::get_vehicle_from_query($json);
 
             return $vehicle;
@@ -99,8 +130,10 @@
             $json = json_decode($response->getBody()->getContents(), true);
             $vehicles = [];
 
-            foreach($json['results'] as $vehicle)
+            foreach($json['results'] as $vehicle){
+                $vehicle['id'] = self::get_id_from_url($vehicle['url']);
                 $vehicles[] = Vehicle::get_vehicle_from_query($vehicle);
+            }
 
             return $vehicles;
         }

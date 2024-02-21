@@ -56,8 +56,8 @@
                 `passengers` = ".($passengers ? "'".htmlspecialchars($passengers)."'" : "null").", 
                 `cargo_capacity` = ".($cargo_capacity ? "'".htmlspecialchars($cargo_capacity)."'" : "null").", 
                 `consumables` = ".($consumables ? "'".htmlspecialchars($consumables)."'" : "null").", 
-                `vehicle_class` = ".($vehicle_class ? "'".htmlspecialchars($vehicle_class)."'" : "null").",
-                `img_url` = ".($img_url ? "'".htmlspecialchars($img_url)."'" : "null")." 
+                `vehicle_class` = ".($vehicle_class ? "'".htmlspecialchars($vehicle_class)."'" : "null")."
+                ".($img_url ? ", `img_url`='".htmlspecialchars($img_url)."'": "")."
                 WHERE `id` = $id";
 
             return database()->query($query);
@@ -105,5 +105,15 @@
             $result = database()->query($query);
             $row = mysqli_fetch_assoc($result);
             return $row['Auto_increment'];
+        }
+
+        static function get_vehicle_by_name(string $name): Vehicle | null{
+            $table = self::$table;
+
+            $query = "SELECT * FROM $table WHERE `name` = '$name'";
+            $result = database()->query($query);
+            $row = mysqli_fetch_assoc($result);
+
+            return $row ? Vehicle::get_vehicle_from_query($row) : null;
         }
     }

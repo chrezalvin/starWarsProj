@@ -70,8 +70,8 @@
                 `gravity` = ".($gravity ? "'".htmlspecialchars($gravity)."'" : "null").", 
                 `terrain` = ".($terrain ? "'".htmlspecialchars($terrain)."'" : "null").", 
                 `surface_water` = ".($surface_water ? "'".htmlspecialchars($surface_water)."'" : "null").", 
-                `population` = ".($population ? "'".htmlspecialchars($population)."'" : "null").",
-                `img_url` = ".($img_url ? "'".htmlspecialchars($img_url)."'" : "null")."
+                `population` = ".($population ? "'".htmlspecialchars($population)."'" : "null")."
+                ".($img_url ? ", `img_url`='".htmlspecialchars($img_url)."'": "")."
                 WHERE `id` = $id";
 
             return database()->query($query);
@@ -115,13 +115,13 @@
             return database()->query($query);
         }
 
-        static function get_planet_by_name($name){
+        static function get_planet_by_name(string $name): Planet | null{
             $table = self::$table;
 
             $query = "SELECT * FROM $table WHERE `name` = '$name'";
             $result = database()->query($query);
             $row = mysqli_fetch_assoc($result);
-            return Planet::get_planet_from_query($row);
+            return $row ? Planet::get_planet_from_query($row) : null;
         }
 
         static function search_planet($name){

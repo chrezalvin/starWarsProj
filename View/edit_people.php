@@ -2,17 +2,9 @@
     require_once('../Controller/edit_people.php') 
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<?php require_once('../include/top.php'); ?>
 
-    <?php include '../assets/bootstrap.php' ?>
-    <?php include '../assets/jquery.php' ?>
-
-    <title>Edit</title>
-</head>
+<?= top("Edit People") ?>
 <body>
     
 </body>

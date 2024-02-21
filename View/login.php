@@ -1,16 +1,7 @@
 <?php require_once '../Controller/login.php' ?>
+<?php require_once('../include/top.php'); ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <?php include '../assets/bootstrap.php' ?>
-    <?php include '../assets/jquery.php' ?>
-
-    <title>Login</title>
-</head>
+<?= top("Login") ?>
 <body>
     <img 
         src="../assets/Star_wars2.svg" 

@@ -1,6 +1,8 @@
 <?php require_once '../Controller/monitor_planet.php' ?>
+<?php require_once('../include/top.php'); ?>
+<?php require_once('../include/table.php'); ?>
 
-<?php $top_title = "Monitor Planet"; include '../include/top.php' ?>
+<?= top("Monitor Planet") ?>
 <body>
         <!-- prompt for error -->
         <?php if($error != null): ?>
@@ -47,61 +49,7 @@
                         enctype="multipart/form-data"
                     >
                         <div class="modal-body">
-                            <div class="form-group">
-                            <label for="image">Image</label>
-                            <input 
-                                type="file" 
-                                name="photo"
-                                accept=".png, .jpg, .jpeg"
-                                id="image"
-                                class="form-control" 
-                                size="60"    
-                            />
-                        </div>
-                        <div class="form-group">
-                            <label for="name">Name</label>
-                            <input type="text" name="name" id="name" class="form-control" value="" required/>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="rotation_period">Rotation Period</label>
-                            <input type="number" name="rotation_period" id="rotation_period" class="form-control"/>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="orbital_period">Orbital Period</label>
-                            <input type="number" name="orbital_period" id="orbital_period" class="form-control"/>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="diameter">Diameter</label>
-                            <input type="number" name="diameter" id="diameter" class="form-control"/>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="climate">Climate</label>
-                            <input type="text" name="climate" id="climate" class="form-control"/>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="gravity">Gravity</label>
-                            <input type="text" name="gravity" id="gravity" class="form-control"/>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="terrain">Terrain</label>
-                            <input type="text" name="terrain" id="terrain" class="form-control"/>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="surface_water">Surface Water</label>
-                            <input type="number" name="surface_water" id="surface_water" class="form-control" value=""/>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="population">Population</label>
-                            <input type="number" name="population" id="population" class="form-control" value=""/>
-                        </div>
+                            <?= PlanetView::create_form() ?>
                         </div>
 
                         <div class="modal-footer">
@@ -135,21 +83,9 @@
             </div>
         </form>
     </div>
-    <!-- table -->
-    <table class="table w-100 px-4">
-        <tr class="text-center">
-            <th>Name</th>
-            <th>Rotation Period</th>
-            <th>Orbital Period</th>
-            <th>Diameter</th>
-            <th>Climate</th>
-            <th>Gravity</th>
-            <th>Terrain</th>
-            <th>Surface Water</th>
-            <th>Population</th>
-            <th>Action</th>
-        </tr>
-        <?php foreach($planets as $planet): ?>
+
+
+    <?php foreach($planets as $planet): ?>
             <!-- Delete modal for each planet -->
             <div class="modal" id="modal<?= $planet->getId() ?>" tabindex="-1" role="dialog">
                     <div class="modal-dialog" role="document">
@@ -187,63 +123,8 @@
                             </div>
                             <form action="./edit_planet.php" method="post" enctype="multipart/form-data">
                                 <div class="modal-body">
-                                <input type="hidden" name="id" value="<?= $planet->getId() ?>" />
-                                <div class="form-group">
-                                    <label for="image">Insert New Image</label>
-                                    <input 
-                                        type="file" 
-                                        name="photo"
-                                        accept=".png, .jpg, .jpeg"
-                                        id="image"
-                                        class="form-control" 
-                                        size="60"    
-                                    />
+                                    <?= PlanetView::create_form($planet) ?>
                                 </div>
-                                <div class="form-group">
-                                    <label for="name">Name</label>
-                                    <input type="text" name="name" id="name" class="form-control" value="<?= $planet->getName() ?>" required/>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="rotation_period">Rotation Period</label>
-                                    <input type="number" name="rotation_period" id="rotation_period" class="form-control" value="<?= $planet->getRotationPeriod() ?>"/>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label for="orbital_period">Orbital Period</label>
-                                    <input type="number" name="orbital_period" id="orbital_period" class="form-control" value="<?= $planet->getOrbitalPeriod() ?>"/>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="diameter">Diameter</label>
-                                    <input type="number" name="diameter" id="diameter" class="form-control" value="<?= $planet->getDiameter() ?>"/>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="climate">Climate</label>
-                                    <input type="text" name="climate" id="climate" class="form-control" value="<?= $planet->getClimate() ?>"/>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="gravity">Gravity</label>
-                                    <input type="text" name="gravity" id="gravity" class="form-control" value="<?= $planet->getGravity() ?>"/>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="terrain">Terrain</label>
-                                    <input type="text" name="terrain" id="terrain" class="form-control" value="<?= $planet->getTerrain() ?>"/>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="surface_water">Surface Water</label>
-                                    <input type="number" name="surface_water" id="surface_water" class="form-control" value="<?= $planet->getSurfaceWater() ?>"/>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="population">Population</label>
-                                    <input type="number" name="population" id="population" class="form-control" value="<?= $planet->getPopulation() ?>"/>
-                                </div>
-
                                 <div class="modal-footer">
                                     <div class="d-flex justify-content-center gap-2">
                                         <button class="btn btn-primary" type="submit">Update</button>
@@ -254,29 +135,38 @@
                         </div>
                     </div>
                 </div>
+    <?php endforeach; ?>
 
-            <tr class="text-center align-middle">
-                <td class="d-flex justify-content-center flex-column align-items-center">
-                    <?php if($planet->getImgUrl() !== null): ?>
-                        <img 
-                            src="../public/planet/<?= $planet->getImgUrl() ?>" 
-                            class="img-fluid object-fit-cover rounded-2"
-                            width="60"
-                            height="80"
-                            alt="<?= $planet->getName() ?>'s image" 
-                        />
-                    <?php endif; ?>
-                    <?= $planet->getName() ?>
-                </td>
-                <td><?= $planet->getRotationPeriod()  ?? "n/a" ?></td>
-                <td><?= $planet->getOrbitalPeriod() ?? "n/a" ?></td>
-                <td><?= $planet->getDiameter() ?? "n/a" ?></td>
-                <td><?= $planet->getClimate() ?? "unknown" ?></td>
-                <td><?= $planet->getGravity() ?? "n/a" ?></td>
-                <td><?= $planet->getTerrain() ?? "unknown" ?></td>
-                <td><?= $planet->getSurfaceWater() ?? "n/a" ?></td>
-                <td><?= $planet->getPopulation() ?? "n/a" ?></td>
-                <td>
+    <!-- table -->
+    <?=
+        TableElement::createTable(
+            tableElements: [
+                new TableElement("Name", array_map(function($planet){ 
+                    ob_start(); ?>
+                    <div class="d-flex justify-content-center flex-column align-items-center">
+                        <?php if($planet->getImgUrl() !== null): ?>
+                            <img 
+                                src="../public/planet/<?= $planet->getImgUrl() ?>" 
+                                class="img-fluid object-fit-cover rounded-2"
+                                width="60"
+                                height="80"
+                                alt="<?= $planet->getName() ?>'s image" 
+                            />
+                        <?php endif; ?>
+                        <?= $planet->getName() ?>
+                    <?php 
+                        return ob_get_clean();
+                }, $planets)),
+                new TableElement("Rotation Period", array_map(function($planet){ return $planet->getRotationPeriod(); }, $planets)),
+                new TableElement("Orbital Period", array_map(function($planet){ return $planet->getOrbitalPeriod(); }, $planets)),
+                new TableElement("Diameter", array_map(function($planet){ return $planet->getDiameter(); }, $planets)),
+                new TableElement("Climate", array_map(function($planet){ return $planet->getClimate(); }, $planets)),
+                new TableElement("Gravity", array_map(function($planet){ return $planet->getGravity(); }, $planets)),
+                new TableElement("Terrain", array_map(function($planet){ return $planet->getTerrain(); }, $planets)),
+                new TableElement("Surface Water", array_map(function($planet){ return $planet->getSurfaceWater(); }, $planets)),
+                new TableElement("Population", array_map(function($planet){ return $planet->getPopulation(); }, $planets)),
+                new TableElement("Action", array_map(function($planet){
+                    ob_start(); ?>
                     <div class="d-flex justify-content-center flex-column gap-1">
                         <button
                             type="button"
@@ -293,10 +183,16 @@
                             Delete
                         </button>
                     </div>
-                </td>
-            </tr>
-        <?php endforeach; ?>
-    </table>
+                    
+                    <?php 
+                        return ob_get_clean();
+                }, $planets))
+            ],
+            tableClass: "table w-100 px-4",
+            theadClass: "text-center",
+            tbodyClass: "text-center align-middle"
+        )
+    ?>
 
 </body>
 </html>

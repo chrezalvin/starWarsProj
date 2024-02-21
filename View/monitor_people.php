@@ -1,6 +1,8 @@
 <?php include_once '../Controller/home.php' ?>
+<?php require_once('../include/top.php'); ?>
+<?php require_once('../include/table.php'); ?>
 
-<?php $top_title = "View Characters"; include '../include/top.php' ?>
+<?= top("Monitor People") ?>
 <body>
     <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
         <symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">
@@ -53,68 +55,7 @@
                     enctype="multipart/form-data"
                 >
                 <div class="modal-body">
-                    <div class="form-group">
-                        <label for="image">Image</label>
-                        <input 
-                            type="file" 
-                            name="photo"
-                            accept=".png, .jpg, .jpeg"
-                            id="image"
-                            class="form-control" 
-                            size="60"    
-                        />
-                    </div>
-                    <div class="form-group">
-                        <label for="name">Name</label>
-                        <input type="text" name="name" id="name" class="form-control" placeholder="e.g: Anakin Skywalker" value="" required />
-                    </div>
-                    <div class="form-group">
-                        <label for="height">Height</label>
-                        <input type="number" name="height" id="height" class="form-control" value="0" min="0" required/>
-                    </div>
-                    <div class="form-group">
-                        <label for="mass">Mass</label>
-                        <input type="number" name="mass" id="mass" class="form-control" value="0" min="0" required/>
-                    </div>
-                    <div class="form-group">
-                        <label for="hair_color">Hair Color</label>
-                        <input type="text" name="hair_color" id="hair_color" class="form-control" value="n/a" />
-                    </div>
-                    <div class="form-group">
-                        <label for="skin_color">Skin Color</label>
-                        <input type="text" name="skin_color" id="skin_color" class="form-control" value="n/a" />
-                    </div>
-                    <div class="form-group">
-                        <label for="eye_color">Eye Color</label>
-                        <input type="text" name="eye_color" id="eye_color" class="form-control" value="n/a" />
-                    </div>
-                    <div class="form-group">
-                        <label for="birth_year">Birth Year</label>
-                        <div class="input-group">
-                            <input type="number" name="birth_year" id="birth_year" class="form-control" value="0" min="0" required/>
-                            <div class="input-group-append">
-                                <select name="birth_year_indicator" id="birthyear" class="form-select">
-                                    <option value="BBY" selected>BBY</option>
-                                    <option value="ABY">ABY</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="gender">Gender</label>
-                        <input type="text" name="gender" id="gender" class="form-control" value="male" />
-                    </div>
-
-                    <div class="form-group">
-                        <label for="homeworld">Home World</label>
-                        <div class="input-group">
-                            <select name="homeworld" id="homeworld" class="form-select fw-bold">
-                                <?php foreach($allPlanetList as $planet): ?>
-                                    <option value=<?= $planet->getId() ?>><?= $planet->getName() ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                    </div>
+                    <?= PeopleView::create_form(null, $allPlanetList) ?>
                 </div>
                 <div class="modal-footer">
                     <div class="d-flex justify-content-center gap-2">
@@ -145,21 +86,8 @@
                 </div>
             </form>
         </div>
-    <table class="table w-100 px-4 mt-4">
-        <tr class="text-center">
-            <th>Name</th>
-            <th>Height</th>
-            <th>Mass</th>
-            <th>Hair Color</th>
-            <th>skin color</th>
-            <th>eye color</th>
-            <th>birth year</th>
-            <th>gender</th>
-            <th>Homeworld</th>
-            <th>Action</th>
-        </tr>
-            <tbody>
-                <?php foreach($people as $person): ?>
+
+        <?php foreach($people as $person): ?>
                         <div class="modal" id="modal<?= $person->getId() ?>" tabindex="-1" role="dialog">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
@@ -199,72 +127,7 @@
                                         enctype="multipart/form-data"
                                     >
                                         <div class="modal-body">
-                                        <input type="hidden" name="id" value="<?= $person->getId() ?>" />
-                                            <div class="form-group">
-                                                <label for="image">Insert New Image</label>
-                                                <input 
-                                                    type="file" 
-                                                    name="photo"
-                                                    accept=".png, .jpg, .jpeg"
-                                                    id="image"
-                                                    class="form-control" 
-                                                    size="60"    
-                                                />
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="name">Name</label>
-                                                <input type="text" name="name" id="name" class="form-control" value="<?= $person->getName() ?>" required/>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="height">Height</label>
-                                                <input type="number" name="height" id="height" class="form-control" value="<?= $person->getHeight() ?>" min="0" required/>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="mass">Mass</label>
-                                                <input type="number" name="mass" id="mass" class="form-control" value="<?= $person->getMass() ?>" min="0" required/>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="hair_color">Hair Color</label>
-                                                <input type="text" name="hair_color" id="hair_color" class="form-control" value="<?= $person->getHairColor() ?>" />
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="skin_color">Skin Color</label>
-                                                <input type="text" name="skin_color" id="skin_color" class="form-control" value="<?= $person->getSkinColor() ?>" />
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="eye_color">Eye Color</label>
-                                                <input type="text" name="eye_color" id="eye_color" class="form-control" value="<?= $person->getEyeColor() ?>" />
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="birth_year">Birth Year</label>
-                                                <div class="input-group">
-                                                    <input type="number" name="birth_year" id="birth_year" class="form-control" value="<?= preg_match("/(\d+)/", $person->getBirthYear(), $matches) ? $matches[0] : "0";  ?>" min="0" />
-                                                    <div class="input-group-append">
-                                                        <select name="birth_year_indicator" id="birthyear" class="form-select fw-bold">
-                                                            <?php
-                                                                $matches;
-                                                                preg_match("/(BBY|ABY)/", $person->getBirthYear(), $matches);
-                                                                $matches = $matches[0];
-                                                            ?>
-                                                            <option value="BBY" <?= $matches === "BBY" ? "selected": '' ?>>BBY</option>
-                                                            <option value="ABY" <?= $matches === "ABY" ? "selected": '' ?>>ABY</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="homeworld">Home World</label>
-                                                <div class="input-group">
-                                                    <select name="homeworld" id="homeworld" class="form-select fw-bold">
-                                                        <?php foreach($allPlanetList as $planet): ?>
-                                                            <option value=<?= $planet->getId() ?> <?= $planet->getId() === $person->getHomeWorldId() ? "selected": '' ?>><?= $planet->getName() ?></option>
-                                                        <?php endforeach; ?>
-                                                    </select>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="gender">Gender</label>
-                                                <input type="text" name="gender" id="gender" class="form-control" value="<?= $person->getGender() ?>" />
-                                            </div>
+                                            <?= PeopleView::create_form($person, $allPlanetList) ?>
                                         </div>
                                         <div class="modal-footer">
                                             <div class="d-flex justify-content-center gap-2">
@@ -276,51 +139,61 @@
                                 </div>
                             </div>
                         </div>
-                        <tr class="text-center align-middle">
-                            <td class="d-flex justify-content-center flex-column align-items-center">
-                                <?php if($person->getImgUrl() !== null): ?>
-                                    <img 
-                                        src="../public/people/<?= $person->getImgUrl() ?>" 
-                                        class="img-fluid object-fit-cover"
-                                        width="60"
-                                        height="80"
-                                        alt="<?= $person->getName() ?>'s image" 
-                                    />
-                                <?php endif; ?>
-                                <?= $person->getName() ?>
-                            </td>
-                            <td><?= $person->getHeight() ?></td>
-                            <td><?= $person->getMass() ?></td>
-                            <td><?= $person->getHairColor() ?></td>
-                            <td><?= $person->getSkinColor() ?></td>
-                            <td><?= $person->getEyeColor() ?></td>
-                            <td><?= $person->getBirthYear() ?></td>
-                            <td><?= $person->getGender() ?></td>
-                            <td>
-                                <?= $person->getHomeWorld() ?>
-                            </td>
-                            <td>
-                                <div class="d-flex justify-content-center flex-column gap-1">
-                                    <button
-                                        type="button"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#modalEdit<?= $person->getId() ?>"
-                                        class="btn btn-warning"
-                                    >Edit</button>
-                                    <button
-                                        type="button"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#modal<?= $person->getId() ?>"
-                                        class="btn btn-danger"
-                                    >
-                                        Delete
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                <?php endforeach; ?>
-            </tbody>
-    </table>
+                    <?php endforeach; ?>
+        <?=
+            TableElement::createTable(
+                [
+                    new TableElement("Name", array_map(function($person){ 
+                        ob_start(); ?>
+
+                            <?php if($person->getImgUrl() != null): ?>
+                                <img 
+                                    src="../public/people/<?= $person->getImgUrl() ?>" 
+                                    class="img-fluid object-fit-cover rounded-2"
+                                    width="60"
+                                    height="80"
+                                    alt="<?= $person->getName() ?>'s image" 
+                                />
+                            <?php endif; ?>
+                            <?= $person->getName() ?>
+
+                        <?php 
+                            return ob_get_clean();
+                    }, $people), "d-flex justify-content-center flex-column align-items-center"),
+                    new TableElement("Height", array_map(function($person){ return $person->getHeight(); }, $people)),
+                    new TableElement("Mass", array_map(function($person){ return $person->getMass(); }, $people)),
+                    new TableElement("Hair Color", array_map(function($person){ return $person->getHairColor(); }, $people)),
+                    new TableElement("Skin Color", array_map(function($person){ return $person->getSkinColor(); }, $people)),
+                    new TableElement("Eye Color", array_map(function($person){ return $person->getEyeColor(); }, $people)),
+                    new TableElement("Birth Year", array_map(function($person){ return $person->getBirthYear(); }, $people)),
+                    new TableElement("Gender", array_map(function($person){ return $person->getGender(); }, $people)),
+                    new TableElement("Homeworld", array_map(function($person){ return $person->getHomeworld(); }, $people)),
+                    new TableElement("Action", array_map(function($person){ 
+                        ob_start(); ?>
+                            <div class='d-flex justify-content-center flex-column gap-1'>
+                            <button
+                                type='button'
+                                data-bs-toggle='modal'
+                                data-bs-target='#modalEdit<?= $person->getId() ?>'
+                                class='btn btn-warning'
+                            >Edit</button>
+                            <button
+                                type='button'
+                                data-bs-toggle='modal'
+                                data-bs-target='#modal<?= $person->getId() ?>'
+                                class='btn btn-danger'
+                            >
+                                Delete
+                            </button>
+                    <?php 
+                        return ob_get_clean();
+                    }, $people))
+                ],
+                "table w-100 px-4 mt-4",
+                "text-center",
+                "text-center align-middle"
+            );
+        ?>
 </body>
 
 <script>

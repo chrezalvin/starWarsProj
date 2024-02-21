@@ -1,6 +1,8 @@
 <?php require_once '../Controller/monitor_vehicle.php' ?>
+<?php require_once('../include/top.php'); ?>
+<?php require_once('../include/table.php'); ?>
 
-<?php $top_title = "Monitor Vehicles"; include '../include/top.php' ?>
+<?= top("Monitor Vehicles") ?>
 <body>
         <!-- prompt for error -->
         <?php if($error != null): ?>
@@ -47,72 +49,7 @@
                         enctype="multipart/form-data"
                     >
                         <div class="modal-body">
-                        <div class="form-group">
-                            <label for="image">Image</label>
-                            <input 
-                                type="file" 
-                                name="photo"
-                                accept=".png, .jpg, .jpeg"
-                                id="image"
-                                class="form-control" 
-                                size="60"    
-                            />
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="name">Name</label>
-                                <input type="text" name="name" id="name" class="form-control" value="" required/>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="model">Model</label>
-                                <input type="text" name="model" id="model" class="form-control" value=""/>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="manufacturer">Manufacturer</label>
-                                <input type="text" name="manufacturer" id="manufacturer" class="form-control" value=""/>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="cost_in_credits">Cost in Credits</label>
-                                <input type="number" name="cost_in_credits" id="cost_in_credits" class="form-control" value="" />
-                            </div>
-
-                            <div class="form-group">
-                                <label for="length">Length</label>
-                                <input type="number" name="length" id="length" step="0.1" class="form-control" value=""/>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="max_atmosphering_speed">Max Atmosphering Speed</label>
-                                <input type="number" name="max_atmosphering_speed" id="max_atmosphering_speed" class="form-control" value=""/>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="crew">Crew</label>
-                                <input type="number" name="crew" id="crew" class="form-control" value=""/>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="passengers">Passengers</label>
-                                <input type="number" name="passengers" id="passengers" class="form-control" value=""/>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="cargo_capacity">Cargo Capacity</label>
-                                <input type="number" name="cargo_capacity" id="cargo_capacity" class="form-control" value=""/>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="consumables">Consumables</label>
-                                <input type="text" name="consumables" id="consumables" class="form-control" value=""/>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="vehicle_class">Vehicle Class</label>
-                                <input type="text" name="vehicle_class" id="vehicle_class" class="form-control" value=""/>
-                            </div>
+                            <?= Vehicle::create_form() ?>
                         </div>
 
                         <div class="modal-footer">
@@ -144,23 +81,8 @@
             </div>
         </form>
     </div>
-    <!-- table -->
-    <table class="table w-100 px-4">
-        <tr class="text-center">
-            <th>Name</th>
-            <th>Model</th>
-            <th>Manufacturer</th>
-            <th>Cost</th>
-            <th>Length</th>
-            <th>Max Speed</th>
-            <th>Crew</th>
-            <th>Passengers</th>
-            <th>Cargo</th>
-            <th>Consumables</th>
-            <th>Class</th>
-            <th>Action</th>
-        </tr>
-        <?php foreach($vehicles as $vehicle): ?>
+
+    <?php foreach($vehicles as $vehicle): ?>
             <!-- Delete modal for each vehicle -->
             <div class="modal" id="modal<?= $vehicle->getId() ?>" tabindex="-1" role="dialog">
                     <div class="modal-dialog" role="document">
@@ -202,76 +124,7 @@
                                 enctype="multipart/form-data"
                             >
                                 <div class="modal-body">
-
-                                    <input type="hidden" name="id" value="<?= $vehicle->getId() ?>" />
-
-                                    <div class="form-group">
-                                        <label for="image">Insert New Image</label>
-                                        <input 
-                                            type="file" 
-                                            name="photo"
-                                            accept=".png, .jpg, .jpeg"
-                                            id="image"
-                                            class="form-control" 
-                                            size="60"    
-                                        />
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="name">Name</label>
-                                        <input type="text" name="name" id="name" class="form-control" value="<?= $vehicle->getName() ?>" required/>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="model">Model</label>
-                                        <input type="text" name="model" id="model" class="form-control" value="<?= $vehicle->getModel() ?>" />
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="manufacturer">Manufacturer</label>
-                                        <input type="text" name="manufacturer" id="manufacturer" class="form-control" value="<?= $vehicle->getManufacturer() ?>" />
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="cost_in_credits">Cost in Credits</label>
-                                        <input type="number" name="cost_in_credits" id="cost_in_credits" class="form-control" value="<?= $vehicle->getCostInCredits() ?>"/>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="length">Length</label>
-                                        <input type="number" step="0.1" name="length" id="length" class="form-control" value="<?= $vehicle->getLength() ?>" />
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="max_atmosphering_speed">Max Atmosphering Speed</label>
-                                        <input type="number" name="max_atmosphering_speed" id="max_atmosphering_speed" class="form-control" value="<?= $vehicle->getMaxAtmospheringSpeed() ?>" />
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="crew">Crew</label>
-                                        <input type="number" name="crew" id="crew" class="form-control" value="<?= $vehicle->getCrew() ?>" />
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="passengers">Passengers</label>
-                                        <input type="number" name="passengers" id="passengers" class="form-control" value="<?= $vehicle->getPassengers() ?>" />
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="cargo_capacity">Cargo Capacity</label>
-                                        <input type="number" name="cargo_capacity" id="cargo_capacity" class="form-control" value="<?= $vehicle->getCargoCapacity() ?>" />
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="consumables">Consumables</label>
-                                        <input type="text" name="consumables" id="consumables" class="form-control" value="<?= $vehicle->getConsumables() ?>" />
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="vehicle_class">Vehicle Class</label>
-                                        <input type="text" name="vehicle_class" id="vehicle_class" class="form-control" value="<?= $vehicle->getVehicleClass() ?>" />
-                                    </div>
-
+                                    <?= Vehicle::create_form($vehicle) ?>
                                 </div>
 
                                 <div class="modal-footer">
@@ -284,9 +137,14 @@
                         </div>
                     </div>
                 </div>
+        <?php endforeach; ?>
 
-            <tr class="text-center align-middle">
-                <td class="d-flex justify-content-center flex-column align-items-center">
+    <?= 
+        TableElement::createTable(
+            tableElements:[
+                new TableElement("Name", array_map(function($vehicle){
+                    ob_start(); 
+                ?>
                     <?php if($vehicle->getImgUrl() !== null): ?>
                         <img 
                             src="../public/vehicle/<?= $vehicle->getImgUrl() ?>" 
@@ -297,38 +155,47 @@
                         />
                     <?php endif; ?>
                     <?= $vehicle->getName() ?>
-                </td>
-                <td><?= $vehicle->getModel() ?></td>
-                <td><?= $vehicle->getManufacturer() ?? "unknown" ?></td>
-                <td><?= $vehicle->getCostInCredits() ?? "n/a" ?></td>
-                <td><?= $vehicle->getLength() ?? "n/a" ?></td>
-                <td><?= $vehicle->getMaxAtmospheringSpeed() ?? "n/a" ?></td>
-                <td><?= $vehicle->getCrew() ?? "n/a" ?></td>
-                <td><?= $vehicle->getPassengers() ?? "n/a" ?></td>
-                <td><?= $vehicle->getCargoCapacity() ?? "n/a" ?></td>
-                <td><?= $vehicle->getConsumables() ?? "n/a" ?></td>
-                <td><?= $vehicle->getVehicleClass() ?? "unknown" ?></td>
-                <td>
-                    <div class="d-flex justify-content-center flex-column gap-1">
+                    <?php
+                        return ob_get_clean();
+                }, $vehicles), "d-flex justify-content-center flex-column align-items-center"),
+                new TableElement("Model", array_map(fn($vehicle) => $vehicle->getModel() ?? "n/a", $vehicles)),
+                new TableElement("Manufacturer", array_map(fn($vehicle) => $vehicle->getManufacturer() ?? "n/a", $vehicles)),
+                new TableElement("Cost", array_map(fn($vehicle) => $vehicle->getCostInCredits() ?? "n/a", $vehicles)),
+                new TableElement("Length", array_map(fn($vehicle) => $vehicle->getLength() ?? "n/a", $vehicles)),
+                new TableElement("Max Speed", array_map(fn($vehicle) => $vehicle->getMaxAtmospheringSpeed() ?? "n/a", $vehicles)),
+                new TableElement("Crew", array_map(fn($vehicle) => $vehicle->getCrew() ?? "n/a", $vehicles)),
+                new TableElement("Passengers", array_map(fn($vehicle) => $vehicle->getPassengers() ?? "n/a", $vehicles)),
+                new TableElement("Cargo", array_map(fn($vehicle) => $vehicle->getCargoCapacity() ?? "n/a", $vehicles)),
+                new TableElement("Consumables", array_map(fn($vehicle) => $vehicle->getConsumables() ?? "n/a", $vehicles)),
+                new TableElement("Class", array_map(fn($vehicle) => $vehicle->getVehicleClass() ?? "n/a", $vehicles)),
+                new TableElement("Action", array_map(function ($vehicle) {
+                    ob_start(); 
+                ?>
+                    <div class='d-flex justify-content-center flex-column gap-1'>
                         <button
-                            type="button"
-                            data-bs-toggle="modal"
-                            data-bs-target="#modalEdit<?= $vehicle->getId() ?>"
-                            class="btn btn-warning"
+                            type='button'
+                            data-bs-toggle='modal'
+                            data-bs-target='#modalEdit<?= $vehicle->getId() ?>'
+                            class='btn btn-warning'
                         >Edit</button>
                         <button
-                            type="button"
-                            data-bs-toggle="modal"
-                            data-bs-target="#modal<?= $vehicle->getId() ?>"
-                            class="btn btn-danger"
+                            type='button'
+                            data-bs-toggle='modal'
+                            data-bs-target='#modal<?= $vehicle->getId() ?>'
+                            class='btn btn-danger'
                         >
                             Delete
                         </button>
-                    </div>
-                </td>
-            </tr>
-        <?php endforeach; ?>
-    </table>
+                    <?php 
+                        return ob_get_clean();
+                }, $vehicles)
+                )
+            ],
+            tableClass: "table w-100 px-4",
+            theadClass: "text-center",
+            tbodyClass: "text-center align-middle"
+        )
+    ?>
 
 </body>
 </html>

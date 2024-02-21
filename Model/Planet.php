@@ -1,7 +1,7 @@
 <?php
-    class Planet{
-        private int $m_id;
-        private string $m_name;
+    require_once('../Model/Base.php');
+
+    class Planet extends Base{
         private ?int $m_rotation_period;
         private ?int $m_orbital_period;
         private ?int $m_diameter;
@@ -15,14 +15,14 @@
         public static function get_planet_from_query(array $queryData): Planet{
             $id = $queryData['id'] ?? 0;
             $name = $queryData['name'] ?? '';
-            $rotation_period = $queryData['rotation_period'];
-            $orbital_period = $queryData['orbital_period'];
-            $diameter = $queryData['diameter'];
+            $rotation_period = intval($queryData['rotation_period']) === 0 ? null : intval($queryData['rotation_period']);
+            $orbital_period = intval($queryData['orbital_period']) === 0 ? null : intval($queryData['orbital_period']);
+            $diameter = intval($queryData['diameter']) === 0 ? null : intval($queryData['diameter']);
             $climate = $queryData['climate'];
             $gravity = $queryData['gravity'];
             $terrain = $queryData['terrain'];
-            $surface_water = intval($queryData['surface_water']);
-            $population = intval($queryData['population']);
+            $surface_water = intval($queryData['surface_water']) === 0 ? null : intval($queryData['surface_water']);
+            $population = intval($queryData['population']) === 0 ? null : intval($queryData['population']);
             $img_url = $queryData['img_url'] ?? null;
 
             return new Planet(
@@ -40,7 +40,7 @@
             );
         }
 
-        public function __construct(
+        protected function __construct(
             int $id,
             string $name,
             ?int $rotation_period,
@@ -53,8 +53,7 @@
             ?int $population,
             ?string $img_url
         ){
-            $this->m_id = $id;
-            $this->m_name = $name;
+            parent::__construct($id, $name);
             $this->m_rotation_period = $rotation_period;
             $this->m_orbital_period = $orbital_period;
             $this->m_diameter = $diameter;
@@ -67,14 +66,6 @@
         }
 
         // getter
-        public function getId(){
-            return $this->m_id;
-        }
-
-        public function getName(){
-            return $this->m_name;
-        }
-
         public function getRotationPeriod(){
             return $this->m_rotation_period;
         }

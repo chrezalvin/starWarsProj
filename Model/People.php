@@ -1,9 +1,9 @@
 <?php
+    require_once('../Model/Base.php');
     require_once('../include/database.php');
+    require_once('../Model/Planet.php');
 
-    class People {
-        private int $m_id;
-        private string $m_name;
+    class People extends Base {
         private ?int $m_height;
         private ?int $m_mass;
         private ?string $m_hair_color;
@@ -13,10 +13,10 @@
         private ?string $m_gender;
         private ?string $m_img_url;
 
-        public static function get_people_from_query(array $queryData): People{
+        public static function get_people_from_query(array $queryData): ?People{
             $id = $queryData['id'] ?? 0;
             $name = $queryData['name'] ?? 'n/a';
-            $height = $queryData['height'] ?? null;
+            $height = intval($queryData['height']) === 0 ? null : intval($queryData['height']);
             $mass = intval($queryData['mass']) === 0 ? null : intval($queryData['mass']);
             $hair_color = $queryData['hair_color'] ?? null;
             $skin_color = $queryData['skin_color'] ?? null;
@@ -28,7 +28,7 @@
             return new People($id, $name, $height, $mass, $hair_color, $skin_color, $eye_color, $birth_year, $gender, $img_url);
         }
 
-        public function __construct(
+        protected function __construct(
             int $id, 
             string $name, 
             ?int $height, 
@@ -40,8 +40,7 @@
             ?string $gender,
             ?string $img_url
         ){
-            $this->m_id = $id;
-            $this->m_name = $name;
+            parent::__construct($id, $name);
             $this->m_height = $height;
             $this->m_mass = $mass;
             $this->m_hair_color = $hair_color;
@@ -50,15 +49,6 @@
             $this->m_birth_year = $birth_year;
             $this->m_gender = $gender;
             $this->m_img_url = $img_url;
-        }
-
-        // getter
-        public function getId(){
-            return $this->m_id;
-        }
-
-        public function getName(){
-            return $this->m_name;
         }
 
         public function getHeight(){
