@@ -32,13 +32,39 @@
         }
     }
 
+    /**
+     * @param Base[] $list
+     */
+    function createListSection(string $name, $list){
+        ob_start(); ?>
+
+            <div class="d-flex flex-column gap-1">
+                <h3 class="text-center"><?= $name ?></h3>
+                <?php foreach($list as $elem): ?>
+                    <div class="d-flex">
+                        <p class="fw-bold flex-grow-1"><?= $elem->getName() ?></p>
+                        <a href="./api.php?remove<?= $name ?>= <?= $elem->getId() ?>"><button class="btn btn-danger">Remove</button></a>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+
+        <?php
+            return ob_get_clean();
+    }
+
 ?>
 
 <?php
     $collection = [
-        'planet' => new Test($planetSwapi, array_merge($planetList, $db_planets)),
         'people' => new Test($peopleSwapi, array_merge($peopleList, $db_people)),
-        'vehicle' => new Test($vehicleSwapi, array_merge($vehicleList, $db_vehicles))
+        'vehicle' => new Test($vehicleSwapi, array_merge($vehicleList, $db_vehicles)),
+        'planet' => new Test($planetSwapi, array_merge($planetList, $db_planets)),
+    ];
+
+    $listSections = [
+        'People' => $peopleList,
+        'Vehicle' => $vehicleList,
+        'Planet' => $planetList,
     ];
 ?>
 
@@ -69,31 +95,13 @@
 
         <div class="collapse bg-light" id="listCollapsable">
             <div class="border border-3 rounded-3 px-2 py-1" style="width: 25vw; z-index: 999;">
-                <?php if(count($peopleList) > 0): ?>
-                    <div class="d-flex flex-column">
-                        <h3 class="text-center">People</h3>
-                        <?php foreach($peopleList as $person): ?>
-                            <p class="fw-bold"><?= $person->getName() ?></p>
-                        <?php endforeach; ?>
-                    </div>
-                <?php endif; ?>
-                <?php if(count($vehicleList) > 0): ?>
-                    <div class="d-flex flex-column">
-                        <h3 class="text-center">Vehicle</h3>
-                        <?php foreach($vehicleList as $vehicle): ?>
-                            <p class="fw-bold"><?= $vehicle->getName() ?></p>
-                        <?php endforeach; ?>
-                    </div>
-                <?php endif; ?>
-                <?php if(count($planetList) > 0): ?>
-                    <div class="d-flex flex-column">
-                        <h3 class="text-center">Planet</h3>
-                        <?php foreach($planetList as $planet): ?>
-                            <p class="fw-bold"><?= $planet->getName() ?></p>
-                        <?php endforeach; ?>
-                    </div>
-                <?php endif; ?>
-                <div class="d-flex justify-content-center">
+                <?php foreach($listSections as $key => $listSection): ?>
+                    <?php if(count($listSection) > 0): ?>
+                        <?= createListSection($key, $listSection) ?>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+
+                <div class="d-flex justify-content-center my-3">
                     <a href="./api_add_multiple.php">
                         <button class="btn btn-primary">Add to Database</button>
                     </a>
@@ -157,7 +165,7 @@
                     <div>
                         <a href="./api.php?add<?= ucfirst($key) ?>=<?= $elem->getId() ?>">
                             <button
-                                class="btn btn-success <?= $list->isAlreadyExistOnList($elem) ? "disabled": "" ?>"
+                                class="btn btn-success position-relative z-n1 <?= $list->isAlreadyExistOnList($elem) ? "disabled": "" ?>"
                             >
                                 Add
                             </button>

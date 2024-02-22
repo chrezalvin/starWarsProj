@@ -63,7 +63,7 @@
 
                 <div class="form-group">
                     <label for="cost_in_credits">Cost in Credits</label>
-                    <input type="number" name="cost_in_credits" id="cost_in_credits" class="form-control" value="<?= $cost_in_credits ?>"/>
+                    <input type="number" name="cost_in_credits" id="cost_in_credits" class="form-control" min="0" value="<?= $cost_in_credits ?>"/>
                 </div>
 
                 <div class="form-group">
@@ -73,22 +73,22 @@
 
                 <div class="form-group">
                     <label for="max_atmosphering_speed">Max Atmosphering Speed</label>
-                    <input type="number" name="max_atmosphering_speed" id="max_atmosphering_speed" class="form-control" value="<?= $max_atmosphering_speed ?>" />
+                    <input type="number" name="max_atmosphering_speed" id="max_atmosphering_speed" class="form-control" min="0" value="<?= $max_atmosphering_speed ?>" />
                 </div>
 
                 <div class="form-group">
                     <label for="crew">Crew</label>
-                    <input type="number" name="crew" id="crew" class="form-control" value="<?= $crew ?>" />
+                    <input type="number" name="crew" id="crew" class="form-control" min="0" value="<?= $crew ?>" />
                 </div>
 
                 <div class="form-group">
                     <label for="passengers">Passengers</label>
-                    <input type="number" name="passengers" id="passengers" class="form-control" value="<?= $passengers ?>" />
+                    <input type="number" name="passengers" id="passengers" class="form-control" min="0" value="<?= $passengers ?>" />
                 </div>
 
                 <div class="form-group">
                     <label for="cargo_capacity">Cargo Capacity</label>
-                    <input type="number" name="cargo_capacity" id="cargo_capacity" class="form-control" value="<?= $cargo_capacity ?>" />
+                    <input type="number" name="cargo_capacity" id="cargo_capacity" class="form-control" min="0" value="<?= $cargo_capacity ?>" />
                 </div>
 
                 <div class="form-group">

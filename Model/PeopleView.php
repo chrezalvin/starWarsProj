@@ -53,7 +53,7 @@
             </div>
             <div class='form-group'>
                 <label for='mass'>Mass</label>
-                <input type='number' name='mass' id='mass' class='form-control' value='<?= $mass ?? "" ?>' min='0' required/>
+                <input type='number' name='mass' id='mass' class='form-control' value='<?= $mass ?? "" ?>' min='0'/>
             </div>
             <div class='form-group'>
                 <label for='hair_color'>Hair Color</label>

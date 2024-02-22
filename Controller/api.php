@@ -107,6 +107,21 @@
         if($getBase && !array_includes(fn(Base $base) => $base->getName() === $getBase->getName(), array_merge($db_vehicles, $vehicleList)))
             $vehicleList[] = $getBase;
     }
+
+    if(isset($_GET['removePlanet'])){
+        $id = intval($_GET['removePlanet']);
+        $planetList = array_filter($planetList, fn(Base $planet) => $planet->getId() != $id);
+    }
+
+    if(isset($_GET['removePeople'])){
+        $id = intval($_GET['removePeople']);
+        $peopleList = array_filter($peopleList, fn(Base $people) => $people->getId() != $id);
+    }
+
+    if(isset($_GET['removeVehicle'])){
+        $id = intval($_GET['removeVehicle']);
+        $vehicleList = array_filter($vehicleList, fn(Base $vehicle) => $vehicle->getId() != $id);
+    }
     
     // sets the list to the cookies
     $_SESSION['planetList'] = $planetList;

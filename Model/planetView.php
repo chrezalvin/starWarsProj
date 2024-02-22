@@ -60,17 +60,17 @@
 
                 <div class="form-group">
                     <label for="rotation_period">Rotation Period</label>
-                    <input type="number" name="rotation_period" id="rotation_period" class="form-control" value="<?= $rotation_period ?>"/>
+                    <input type="number" name="rotation_period" id="rotation_period" class="form-control" min="0" value="<?= $rotation_period ?>"/>
                 </div>
                 
                 <div class="form-group">
                     <label for="orbital_period">Orbital Period</label>
-                    <input type="number" name="orbital_period" id="orbital_period" class="form-control" value="<?= $orbital_period ?>"/>
+                    <input type="number" name="orbital_period" id="orbital_period" min="0" class="form-control" value="<?= $orbital_period ?>"/>
                 </div>
 
                 <div class="form-group">
                     <label for="diameter">Diameter</label>
-                    <input type="number" name="diameter" id="diameter" class="form-control" value="<?= $diameter ?>"/>
+                    <input type="number" name="diameter" id="diameter" class="form-control" min="0" value="<?= $diameter ?>"/>
                 </div>
 
                 <div class="form-group">
@@ -95,7 +95,7 @@
 
                 <div class="form-group">
                     <label for="population">Population</label>
-                    <input type="number" name="population" id="population" class="form-control" value="<?= $population ?>"/>
+                    <input type="number" name="population" id="population" min="0" class="form-control" value="<?= $population ?>"/>
                 </div>
             <?php 
             
