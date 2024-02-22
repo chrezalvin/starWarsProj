@@ -79,7 +79,9 @@
                     placeholder="Search planet name here"
                     value="<?= $search ?? "" ?>"
                 />
-                <button class="btn btn-outline-primary">Search</button>
+                <button class="btn btn-outline-primary">
+                    <i class="bi-search"></i>
+                </button>
             </div>
         </form>
     </div>
@@ -167,20 +169,22 @@
                 new TableElement("Population", array_map(function($planet){ return $planet->getPopulation(); }, $planets)),
                 new TableElement("Action", array_map(function($planet){
                     ob_start(); ?>
-                    <div class="d-flex justify-content-center flex-column gap-1">
+                    <div class="d-flex justify-content-center gap-1">
                         <button
                             type="button"
                             data-bs-toggle="modal"
                             data-bs-target="#modalEdit<?= $planet->getId() ?>"
                             class="btn btn-warning"
-                        >Edit</button>
+                        >
+                            <i class="bi-pen-fill text-dark"></i>
+                        </button>
                         <button
                             type="button"
                             data-bs-toggle="modal"
                             data-bs-target="#modal<?= $planet->getId() ?>"
                             class="btn btn-danger <?= $planet->isDeletable() ? "disabled": "" ?>"
                         >
-                            Delete
+                            <i class="bi-trash3-fill text-dark"></i>
                         </button>
                     </div>
                     

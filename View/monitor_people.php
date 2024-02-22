@@ -82,7 +82,9 @@
                         placeholder="Search for name here"
                         value="<?= $search ?? "" ?>"
                     />
-                    <button class="btn btn-outline-primary">Search</button>
+                    <button class="btn btn-outline-primary">
+                        <i class="bi-search"></i>
+                    </button>
                 </div>
             </form>
         </div>
@@ -170,20 +172,22 @@
                     new TableElement("Homeworld", array_map(function($person){ return $person->getHomeworld(); }, $people)),
                     new TableElement("Action", array_map(function($person){ 
                         ob_start(); ?>
-                            <div class='d-flex justify-content-center flex-column gap-1'>
+                            <div class='d-flex justify-content-center gap-1'>
                             <button
                                 type='button'
                                 data-bs-toggle='modal'
                                 data-bs-target='#modalEdit<?= $person->getId() ?>'
                                 class='btn btn-warning'
-                            >Edit</button>
+                            >
+                                <i class="bi-pen-fill text-dark"></i>
+                        </button>
                             <button
                                 type='button'
                                 data-bs-toggle='modal'
                                 data-bs-target='#modal<?= $person->getId() ?>'
                                 class='btn btn-danger'
                             >
-                                Delete
+                                <i class="bi-trash3-fill text-dark"></i>
                             </button>
                     <?php 
                         return ob_get_clean();

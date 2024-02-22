@@ -43,7 +43,9 @@
                 <?php foreach($list as $elem): ?>
                     <div class="d-flex">
                         <p class="fw-bold flex-grow-1"><?= $elem->getName() ?></p>
-                        <a href="./api.php?remove<?= $name ?>= <?= $elem->getId() ?>"><button class="btn btn-danger">Remove</button></a>
+                        <a href="./api.php?remove<?= $name ?>= <?= $elem->getId() ?>"><button class="btn btn-danger">
+                            <i class="bi-dash-lg"></i>
+                        </button></a>
                     </div>
                 <?php endforeach; ?>
             </div>
@@ -142,7 +144,9 @@
         <div class="d-flex justify-content-center my-2">
         <?php if($list->getPrevious() !== null): ?>
             <h2>
-                <a href="./api.php?<?= $key ?>Page=<?= $list->getPrevious() ?>" class="link link-underline link-underline-opacity-0"><</a>
+                <a href="./api.php?<?= $key ?>Page=<?= $list->getPrevious() ?>" class="link link-underline link-underline-opacity-0 py-2">
+                    <i class="bi-arrow-left"></i>
+                </a>
             </h2>
         <?php endif; ?>
         <h2 class="px-2 border border-top-0 border-start-0 border-end-0 border-warning border-4">
@@ -150,7 +154,9 @@
         </h2>
         <?php if($list->getNext() !== null): ?>
             <h2>
-                <a href="./api.php?<?= $key ?>Page=<?= $list->getNext() ?>" class="link link-underline link-underline-opacity-0">></a>
+                <a href="./api.php?<?= $key ?>Page=<?= $list->getNext() ?>" class="link link-underline link-underline-opacity-0 py-2">
+                    <i class="bi-arrow-right"></i>
+                </a>
             </h2>
         <?php endif; ?>
         </div>
@@ -167,7 +173,7 @@
                             <button
                                 class="btn btn-success position-relative z-n1 <?= $list->isAlreadyExistOnList($elem) ? "disabled": "" ?>"
                             >
-                                Add
+                                <i class="bi-plus-lg"></i>
                             </button>
                         </a>
                     </div>
