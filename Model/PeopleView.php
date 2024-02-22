@@ -28,7 +28,7 @@
 
             ob_start(); ?>
 
-            <?php if($id): ?>
+            <?php if(!is_null($id)): ?>
                 <input type='hidden' name='id' value='<?= $id ?>' />
             <?php endif; ?>
 
@@ -40,7 +40,7 @@
                     accept='.png, .jpg, .jpeg'
                     id='image'
                     class='form-control' 
-                    size='60'    
+                    size='60'
                 />
             </div>
             <div class='form-group'>

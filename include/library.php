@@ -37,3 +37,27 @@
         }
         return false;
     }
+
+    /**
+     * turns any input that is not a string and empty string into null
+     * @param mixed $input the input to sanitize
+     * @return string|null the sanitized input
+     */
+    function sanitizeInputStr(Mixed $input): ?string{
+        if(is_string($input))
+            return htmlspecialchars($input) === "" ? null : htmlspecialchars($input);
+
+        return null;
+    }
+
+    /**
+     * @param mixed $input the input to sanitize
+     * @return int|null the sanitized input
+     */
+    function sanitizeInputInt(Mixed $input): ?int{
+        $input = filter_var($input, FILTER_VALIDATE_INT);
+        if($input !== false)
+            return $input;
+
+        return null;
+    }

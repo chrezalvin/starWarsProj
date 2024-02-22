@@ -1,6 +1,7 @@
 <?php
     require_once('../include/database.php');
     require_once('../Model/People.php');
+    require_once('../include/library.php');
 
     class PeopleDatabase{
         private static $table = "people";
@@ -9,11 +10,12 @@
 
         static function get_all_people(){
             $table = self::$table;
-
+    
             $query = "SELECT * FROM $table LIMIT 20";
-            $result = database()->query($query);
+            $stmt = pdo()->query($query);
+
             $people = [];
-            while($row = mysqli_fetch_assoc($result))
+            while($row = $stmt->fetch())
                 $people[] = People::get_people_from_query($row);
             return $people;
         }
@@ -21,35 +23,14 @@
         static function get_people_by_id($id){
             $table = self::$table;
 
+            $stmt = pdo()->prepare("SELECT * FROM $table WHERE `id` = :id");
+            $stmt->execute(['id' => $id]);
+            
+
             $query = "SELECT * FROM $table WHERE `id` = '$id'";
             $result = database()->query($query);
             $row = mysqli_fetch_assoc($result);
             return People::get_people_from_query($row);
-        }
-
-        static function validate_person(
-            $name,
-            $height,
-            $mass,
-            $hair_color,
-            $skin_color,
-            $eye_color,
-            $birth_year,
-            $gender,
-            $homeworld
-        ){
-            if($name == null)
-                throw new Exception("Name cannot be null");
-
-            if($height == null || $height < 0)
-                throw new Exception("Height cannot be null or negative");
-
-            if($mass == null || $mass < 0)
-                throw new Exception("Mass cannot be null or negative");
-
-            // <year><BBY/ABY>
-            if($birth_year == null || preg_match("/\d{1,5}(BBY|ABY)/", $birth_year) !== 1)
-                throw new Exception("Invalid birth year format.");
         }
 
         static function update_people(
@@ -62,42 +43,68 @@
             ?string $eye_color, 
             ?string $birth_year, 
             ?string $gender, 
-            ?string $homeworld,
+            ?int $homeworld,
             ?string $photo
         )
         {
-            PeopleDatabase::validate_person($name, $height, $mass, $hair_color, $skin_color, $eye_color, $birth_year, $gender, $homeworld);
-
             $table = self::$table;
-            $query = "UPDATE `$table` SET 
-                `name` = '$name', 
-                `height` = '$height', 
-                `mass` = '$mass', 
-                `hair_color` = '$hair_color', 
-                `skin_color` = '$skin_color', 
-                `eye_color` = '$eye_color', 
-                `birth_year` = '$birth_year', 
-                `gender` = '$gender', 
-                `homeworld` = '$homeworld'".
-                ($photo ? ", `img_url`='".htmlspecialchars($photo)."'": "")."
-                WHERE `id` = $id";
+            $stmt = pdo()->prepare("UPDATE `$table` SET 
+            `name`= :name, 
+            `height`= :height, 
+            `mass`= :mass, 
+            `hair_color`= :hair_color, 
+            `skin_color`= :skin_color, 
+            `eye_color`= :eye_color, 
+            `birth_year`= :birth_year, 
+            `gender`= :gender,
+            ".(is_null($photo) ? "" : "`img_url`= :photo,")."
+            `homeworld`= :homeworld
+            WHERE `id` = :id
+            ");
 
-            $res = database()->query($query);
+            $birth_year = People::isValidBirthYear($birth_year) ? $birth_year : null;
+
+            $args = [
+                'name' => $name,
+                'height' => $height,
+                'mass' => $mass,
+                'hair_color' => $hair_color,
+                'skin_color' => $skin_color,
+                'eye_color' => $eye_color,
+                'birth_year' => $birth_year,
+                'gender' => $gender,
+                'homeworld' => $homeworld,
+                'id' => $id
+            ];
+
+            if(!is_null($photo))
+                $args['photo'] = $photo;
+
+            $res = $stmt->execute($args);
+
             return $res;
         }
 
-        static function delete_people_by_id(int $id){
+        static function delete_people_by_id(int $id): bool{
             $table = self::$table;
-            $query = "DELETE FROM $table WHERE `id` = '$id'";
-            return database()->query($query);
+            $stmt = pdo()->prepare("DELETE FROM $table WHERE `id` = :id");
+            $res = $stmt->execute(['id' => $id]);
+
+            return $res;
         }
 
-        static function search_people($name){
+        /**
+         * @return People[]
+         */
+        static function search_people(string $name){
             $table = self::$table;
-            $query = "SELECT * FROM $table WHERE `name` LIKE '%$name%'";
-            $result = database()->query($query);
+            $stmt = pdo()->prepare("SELECT * FROM $table WHERE `name` LIKE :name");
+            $stmt->execute(['name' => "%$name%"]);
+
+            $data = $stmt->fetchAll();
+
             $people = [];
-            while($row = mysqli_fetch_assoc($result))
+            foreach($data as $row)
                 $people[] = People::get_people_from_query($row);
             return $people;
         }
@@ -111,26 +118,32 @@
             ?string $eye_color, 
             ?string $birth_year, 
             ?string $gender,
-            ?string $homeworld,
+            ?int $homeworld,
             ?string $photo
         ){
-            PeopleDatabase::validate_person($name, $height, $mass, $hair_color, $skin_color, $eye_color, $birth_year, $gender, $homeworld);
-
-            // sanitize the inputs
-            $name = htmlspecialchars($name);
-            $height = htmlspecialchars($height);
-            $mass = htmlspecialchars($mass);
-            $hair_color = htmlspecialchars($hair_color);
-            $skin_color = htmlspecialchars($skin_color);
-            $eye_color = htmlspecialchars($eye_color);
-            $birth_year = htmlspecialchars($birth_year);
-            $gender = htmlspecialchars($gender);
-            $homeworld = htmlspecialchars($homeworld);
-            $photo = htmlspecialchars($photo);
-
             $table = self::$table;
-            $query = "INSERT INTO $table (`name`, `height`, `mass`, `hair_color`, `skin_color`, `eye_color`, `birth_year`, `gender`, `homeworld`, `img_url`) VALUES ('$name', '$height', '$mass', '$hair_color', '$skin_color', '$eye_color', '$birth_year', '$gender', '$homeworld', '$photo')";
-            return database()->query($query);
+
+            $stmt = pdo()->prepare(
+                "INSERT INTO $table (`name`, `height`, `mass`, `hair_color`, `skin_color`, `eye_color`, `birth_year`, `gender`, `homeworld`, `img_url`)
+                VALUES (:name, :height, :mass, :hair_color, :skin_color, :eye_color, :birth_year, :gender, :homeworld, :photo)"
+            );
+
+            $birth_year = People::isValidBirthYear($birth_year) ? $birth_year : null;
+
+            $res = $stmt->execute([
+                'name' => $name,
+                'height' => $height,
+                'mass' => $mass,
+                'hair_color' => $hair_color,
+                'skin_color' => $skin_color,
+                'eye_color' => $eye_color,
+                'birth_year' => $birth_year,
+                'gender' => $gender,
+                'homeworld' => $homeworld ?? 0,
+                'photo' => $photo
+            ]);
+
+            return $res;
         }
 
         static function get_next_id(){

@@ -1,5 +1,6 @@
 <?php
     require_once('../Model/Base.php');
+    require_once('../include/library.php');
 
     class Planet extends Base{
         private ?int $m_rotation_period;
@@ -13,17 +14,17 @@
         private ?string $m_img_url;
 
         public static function get_planet_from_query(array $queryData): Planet{
-            $id = $queryData['id'] ?? 0;
-            $name = $queryData['name'] ?? '';
-            $rotation_period = intval($queryData['rotation_period']) === 0 ? null : intval($queryData['rotation_period']);
-            $orbital_period = intval($queryData['orbital_period']) === 0 ? null : intval($queryData['orbital_period']);
-            $diameter = intval($queryData['diameter']) === 0 ? null : intval($queryData['diameter']);
-            $climate = $queryData['climate'];
-            $gravity = $queryData['gravity'];
-            $terrain = $queryData['terrain'];
-            $surface_water = intval($queryData['surface_water']) === 0 ? null : intval($queryData['surface_water']);
-            $population = intval($queryData['population']) === 0 ? null : intval($queryData['population']);
-            $img_url = $queryData['img_url'] ?? null;
+            $id = sanitizeInputInt($queryData['id']) ?? 0;
+            $name = sanitizeInputStr($queryData['name']);
+            $rotation_period = sanitizeInputInt($queryData['rotation_period']);
+            $orbital_period = sanitizeInputInt($queryData['orbital_period']);
+            $diameter = sanitizeInputInt($queryData['diameter']);
+            $climate = sanitizeInputStr($queryData['climate']);
+            $gravity = sanitizeInputStr($queryData['gravity']);
+            $terrain = sanitizeInputStr($queryData['terrain']);
+            $surface_water = sanitizeInputInt($queryData['surface_water']);
+            $population = sanitizeInputInt($queryData['population']);
+            $img_url = sanitizeInputStr($queryData['img_url']);
 
             return new Planet(
                 $id, 

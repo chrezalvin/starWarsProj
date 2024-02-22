@@ -4,10 +4,11 @@
     //  delete planet
     require_once '../service/Planet.php';
     require_once '../include/FileManager.php';
+    require_once '../include/library.php';
 
     try{
         $fileManager = new FileManager("../public/planet");
-        $deleteId = $_POST['deleteId'] ?? null;
+        $deleteId = sanitizeInputInt($_POST['deleteId']);
     
         $planets = PlanetDatabase::get_all_planets();
     

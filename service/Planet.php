@@ -11,9 +11,11 @@
             $table = self::$table;
 
             $query = "SELECT * FROM $table LIMIT 20";
-            $result = database()->query($query);
+            $result = pdo()->query($query);
+            $data = $result->fetchAll();
+
             $planets = [];
-            while($row = mysqli_fetch_assoc($result))
+            foreach($data as $row)
                 $planets[] = Planet::get_planet_from_query($row);
 
             if($search != null){
@@ -26,12 +28,13 @@
             return $planets;
         }
     
-        static function get_planet_by_id($id){
+        static function get_planet_by_id(int $id): Planet{
             $table = self::$table;
 
             $query = "SELECT * FROM $table WHERE `id` = '$id'";
-            $result = database()->query($query);
-            $row = mysqli_fetch_assoc($result);
+            $result = pdo()->query($query);
+            $row = $result->fetch();
+
             return Planet::get_planet_from_query($row);
         }
 
@@ -54,33 +57,54 @@
             ?int $surface_water, 
             ?int $population,
             ?string $img_url
-        )
+        ): bool
         {
             PlanetDatabase::validate_planet($name);
 
             $table = self::$table;
 
-            // turn null -> 'null' and sanitize the inputs
-            $query = "UPDATE `$table` SET 
-                `name` = ".($name ? "'".htmlspecialchars($name)."'" : "null").", 
-                `rotation_period` = ".($rotation_period ? "'".htmlspecialchars($rotation_period)."'" : "null").", 
-                `orbital_period` = ".($orbital_period ? "'".htmlspecialchars($orbital_period)."'" : "null").", 
-                `diameter` = ".($diameter ? "'".htmlspecialchars($diameter)."'" : "null").", 
-                `climate` = ".($climate ? "'".htmlspecialchars($climate)."'" : "null").", 
-                `gravity` = ".($gravity ? "'".htmlspecialchars($gravity)."'" : "null").", 
-                `terrain` = ".($terrain ? "'".htmlspecialchars($terrain)."'" : "null").", 
-                `surface_water` = ".($surface_water ? "'".htmlspecialchars($surface_water)."'" : "null").", 
-                `population` = ".($population ? "'".htmlspecialchars($population)."'" : "null")."
-                ".($img_url ? ", `img_url`='".htmlspecialchars($img_url)."'": "")."
-                WHERE `id` = $id";
+            $stmt = pdo()->prepare("UPDATE `$table` SET 
+                `name`= :name, 
+                `rotation_period`= :rotation_period, 
+                `orbital_period`= :orbital_period, 
+                `diameter`= :diameter, 
+                `climate`= :climate, 
+                `gravity`= :gravity, 
+                `terrain`= :terrain, 
+                `surface_water`= :surface_water, 
+                ".(is_null($img_url) ? "" : "`img_url`= :img_url,")."
+                `population`= :population
+                WHERE 
+                `id` = :id");
 
-            return database()->query($query);
+            $args = [
+                'name' => $name,
+                'rotation_period' => $rotation_period,
+                'orbital_period' => $orbital_period,
+                'diameter' => $diameter,
+                'climate' => $climate,
+                'gravity' => $gravity,
+                'terrain' => $terrain,
+                'surface_water' => $surface_water,
+                'population' => $population,
+                'id' => $id
+            ];
+
+            if(!is_null($img_url))
+                $args['img_url'] = $img_url;
+
+            $res = $stmt->execute($args);
+
+            return $res;
         }
 
-        static function delete_planet_by_id($id){
+        static function delete_planet_by_id(int $id): bool{
             $table = self::$table;
-            $query = "DELETE FROM $table WHERE `id` = '$id'";
-            return database()->query($query);
+
+            $stmt = pdo()->prepare("DELETE FROM $table WHERE `id` = :id");
+            $res = $stmt->execute(['id' => $id]);
+
+            return $res;
         }
 
         static function create_planet(
@@ -96,40 +120,60 @@
             ?string $img_url
         ){
             PlanetDatabase::validate_planet($name);
-
             $table = self::$table;
 
-            // turn null -> 'null' and sanitize the inputs
-            $query = "INSERT INTO `$table` (`name`, `rotation_period`, `orbital_period`, `diameter`, `climate`, `gravity`, `terrain`, `surface_water`, `population`, `img_url`) VALUES (
-                ".($name ? "'".htmlspecialchars($name)."'" : "null").", 
-                ".($rotation_period ? "'".htmlspecialchars($rotation_period)."'" : "null").", 
-                ".($orbital_period ? "'".htmlspecialchars($orbital_period)."'" : "null").", 
-                ".($diameter ? "'".htmlspecialchars($diameter)."'" : "null").", 
-                ".($climate ? "'".htmlspecialchars($climate)."'" : "null").", 
-                ".($gravity ? "'".htmlspecialchars($gravity)."'" : "null").", 
-                ".($terrain ? "'".htmlspecialchars($terrain)."'" : "null").", 
-                ".($surface_water ? "'".htmlspecialchars($surface_water)."'" : "null").", 
-                ".($population ? "'".htmlspecialchars($population)."'" : "null").",
-                ".($img_url ? "'".htmlspecialchars($img_url)."'" : "null").")";
+            $stmt = pdo()->prepare("INSERT INTO `$table` 
+            (`name`, `rotation_period`, `orbital_period`, `diameter`, `climate`, `gravity`, `terrain`, `surface_water`, `population`, `img_url`) 
+            VALUES (
+                :name, 
+                :rotation_period, 
+                :orbital_period, 
+                :diameter, 
+                :climate, 
+                :gravity, 
+                :terrain, 
+                :surface_water, 
+                :population, 
+                :img_url)"
+            );
 
-            return database()->query($query);
+            $res = $stmt->execute([
+                'name' => $name,
+                'rotation_period' => $rotation_period,
+                'orbital_period' => $orbital_period,
+                'diameter' => $diameter,
+                'climate' => $climate,
+                'gravity' => $gravity,
+                'terrain' => $terrain,
+                'surface_water' => $surface_water,
+                'population' => $population,
+                'img_url' => $img_url
+            ]);
+
+            return $res;
         }
 
-        static function get_planet_by_name(string $name): Planet | null{
+        static function get_planet_by_name(string $name): ?Planet{
             $table = self::$table;
 
-            $query = "SELECT * FROM $table WHERE `name` = '$name'";
-            $result = database()->query($query);
-            $row = mysqli_fetch_assoc($result);
+            $stmt = pdo()->prepare("SELECT * FROM $table WHERE `name` = :name");
+            $stmt->execute(['name' => $name]);
+            $row = $stmt->fetch();
+
             return $row ? Planet::get_planet_from_query($row) : null;
         }
 
-        static function search_planet($name){
+        /**
+         * @return Planet[]
+         */
+        static function search_planet(string $name){
             $table = self::$table;
-            $query = "SELECT * FROM $table WHERE `name` LIKE '%$name%'";
-            $result = database()->query($query);
+            $stmt = pdo()->prepare("SELECT * FROM $table WHERE `name` LIKE :name");
+            $stmt->execute(['name' => "%$name%"]);
+            $data = $stmt->fetchAll();
+
             $planets = [];
-            while($row = mysqli_fetch_assoc($result))
+            foreach($data as $row)
                 $planets[] = Planet::get_planet_from_query($row);
             return $planets;
         }

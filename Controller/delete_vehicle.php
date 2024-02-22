@@ -4,10 +4,11 @@
     //  delete planet
     require_once '../service/vehicle.php';
     require_once '../include/FileManager.php';
+    require_once '../include/library.php';
 
     try{
         $fileManager = new FileManager("../public/vehicle");
-        $deleteId = $_POST['deleteId'] ?? null;
+        $deleteId = sanitizeInputInt($_POST['deleteId']);
     
         $response = false;
 

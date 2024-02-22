@@ -2,10 +2,11 @@
     require '../include/session.php';
     require_once '../service/people.php';
     require_once '../include/FileManager.php';
+    require_once '../include/library.php';
 
     try{
         $fileManager = new FileManager("../public/people");
-        $deleteId = $_POST['deleteId'] ?? null;
+        $deleteId = sanitizeInputInt($_POST['deleteId']);
     
         $response = false;
 

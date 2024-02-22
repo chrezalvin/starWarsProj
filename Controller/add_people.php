@@ -2,17 +2,18 @@
     require '../include/session.php';
     require_once '../service/people.php';
     require_once '../include/FileManager.php';
+    require_once '../include/library.php';
 
     try{
-        $name = $_POST['name'];
-        $height = $_POST['height'];
-        $mass = $_POST['mass'];
-        $hair_color = $_POST['hair_color'];
-        $skin_color = $_POST['skin_color'];
-        $eye_color = $_POST['eye_color'];
-        $birth_year = $_POST['birth_year'].$_POST['birth_year_indicator'];
-        $gender =  $_POST['gender'];
-        $homeworld = $_POST['homeworld'];
+        $name =         sanitizeInputStr($_POST['name']);
+        $height =       sanitizeInputInt($_POST['height']);
+        $mass =         sanitizeInputInt($_POST['mass']);
+        $hair_color =   sanitizeInputStr($_POST['hair_color']);
+        $skin_color =   sanitizeInputStr($_POST['skin_color']);
+        $eye_color =    sanitizeInputStr($_POST['eye_color']);
+        $birth_year =   sanitizeInputStr($_POST['birth_year'].$_POST['birth_year_indicator']);
+        $gender =       sanitizeInputStr($_POST['gender']);
+        $homeworld =    sanitizeInputStr($_POST['homeworld']);
 
         $photo = $_FILES['photo'] ?? null;
 

@@ -38,7 +38,7 @@
             $population = $planetView?->getPopulation() ?? "";
 
             ob_start(); ?>
-                <?php if($id): ?>
+                <?php if(!is_null($id)): ?>
                     <input type="hidden" name="id" value="<?= $id ?>" />
                 <?php endif; ?>
 

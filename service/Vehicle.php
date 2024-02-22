@@ -11,10 +11,11 @@
             $table = self::$table;
 
             $query = "SELECT * FROM $table";
-            $result = database()->query($query);
-            $vehicles = [];
+            $stmt = pdo()->query($query);
+            $data = $stmt->fetchAll();
 
-            while($row = mysqli_fetch_assoc($result))
+            $vehicles = [];
+            foreach($data as $row)
                 $vehicles[] = Vehicle::get_vehicle_from_query($row);
 
             return $vehicles;
@@ -23,8 +24,10 @@
         static function delete_vehicle_by_id(int $id): bool{
             $table = self::$table;
 
-            $query = "DELETE FROM $table WHERE id = $id";
-            return database()->query($query);
+            $stmt = pdo()->prepare("DELETE FROM $table WHERE `id` = :id");
+            $res = $stmt->execute(['id' => $id]);
+
+            return $res;
         }
 
         static function edit_vehicle_by_id(
@@ -44,23 +47,42 @@
         ): bool{
             $table = self::$table;
 
-            // turn null -> 'null' and sanitize the inputs
-            $query = "UPDATE $table SET 
-                `name` = ".($name ? "'".htmlspecialchars($name)."'" : "null").", 
-                `model` = ".($model ? "'".htmlspecialchars($model)."'" : "null").", 
-                `manufacturer` = ".($manufacturer ? "'".htmlspecialchars($manufacturer)."'" : "null").", 
-                `cost_in_credits` = ".($cost_in_credits ? "'".htmlspecialchars($cost_in_credits)."'" : "null").", 
-                `length` = ".($length ? "'".htmlspecialchars($length)."'" : "null").", 
-                `max_atmosphering_speed` = ".($max_atmosphering_speed ? "'".htmlspecialchars($max_atmosphering_speed)."'" : "null").", 
-                `crew` = ".($crew ? "'".htmlspecialchars($crew)."'" : "null").", 
-                `passengers` = ".($passengers ? "'".htmlspecialchars($passengers)."'" : "null").", 
-                `cargo_capacity` = ".($cargo_capacity ? "'".htmlspecialchars($cargo_capacity)."'" : "null").", 
-                `consumables` = ".($consumables ? "'".htmlspecialchars($consumables)."'" : "null").", 
-                `vehicle_class` = ".($vehicle_class ? "'".htmlspecialchars($vehicle_class)."'" : "null")."
-                ".($img_url ? ", `img_url`='".htmlspecialchars($img_url)."'": "")."
-                WHERE `id` = $id";
+            $stmt = pdo()->prepare("UPDATE $table SET 
+                `name` = :name, 
+                `model` = :model, 
+                `manufacturer` = :manufacturer, 
+                `cost_in_credits` = :cost_in_credits, 
+                `length` = :length, 
+                `max_atmosphering_speed` = :max_atmosphering_speed, 
+                `crew` = :crew, 
+                `passengers` = :passengers, 
+                `cargo_capacity` = :cargo_capacity, 
+                `consumables` = :consumables, 
+                `vehicle_class` = :vehicle_class
+                ".(is_null($img_url) ? "": ", `img_url`=:img_url")."
+                WHERE `id` = :id"
+            );
 
-            return database()->query($query);
+            $args = [
+                'name' => $name,
+                'model' => $model,
+                'manufacturer' => $manufacturer,
+                'cost_in_credits' => $cost_in_credits,
+                'length' => $length,
+                'max_atmosphering_speed' => $max_atmosphering_speed,
+                'crew' => $crew,
+                'passengers' => $passengers,
+                'cargo_capacity' => $cargo_capacity,
+                'consumables' => $consumables,
+                'vehicle_class' => $vehicle_class,
+                'id' => $id
+            ];
+
+            if(!is_null($img_url))
+                $args['img_url'] = $img_url;
+
+            $res = $stmt->execute($args);
+            return $res;
         }
 
         static function create_vehicle(
@@ -79,23 +101,39 @@
         ): bool{
             $table = self::$table;
 
-            // turn null -> 'null' and sanitize the inputs
-            $query = "INSERT INTO $table (`name`, `model`, `manufacturer`, `cost_in_credits`, `length`, `max_atmosphering_speed`, `crew`, `passengers`, `cargo_capacity`, `consumables`, `vehicle_class`, `img_url`) VALUES (
-                ".($name ? "'".htmlspecialchars($name)."'" : "null").", 
-                ".($model ? "'".htmlspecialchars($model)."'" : "null").", 
-                ".($manufacturer ? "'".htmlspecialchars($manufacturer)."'" : "null").", 
-                ".($cost_in_credits ? "'".htmlspecialchars($cost_in_credits)."'" : "null").", 
-                ".($length ? "'".htmlspecialchars($length)."'" : "null").", 
-                ".($max_atmosphering_speed ? "'".htmlspecialchars($max_atmosphering_speed)."'" : "null").", 
-                ".($crew ? "'".htmlspecialchars($crew)."'" : "null").", 
-                ".($passengers ? "'".htmlspecialchars($passengers)."'" : "null").", 
-                ".($cargo_capacity ? "'".htmlspecialchars($cargo_capacity)."'" : "null").", 
-                ".($consumables ? "'".htmlspecialchars($consumables)."'" : "null").", 
-                ".($vehicle_class ? "'".htmlspecialchars($vehicle_class)."'" : "null").",
-                ".($img_url ? "'".htmlspecialchars($img_url)."'" : "null")."
-            )";
+            $stmt = pdo()->prepare("INSERT INTO $table (`name`, `model`, `manufacturer`, `cost_in_credits`, `length`, `max_atmosphering_speed`, `crew`, `passengers`, `cargo_capacity`, `consumables`, `vehicle_class`, `img_url`) VALUES (
+                :name, 
+                :model, 
+                :manufacturer, 
+                :cost_in_credits, 
+                :length, 
+                :max_atmosphering_speed, 
+                :crew, 
+                :passengers, 
+                :cargo_capacity, 
+                :consumables, 
+                :vehicle_class,
+                :img_url
+            )");
 
-            return database()->query($query);
+            $args = [
+                'name' => $name,
+                'model' => $model,
+                'manufacturer' => $manufacturer,
+                'cost_in_credits' => $cost_in_credits,
+                'length' => $length,
+                'max_atmosphering_speed' => $max_atmosphering_speed,
+                'crew' => $crew,
+                'passengers' => $passengers,
+                'cargo_capacity' => $cargo_capacity,
+                'consumables' => $consumables,
+                'vehicle_class' => $vehicle_class,
+                'img_url' => $img_url
+            ];
+
+            $res = $stmt->execute($args);
+
+            return $res;
         }
 
         static function get_next_id(){
@@ -107,12 +145,12 @@
             return $row['Auto_increment'];
         }
 
-        static function get_vehicle_by_name(string $name): Vehicle | null{
+        static function get_vehicle_by_name(string $name): ?Vehicle{
             $table = self::$table;
 
-            $query = "SELECT * FROM $table WHERE `name` = '$name'";
-            $result = database()->query($query);
-            $row = mysqli_fetch_assoc($result);
+            $stmt = pdo()->prepare("SELECT * FROM $table WHERE `name` = :name");
+            $stmt->execute(['name' => $name]);
+            $row = $stmt->fetch();
 
             return $row ? Vehicle::get_vehicle_from_query($row) : null;
         }

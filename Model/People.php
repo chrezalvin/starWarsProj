@@ -28,6 +28,10 @@
             return new People($id, $name, $height, $mass, $hair_color, $skin_color, $eye_color, $birth_year, $gender, $img_url);
         }
 
+        public static function isValidBirthYear(string $birthYear): bool{
+            return preg_match("/\d{1,5}(BBY|ABY)/", $birthYear) === 1;
+        }
+
         protected function __construct(
             int $id, 
             string $name, 

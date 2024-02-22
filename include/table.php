@@ -44,7 +44,7 @@
                     <?php for($i = 0; $i < count($tableElements[0]->getElements()); $i++): ?>
                         <tr>
                             <?php foreach($tableElements as $tableElement):  ?>
-                                <td class='<?= $tableElement->getClass() ?>'><?= $tableElement->getElements()[$i] ?></td>
+                                <td class='<?= $tableElement->getClass() ?>'><?= $tableElement->getElements()[$i] ?? "n/a" ?></td>
                             <?php endforeach; ?>
                         </tr>
                     <?php endfor; ?>

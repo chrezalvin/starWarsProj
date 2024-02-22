@@ -1,19 +1,20 @@
 <?php
-    require '../include/session.php';
-    require_once '../service/planet.php';
-    require_once '../include/FileManager.php';
+    require('../include/session.php');
+    require_once('../service/planet.php');
+    require_once('../include/FileManager.php');
+    require_once('../include/library.php');
 
     try{
-        $id = $_POST['id'];
-        $name = $_POST['name'];
-        $rotation_period = intval($_POST['rotation_period']) == 0 ? null : intval($_POST['rotation_period']);
-        $orbital_period = intval($_POST['orbital_period']) == 0 ? null : intval($_POST['orbital_period']);
-        $diameter = intval($_POST['diameter']) == 0 ? null : intval($_POST['diameter']);
-        $climate = $_POST['climate'] ?? null;
-        $gravity = $_POST['gravity'] ?? null;
-        $terrain = $_POST['terrain'] ?? null;
-        $surface_water = intval($_POST['surface_water']) == 0 ? null : intval($_POST['surface_water']);
-        $population = intval($_POST['population']) == 0 ? null : intval($_POST['population']);
+        $id =               sanitizeInputInt($_POST['id']);
+        $name =             sanitizeInputStr($_POST['name']);
+        $rotation_period =  sanitizeInputInt($_POST['rotation_period']);
+        $orbital_period =   sanitizeInputInt($_POST['orbital_period']);
+        $diameter =         sanitizeInputStr($_POST['diameter']);
+        $climate =          sanitizeInputStr($_POST['climate']);
+        $gravity =          sanitizeInputStr($_POST['gravity']);
+        $terrain =          sanitizeInputStr($_POST['terrain']);
+        $surface_water =    sanitizeInputInt($_POST['surface_water']);
+        $population =       sanitizeInputInt($_POST['population']);
 
         $photo = $_FILES['photo'] ?? null;
 
@@ -50,5 +51,6 @@
     }
     catch(Exception $e){
         $error = $e->getMessage();
+        var_dump($error);
         header('Location: ./monitor_planet.php'.($error ? "?error=$error" : ""));
     }

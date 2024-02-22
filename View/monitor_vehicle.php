@@ -158,16 +158,16 @@
                     <?php
                         return ob_get_clean();
                 }, $vehicles), "d-flex justify-content-center flex-column align-items-center"),
-                new TableElement("Model", array_map(fn($vehicle) => $vehicle->getModel() ?? "n/a", $vehicles)),
-                new TableElement("Manufacturer", array_map(fn($vehicle) => $vehicle->getManufacturer() ?? "n/a", $vehicles)),
-                new TableElement("Cost", array_map(fn($vehicle) => $vehicle->getCostInCredits() ?? "n/a", $vehicles)),
-                new TableElement("Length", array_map(fn($vehicle) => $vehicle->getLength() ?? "n/a", $vehicles)),
-                new TableElement("Max Speed", array_map(fn($vehicle) => $vehicle->getMaxAtmospheringSpeed() ?? "n/a", $vehicles)),
-                new TableElement("Crew", array_map(fn($vehicle) => $vehicle->getCrew() ?? "n/a", $vehicles)),
-                new TableElement("Passengers", array_map(fn($vehicle) => $vehicle->getPassengers() ?? "n/a", $vehicles)),
-                new TableElement("Cargo", array_map(fn($vehicle) => $vehicle->getCargoCapacity() ?? "n/a", $vehicles)),
-                new TableElement("Consumables", array_map(fn($vehicle) => $vehicle->getConsumables() ?? "n/a", $vehicles)),
-                new TableElement("Class", array_map(fn($vehicle) => $vehicle->getVehicleClass() ?? "n/a", $vehicles)),
+                new TableElement("Model", array_map(fn($vehicle) => $vehicle->getModel(), $vehicles)),
+                new TableElement("Manufacturer", array_map(fn($vehicle) => $vehicle->getManufacturer(), $vehicles)),
+                new TableElement("Cost", array_map(fn($vehicle) => $vehicle->getCostInCredits(), $vehicles)),
+                new TableElement("Length", array_map(fn($vehicle) => $vehicle->getLength(), $vehicles)),
+                new TableElement("Max Speed", array_map(fn($vehicle) => $vehicle->getMaxAtmospheringSpeed(), $vehicles)),
+                new TableElement("Crew", array_map(fn($vehicle) => $vehicle->getCrew(), $vehicles)),
+                new TableElement("Passengers", array_map(fn($vehicle) => $vehicle->getPassengers(), $vehicles)),
+                new TableElement("Cargo", array_map(fn($vehicle) => $vehicle->getCargoCapacity(), $vehicles)),
+                new TableElement("Consumables", array_map(fn($vehicle) => $vehicle->getConsumables(), $vehicles)),
+                new TableElement("Class", array_map(fn($vehicle) => $vehicle->getVehicleClass(), $vehicles)),
                 new TableElement("Action", array_map(function ($vehicle) {
                     ob_start(); 
                 ?>

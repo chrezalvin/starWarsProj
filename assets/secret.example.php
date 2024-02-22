@@ -7,3 +7,4 @@
     define("DB_USERNAME", "root");
     define("DB_PASSWORD", "");
     define("DB_NAME", "swapi");
+    define("DB_CHARSET", "utf8mb4");

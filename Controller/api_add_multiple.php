@@ -30,9 +30,11 @@
             exit();
         }
 
+        // get the data from the swapi
         $res = SWAPIDatabase::get_people($person->getId());
 
-        if(!PeopleDatabase::get_people_by_name($person->getName())){
+        // check if the name is already exist within the database
+        if(is_null(PeopleDatabase::get_people_by_name($res->getName()))){
             $resp = PeopleDatabase::create_people(
                 $res->getName(),
                 $res->getHeight(),
@@ -45,7 +47,6 @@
                 null,
                 null
             );
-            var_dump($resp);
             if($resp);
                 ++$peopleCount;
         }
@@ -58,8 +59,6 @@
         }
 
         $res = SWAPIDatabase::get_vehicle($vehicle->getId());
-
-        echo($res);
 
         if(!VehicleDatabase::get_vehicle_by_name($vehicle->getName()))
             if(VehicleDatabase::create_vehicle(

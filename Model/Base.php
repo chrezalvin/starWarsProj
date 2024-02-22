@@ -1,4 +1,6 @@
 <?php
+    require_once('../include/library.php');
+
     /**
      * The must required variables for database
      */
@@ -6,10 +8,16 @@
         private int $m_id;
         private string $m_name;
 
-        public static function get_from_query(array $query): Base {
+        public static function get_from_query(array $query): ?Base {
+            $id = sanitizeInputInt($query['id']);
+            $name = sanitizeInputStr($query['name']);
+
+            if(is_null($id) || is_null($name))
+                return null;
+
             return new Base(
-                intval($query['id']),
-                $query['name']
+                $id,
+                $name
             );
         }
 

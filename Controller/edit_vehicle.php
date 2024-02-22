@@ -2,20 +2,21 @@
     require '../include/session.php';
     require_once '../service/vehicle.php';
     require_once '../include/FileManager.php';
+    require_once '../include/library.php';
 
     try{
-        $id = $_POST['id'];
-        $name = $_POST['name'];
-        $model = $_POST['model'] ?? null;
-        $manufacturer = $_POST['manufacturer'] ?? null;
-        $cost_in_credits = intval($_POST['cost_in_credits']) == 0 ? null : intval($_POST['cost_in_credits']);
-        $length = floatval($_POST['length']) == 0 ? null : floatval($_POST['length']);
-        $max_atmosphering_speed = intval($_POST['max_atmosphering_speed']) == 0 ? null : intval($_POST['max_atmosphering_speed']);
-        $crew = intval($_POST['crew']) == 0 ? null : intval($_POST['crew']);
-        $passengers = intval($_POST['passengers']) == 0 ? null : intval($_POST['passengers']);
-        $cargo_capacity = intval($_POST['cargo_capacity']) == 0 ? null : intval($_POST['cargo_capacity']);
-        $consumables = $_POST['consumables'] ?? null;
-        $vehicle_class = $_POST['vehicle_class'] ?? null;
+        $id =                       sanitizeInputInt($_POST['id']);
+        $name =                     sanitizeInputStr($_POST['name']);
+        $model =                    sanitizeInputStr($_POST['model']);
+        $manufacturer =             sanitizeInputStr($_POST['manufacturer']);
+        $cost_in_credits =          sanitizeInputInt($_POST['cost_in_credits']);
+        $length =                   sanitizeInputInt($_POST['length']);
+        $max_atmosphering_speed =   sanitizeInputInt($_POST['max_atmosphering_speed']);
+        $crew =                     sanitizeInputInt($_POST['crew']);
+        $passengers =               sanitizeInputInt($_POST['passengers']);
+        $cargo_capacity =           sanitizeInputInt($_POST['cargo_capacity']);
+        $consumables =              sanitizeInputStr($_POST['consumables']);
+        $vehicle_class =            sanitizeInputStr($_POST['vehicle_class']);
 
         $photo = $_FILES['photo'] ?? null;
 

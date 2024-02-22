@@ -1,5 +1,6 @@
 <?php
     require_once('../Model/Base.php');
+    require_once('../include/library.php');
 
     class Vehicle extends Base{
         private ?string $m_model;
@@ -29,7 +30,7 @@
             $vehicle_class = $vehicle?->getVehicleClass() ?? "";
 
             ob_start(); ?>
-                <?php if($id): ?>
+                <?php if(!is_null($id)): ?>
                     <input type="hidden" name="id" value="<?= $id ?>" />
                 <?php endif; ?>
 
@@ -105,19 +106,19 @@
         }
 
         public static function get_vehicle_from_query(array $data){
-            $id = $data['id'] ?? 0;
-            $name = $data['name'] ?? '';
-            $model = $data['model'] ?? null;
-            $manufacturer = $data['manufacturer'] ?? null;
-            $cost_in_credits = intval($data['cost_in_credits']) == 0 ? null : intval($data['cost_in_credits']);
+            $id = sanitizeInputInt($data['id']);
+            $name = sanitizeInputStr($data['name']);
+            $model = sanitizeInputStr($data['model']);
+            $manufacturer = sanitizeInputStr($data['manufacturer']);
+            $cost_in_credits = sanitizeInputInt($data['cost_in_credits']);
             $length = floatval($data['length']) == 0 ? null : floatval($data['length']);
-            $max_atmosphering_speed = intval($data['max_atmosphering_speed']) == 0 ? null : intval($data['max_atmosphering_speed']);
-            $crew = intval($data['crew']) == 0 ? null : intval($data['crew']);
-            $passengers = intval($data['passengers']) == 0 ? null : intval($data['passengers']);
-            $cargo_capacity = intval($data['cargo_capacity']) == 0 ? null : intval($data['cargo_capacity']);
-            $consumables = $data['consumables'] ?? null;
-            $vehicle_class = $data['vehicle_class'] ?? null;
-            $img_url = $data['img_url'] ?? null;
+            $max_atmosphering_speed = sanitizeInputInt($data['max_atmosphering_speed']);
+            $crew = sanitizeInputInt($data['crew']);
+            $passengers = sanitizeInputInt($data['passengers']);
+            $cargo_capacity = sanitizeInputInt($data['cargo_capacity']);
+            $consumables = sanitizeInputStr($data['consumables']);
+            $vehicle_class = sanitizeInputStr($data['vehicle_class']);
+            $img_url = sanitizeInputStr($data['img_url']);
 
             return new Vehicle(
                 $id,
