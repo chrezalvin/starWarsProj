@@ -49,7 +49,7 @@
                         enctype="multipart/form-data"
                     >
                         <div class="modal-body">
-                            <?= Vehicle::create_form() ?>
+                            <?= VehicleView::create_form() ?>
                         </div>
 
                         <div class="modal-footer">
@@ -124,7 +124,7 @@
                                 enctype="multipart/form-data"
                             >
                                 <div class="modal-body">
-                                    <?= Vehicle::create_form($vehicle) ?>
+                                    <?= VehicleView::create_form($vehicle) ?>
                                 </div>
 
                                 <div class="modal-footer">

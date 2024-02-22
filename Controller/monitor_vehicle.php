@@ -1,12 +1,13 @@
 <?php
     require '../include/session.php';
-    require_once '../service/vehicle.php';
+    require_once '../service/VehicleView.php';
+    require_once '../Model/VehicleView.php';
 
     $search = $_GET['search'] ?? null;
-    $vehicles = VehicleDatabase::get_all_vehicles();
+    $vehicles = VehicleViewDatabase::get_view();
 
     if($search != null){
-        $vehicles = array_filter($vehicles, function(Vehicle $vehicle) use ($search)
+        $vehicles = array_filter($vehicles, function(VehicleView $vehicle) use ($search)
         {
             return strpos(strtolower($vehicle->getName()), strtolower($search)) !== false;
         });

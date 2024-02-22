@@ -11,13 +11,13 @@
         static function get_view(){
             $table = self::$table;
 
-            $query = "SELECT * FROM $table LIMIT 20";
-            $result = database()->query($query);
-            $people = [];
+            $query = pdo()->query("SELECT * FROM $table LIMIT 20");
+            $data = $query->fetchAll();
 
-            while($row = mysqli_fetch_assoc($result))
-                $people[] = PlanetView::get_planet_view_from_query($row);
+            $planet = [];
+            foreach($data as $row)
+                $planet[] = PlanetView::get_planet_view_from_query($row);
 
-            return $people;
+            return $planet;
         }
     }

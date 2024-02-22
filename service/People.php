@@ -11,11 +11,12 @@
         static function get_all_people(){
             $table = self::$table;
     
-            $query = "SELECT * FROM $table LIMIT 20";
+            $query = "SELECT * FROM $table";
             $stmt = pdo()->query($query);
+            $data = $stmt->fetchAll();
 
             $people = [];
-            while($row = $stmt->fetch())
+            foreach($data as $row)
                 $people[] = People::get_people_from_query($row);
             return $people;
         }
