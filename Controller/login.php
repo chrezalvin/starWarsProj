@@ -21,7 +21,7 @@
             $_SESSION['userId'] = $user->getId();
             $_SESSION['timestamp'] = time();
 
-            header('Location: ./monitor_planet.php');
+            header('Location: ./monitor.php');
         }
         else
             header('Location: ./login.php?error=Invalid username or password');

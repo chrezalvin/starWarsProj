@@ -21,9 +21,9 @@
         else
             $errorMessage = "Invalid ID";
 
-        header('Location: ./monitor_vehicle.php'.($errorMessage ? "?error=$errorMessage" : ""));
+        header('Location: ./monitor.php?page=vehicle'.($errorMessage ? "?error=$errorMessage" : ""));
     }
     catch(Exception $e){
         $error = $e->getMessage();
-        header('Location: ./monitor_vehicle.php'.($error ? "?error=$error" : ""));
+        header('Location: ./monitor.php?page=vehicle'.($error ? "?error=$error" : ""));
     }

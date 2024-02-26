@@ -27,6 +27,16 @@
             
             return $planets;
         }
+
+        static function get_all_planets_as_json(){
+            $table = self::$table;
+
+            $query = "SELECT * FROM $table LIMIT 20";
+            $result = pdo()->query($query);
+            $data = $result->fetchAll();
+
+            return json_encode($data);
+        }
     
         static function get_planet_by_id(int $id): Planet{
             $table = self::$table;

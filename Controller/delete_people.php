@@ -19,9 +19,9 @@
         else
             $errorMessage = "Invalid ID";
 
-        header('Location: ./monitor_people.php'.($errorMessage ? "?error=$errorMessage" : ""));
+        header('Location: ./monitor.php?page=people'.($errorMessage ? "?error=$errorMessage" : ""));
     }
     catch(Exception $e){
         $error = $e->getMessage();
-        header('Location: ./monitor_people.php'.($error ? "?error=$error" : ""));
+        header('Location: ./monitor.php?page=people'.($error ? "?error=$error" : ""));
     }

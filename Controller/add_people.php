@@ -44,9 +44,9 @@
         if(!$add)
             $error = "Failed to add people";
         
-        header('Location: ./monitor_people.php'.($error ? "?error=$error" : ""));
+        header('Location: ./monitor.php?page=people'.($error ? "?error=$error" : ""));
     }
     catch(Exception $e){
         $error = $e->getMessage();
-        header('Location: ./monitor_people.php'.($error ? "?error=$error" : ""));
+        header('Location: ./monitor.php?page=people'.($error ? "?error=$error" : ""));
     }

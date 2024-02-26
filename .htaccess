@@ -1,0 +1,2 @@
+ErrorDocument 404 http://localhost/starWarsProj/View/404.php
+ErrorDocument 401 http://localhost/starWarsProj/View/401.php

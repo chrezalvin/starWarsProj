@@ -44,9 +44,9 @@
         if(!$add)
             $error = "Failed to add planet";
         
-        header('Location: ./monitor_planet.php'.($error ? "?error=$error" : ""));
+        header('Location: ./monitor.php?page=planet'.($error ? "?error=$error" : ""));
     }
     catch(Exception $e){
         $error = $e->getMessage();
-        header('Location: ./monitor_planet.php'.($error ? "?error=$error" : ""));
+        header('Location: ./monitor.php?page=planet'.($error ? "?error=$error" : ""));
     }

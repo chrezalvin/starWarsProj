@@ -20,8 +20,18 @@
                 $people[] = People::get_people_from_query($row);
             return $people;
         }
+
+        static function get_all_people_as_json(){
+            $table = self::$table;
     
-        static function get_people_by_id($id){
+            $query = "SELECT * FROM $table";
+            $stmt = pdo()->query($query);
+            $data = $stmt->fetchAll();
+
+            return json_encode($data);
+        }
+    
+        static function get_people_by_id(int $id): ?People{
             $table = self::$table;
 
             $stmt = pdo()->prepare("SELECT * FROM $table WHERE `id` = :id");

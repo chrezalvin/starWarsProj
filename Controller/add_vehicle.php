@@ -47,9 +47,9 @@
         if(!$add)
             $error = "Failed to add vehicle";
 
-        header('Location: ./monitor_vehicle.php'.($error ? "?error=$error" : ""));
+        header('Location: ./monitor.php?page=vehicle'.($error ? "?error=$error" : ""));
     }
     catch(Exception $e){
         $error = $e->getMessage();
-        header('Location: ./monitor_vehicle.php'.($error ? "?error=$error" : ""));
+        header('Location: ./monitor.php?page=vehicle'.($error ? "?error=$error" : ""));
     }
