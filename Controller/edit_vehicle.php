@@ -1,6 +1,6 @@
 <?php
     require '../include/session.php';
-    require_once '../service/vehicle.php';
+    require_once '../service/Vehicle.php';
     require_once '../include/FileManager.php';
     require_once '../include/library.php';
 

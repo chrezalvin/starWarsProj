@@ -161,7 +161,7 @@
                                     </div>
                                     <div class='d-flex justify-content-center gap-1'>
                                         <?= createDeleteAction($person, "./delete_people.php") ?>
-                                        <?= createEditAction($person, PeopleView::create_form($person), "./edit_people.php") ?>
+                                        <?= createEditAction($person, PeopleView::create_form($person, PlanetDatabase::get_all_planets()), "./edit_people.php") ?>
                                     </div>
                                 </div>
                         <?php 

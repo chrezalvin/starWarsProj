@@ -17,7 +17,6 @@
          * @return bool true if the photo is valid, false otherwise
          */
         public static function isFileValid(array $photo): bool{
-            var_dump($photo);
             if(isset($photo['name']) && isset($photo['full_path']) && isset($photo['size']))
                 if($photo['name'] !== "" && $photo["full_path"] !== "" && $photo['size'] < 10000000){
                     return true;

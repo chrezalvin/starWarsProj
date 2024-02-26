@@ -3,7 +3,7 @@
     require_once '../service/User.php';
 
     if(isset($_SESSION['userId']) && isset($_SESSION['timestamp'])){
-        header('Location: ./monitor_planet.php');
+        header('Location: ./monitor.php');
         exit();
     }
 

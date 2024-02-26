@@ -50,6 +50,13 @@
         </div>
     </div>
 
+    <img 
+        src="../assets/Star_wars2.svg" 
+        class="img-fluid position-fixed top-50 start-50 translate-middle"
+        style="opacity: 0.1;"
+        alt=""
+    >
+
     <!-- prompt for error -->
     <?php if($error != null): ?>
         <div class="d-flex justify-content-center">
