@@ -21,11 +21,11 @@
         <div class="d-flex justify-content-center align-items-center flex-column">
             <h1>Welcome to Star Wars Watchers</h1>
             <!-- <h4 class="text-warning border">May The Force Be With You</h4> -->
-            <a href="./View/monitor_people.php" class="d-block w-50 d-flex justify-content-center">
+            <a href="./View/login.php" class="d-block w-50 d-flex justify-content-center">
                 <button
                     class="btn btn-primary flex-grow-0 w-50"
                     >
-                    Enter
+                    Login
                 </button>
             </a>
         </div>
