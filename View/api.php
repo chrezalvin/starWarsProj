@@ -81,7 +81,7 @@
 
     <!-- Add Button -->
     <div class="position-absolute end-0 m-2">
-        <a href="./monitor_people.php">
+        <a href="./monitor.php">
             <button class="btn btn-outline-success fw-bold text-warning"> Back to Database </button>
         </a>
     </div>

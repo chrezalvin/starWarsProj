@@ -21,6 +21,16 @@
             return $vehicles;
         }
 
+        static function get_all_vehicles_as_json(){
+            $table = self::$table;
+
+            $query = "SELECT * FROM $table";
+            $stmt = pdo()->query($query);
+            $data = $stmt->fetchAll();
+
+            return json_encode($data);
+        }
+
         static function delete_vehicle_by_id(int $id): bool{
             $table = self::$table;
 

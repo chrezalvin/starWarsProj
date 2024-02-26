@@ -86,4 +86,20 @@
         public function getImgUrl(){
             return $this->m_img_url;
         }
+
+        public function asJson(){
+            $json = [];
+            $json['id'] = $this->getId();
+            $json['name'] = $this->getName();
+            $json['height'] = $this->getHeight();
+            $json['mass'] = $this->getMass();
+            $json['hair_color'] = $this->getHairColor();
+            $json['skin_color'] = $this->getSkinColor();
+            $json['eye_color'] = $this->getEyeColor();
+            $json['birth_year'] = $this->getBirthYear();
+            $json['gender'] = $this->getGender();
+            $json['img_url'] = $this->getImgUrl();
+
+            return json_encode($json);
+        }
     }

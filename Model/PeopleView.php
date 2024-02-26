@@ -114,14 +114,14 @@
             $homeworld_img_url = $queryData['homeworld_img_url'];
 
             return new PeopleView(
-                $people->getId(), 
-                $people->getName(), 
-                $people->getHeight(), 
-                $people->getMass(), 
-                $people->getHairColor(), 
-                $people->getSkinColor(), 
-                $people->getEyeColor(), 
-                $people->getBirthYear(), 
+                $people->getId(),
+                $people->getName(),
+                $people->getHeight(),
+                $people->getMass(),
+                $people->getHairColor(),
+                $people->getSkinColor(),
+                $people->getEyeColor(),
+                $people->getBirthYear(),
                 $people->getGender(),
                 $people->getImgUrl(),
                 $homeworld,

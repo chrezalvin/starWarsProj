@@ -23,9 +23,9 @@
         else
             $errorMessage = "Invalid ID";
 
-        header('Location: ./monitor_planet.php'.($errorMessage ? "?error=$errorMessage" : ""));
+        header('Location: ./monitor.php?page=planet'.($errorMessage ? "?error=$errorMessage" : ""));
     }
     catch(Exception $e){
         $error = $e->getMessage();
-        header('Location: ./monitor_planet.php'.($error ? "?error=$error" : ""));
+        header('Location: ./monitor.php?page=planet'.($error ? "?error=$error" : ""));
     }

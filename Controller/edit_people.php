@@ -50,10 +50,10 @@
         else
             $errorMessage = "Invalid request method";
 
-        header('Location: ./monitor_people.php'.($errorMessage ? "?error=$errorMessage" : ""));
+        header('Location: ./monitor.php?page=people'.($errorMessage ? "?error=$errorMessage" : ""));
     }
     catch(Exception $e){
         $error = htmlspecialchars($e->getMessage());
         var_dump($error);
-        header('Location: ./monitor_people.php'.($error ? "?error=$error" : ""));
+        header('Location: ./monitor.php?page=people'.($error ? "?error=$error" : ""));
     }
