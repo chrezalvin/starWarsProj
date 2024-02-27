@@ -24,6 +24,10 @@
             return ob_get_clean();
     }
 
+    function formatNumberIfExist(?int $number){
+        return is_null($number) ? "n/a" : number_format($number);
+    }
+
     function createDeleteAction(Base $base, string $deleteUrl, bool $disabled = false){
         ob_start(); ?>
             <?php if(!$disabled): ?>
@@ -134,19 +138,19 @@
         case "people":
             $data = TableElement::createTable(
                 generateTableElements([
-                    "Name" => fn($person) => createImgIfExist(
+                    "Name" => fn(PeopleView $person) => createImgIfExist(
                             $person->getName(), 
                             is_null($person->getImgUrl()) ? null : "../public/people/" . $person->getImgUrl()
                     ),
-                    "Height" => fn($person) => $person->getHeight(),
-                    "Mass" => fn($person) => $person->getMass(),
-                    "Hair Color" => fn($person) => $person->getHairColor(),
-                    "Skin Color" => fn($person) => $person->getSkinColor(),
-                    "Eye Color" => fn($person) => $person->getEyeColor(),
-                    "Birth Year" => fn($person) => $person->getBirthYear(),
-                    "Gender" => fn($person) => $person->getGender(),
-                    "Homeworld" => fn($person) => $person->getHomeworld(),
-                    "Action" => function($person){ 
+                    "Height" => fn(PeopleView $person) => formatNumberIfExist($person->getHeight()),
+                    "Mass" => fn(PeopleView $person) => formatNumberIfExist($person->getMass()),
+                    "Hair Color" => fn(PeopleView $person) => $person->getHairColor(),
+                    "Skin Color" => fn(PeopleView $person) => $person->getSkinColor(),
+                    "Eye Color" => fn(PeopleView $person) => $person->getEyeColor(),
+                    "Birth Year" => fn(PeopleView $person) => $person->getBirthYear(),
+                    "Gender" => fn(PeopleView $person) => $person->getGender(),
+                    "Homeworld" => fn(PeopleView $person) => $person->getHomeworld(),
+                    "Action" => function(PeopleView $person){ 
                             ob_start(); ?>
                                 <div class="d-flex justify-content-center flex-column gap-1">
                                     <div class='d-flex justify-content-center gap-1'>
@@ -157,7 +161,7 @@
                                     </div>
                                     <div class='d-flex justify-content-center gap-1'>
                                         <?= createDeleteAction($person, "./delete_people.php") ?>
-                                        <?= createEditAction($person, PeopleView::create_form($person), "./edit_people.php") ?>
+                                        <?= createEditAction($person, PeopleView::create_form($person, PlanetDatabase::get_all_planets()), "./edit_people.php") ?>
                                     </div>
                                 </div>
                         <?php 
@@ -176,14 +180,14 @@
                             $planet->getName(), 
                             is_null($planet->getImgUrl()) ? null : "../public/planet/" . $planet->getImgUrl()
                     ),
-                    "Rotation Period" => fn(PlanetView $planet) => $planet->getRotationPeriod(),
-                    "Orbital Period" => fn(PlanetView $planet) => $planet->getOrbitalPeriod(),
-                    "Diameter" => fn(PlanetView $planet) => $planet->getDiameter(),
+                    "Rotation Period" => fn(PlanetView $planet) => formatNumberIfExist($planet->getRotationPeriod()),
+                    "Orbital Period" => fn(PlanetView $planet) => formatNumberIfExist($planet->getOrbitalPeriod()),
+                    "Diameter" => fn(PlanetView $planet) => formatNumberIfExist($planet->getDiameter()),
                     "Climate" => fn(PlanetView $planet) => $planet->getClimate(),
                     "Gravity" => fn(PlanetView $planet) => $planet->getGravity(),
                     "Terrain" => fn(PlanetView $planet) => $planet->getTerrain(),
-                    "Surface Water" => fn(PlanetView $planet) => $planet->getSurfaceWater(),
-                    "Population" => fn(PlanetView $planet) => $planet->getPopulation(),
+                    "Surface Water" => fn(PlanetView $planet) => formatNumberIfExist($planet->getSurfaceWater()),
+                    "Population" => fn(PlanetView $planet) => formatNumberIfExist($planet->getPopulation()),
                     "Action" => function(PlanetView $planet){ 
                             ob_start(); ?>
                                 <div class="d-flex justify-content-center flex-column gap-1">
@@ -218,10 +222,10 @@
                     "Manufacturer" => fn(VehicleView $vehicle) => $vehicle->getManufacturer(),
                     "Cost In Credits" => fn(VehicleView $vehicle) => $vehicle->getCostInCredits(),
                     "Length" => fn(VehicleView $vehicle) => $vehicle->getLength(),
-                    "Max Atmosphering Speed" => fn(VehicleView $vehicle) => $vehicle->getMaxAtmospheringSpeed(),
-                    "Crew" => fn(VehicleView $vehicle) => $vehicle->getCrew(),
-                    "Passengers" => fn(VehicleView $vehicle) => $vehicle->getPassengers(),
-                    "Cargo Capacity" => fn(VehicleView $vehicle) => $vehicle->getCargoCapacity(),
+                    "Max Atmosphering Speed" => fn(VehicleView $vehicle) => formatNumberIfExist($vehicle->getMaxAtmospheringSpeed()),
+                    "Crew" => fn(VehicleView $vehicle) => formatNumberIfExist($vehicle->getCrew()),
+                    "Passengers" => fn(VehicleView $vehicle) => formatNumberIfExist($vehicle->getPassengers()),
+                    "Cargo Capacity" => fn(VehicleView $vehicle) => formatNumberIfExist($vehicle->getCargoCapacity()),
                     "Consumables" => fn(VehicleView $vehicle) => $vehicle->getConsumables(),
                     "Vehicle Class" => fn(VehicleView $vehicle) => $vehicle->getVehicleClass(),
                     "Action" => function(VehicleView $vehicle){ 
@@ -250,4 +254,3 @@
         default:
             $data = "";
     }
-    

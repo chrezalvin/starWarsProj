@@ -2,7 +2,7 @@
     require '../include/session.php';
     
     //  delete planet
-    require_once '../service/vehicle.php';
+    require_once '../service/Vehicle.php';
     require_once '../include/FileManager.php';
     require_once '../include/library.php';
 

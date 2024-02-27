@@ -1,6 +1,6 @@
 <?php
     require '../include/session.php';
-    require_once '../service/people.php';
+    require_once '../service/People.php';
     require_once '../service/PeopleView.php';
     require_once '../service/Planet.php';
     require_once '../Model/FormInput.php';

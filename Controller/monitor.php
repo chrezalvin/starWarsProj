@@ -66,7 +66,7 @@
         "planet" => new Page(
             "Planets",
             "planet",
-            "./table.php?table=planets",
+            "planets",
             "./add_planet.php",
             "./edit_planet.php",
             "./delete_planet.php",
@@ -75,7 +75,7 @@
         "vehicle" => new Page(
             "Vehicles",
             "vehicle",
-            "./table.php?table=vehicles",
+            "vehicles",
             "./add_vehicle.php",
             "./edit_vehicle.php",
             "./delete_vehicle.php",
@@ -84,7 +84,7 @@
         "people" => new Page(
             "People",
             "people",
-            "./table.php?table=people",
+            "people",
             "./add_people.php",
             "./edit_people.php",
             "./delete_people.php",
@@ -106,4 +106,4 @@
     $page = $indexPage[$indexArrKeys[$curr]];
     $prev = $curr - 1 >= 0 ? $indexPage[$indexArrKeys[$curr - 1]] : null;
     $next = $curr + 1 < count($indexArrKeys) ? $indexPage[$indexArrKeys[$curr + 1]] : null;
-    $error = "";
+    $error = $_GET['error'] ?? null;

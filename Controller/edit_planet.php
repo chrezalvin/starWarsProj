@@ -1,6 +1,6 @@
 <?php
     require('../include/session.php');
-    require_once('../service/planet.php');
+    require_once('../service/Planet.php');
     require_once('../include/FileManager.php');
     require_once('../include/library.php');
 
@@ -51,6 +51,5 @@
     }
     catch(Exception $e){
         $error = $e->getMessage();
-        var_dump($error);
         header('Location: ./monitor.php?page=planet'.($error ? "?error=$error" : ""));
     }

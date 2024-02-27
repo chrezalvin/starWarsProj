@@ -1,7 +1,7 @@
 <?php
     require '../include/session.php';
     
-    require_once '../service/people.php';
+    require_once '../service/People.php';
     require_once '../include/FileManager.php';
 
     try{
@@ -54,6 +54,5 @@
     }
     catch(Exception $e){
         $error = htmlspecialchars($e->getMessage());
-        var_dump($error);
         header('Location: ./monitor.php?page=people'.($error ? "?error=$error" : ""));
     }

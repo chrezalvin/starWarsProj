@@ -1,15 +1,6 @@
-<!-- base app -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<?php require_once('./include/top.php') ?>
 
-    <?php include './assets/bootstrap.php' ?>
-    <?php include './assets/jquery.php' ?>
-
-    <title>My Star Wars Watchers</title>
-</head>
+<?= top("My Star Wars Watchers") ?>
 <body>
     <img 
         src="./assets/Star_wars2.svg" 
@@ -21,11 +12,11 @@
         <div class="d-flex justify-content-center align-items-center flex-column">
             <h1>Welcome to Star Wars Watchers</h1>
             <!-- <h4 class="text-warning border">May The Force Be With You</h4> -->
-            <a href="./View/monitor_people.php" class="d-block w-50 d-flex justify-content-center">
+            <a href="./View/login.php" class="d-block w-50 d-flex justify-content-center">
                 <button
                     class="btn btn-primary flex-grow-0 w-50"
                     >
-                    Enter
+                    Login
                 </button>
             </a>
         </div>

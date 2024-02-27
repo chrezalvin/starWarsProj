@@ -10,18 +10,6 @@
         </symbol>
     </svg>
 
-    <!-- button for delete multiple -->
-    <div class="position-fixed bottom-0 end-0 m-2" id="deleteSelected">
-        <button
-            class="btn btn-danger"
-            id="deleteMultiple"
-            data-bs-toggle="modal"
-            data-bs-target="#modalDeleteMultiple"
-        >
-            Delete Multiple
-        </button>
-    </div>
-
     <!-- Modal for delete multiple -->
     <div class="modal text-start" id="modalDeleteMultiple" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
@@ -50,27 +38,35 @@
         </div>
     </div>
 
+    <img 
+        src="../assets/Star_wars2.svg" 
+        class="img-fluid position-fixed top-50 start-50 translate-middle"
+        style="opacity: 0.1;"
+        alt=""
+    >
+
     <!-- prompt for error -->
     <?php if($error != null): ?>
         <div class="d-flex justify-content-center">
             <div class="alert alert-danger alert-dismissible w-50 my-1">
-            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                <i class="bi-exclamation-triangle-fill me-2"></i>
                 <?= htmlspecialchars($error) ?>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         </div>
     <?php endif; ?>
 
-    <!-- Add Button -->
-    <div class="position-absolute end-0 m-2">
-        <button 
-            class="btn btn-outline-success fw-bold text-warning"
-            data-bs-toggle="modal"
-            data-bs-target="#addButton"
-            >
-            Add a New <?= $page->getPageName() ?>
-        </button>
-    </div>
+    <div class="sticky-top bg-light py-2 ">
+        <!-- Add Button -->
+        <div class="position-absolute end-0 m-2">
+            <button
+                class="btn btn-outline-success fw-bold text-warning"
+                data-bs-toggle="modal"
+                data-bs-target="#addButton"
+                >
+                Add a New <?= $page->getPageName() ?>
+            </button>
+        </div>
 
         <!-- Add Button Modal -->
         <div class="modal" id="addButton" tabindex="-1" role="dialog">
@@ -82,15 +78,14 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form 
-                        action="<?= $page->getCreateUrl() ?>" 
+                    <form
+                        action="<?= $page->getCreateUrl() ?>"
                         method="post"
                         enctype="multipart/form-data"
                     >
                         <div class="modal-body">
                             <?= $page->getForm() ?>
                         </div>
-
                         <div class="modal-footer">
                             <div class="d-flex justify-content-center gap-2">
                                 <button class="btn btn-primary" type="submit">Create</button>
@@ -102,46 +97,77 @@
             </div>
         </div>
 
-    <!-- Add Button -->
-    <div class="position-absolute start-0 m-2">
-        <a href="./api.php">
-            <button class="btn btn-primary fw-bold px-5"> SWAPI </button>
-        </a>
-    </div>
-
-        <div class="d-flex justify-content-center align-items-center gap-2">
-            <?php if($prev !== null): ?>
-                <a 
-                    href="./monitor.php?page=<?= $prev->getPageName() ?>" 
-                    class="h-100 link-underline link-underline-opacity-0">
-                    <?= $prev->getPageTitle() ?>
-                </a>
-            <?php endif; ?>
-            <h1 class="text-center"><?=  $page->getPageTitle() ?></h1>
-            <?php if($next !== null): ?>
-                <a 
-                    href="./monitor.php?page=<?= $next->getPageName() ?>" 
-                    class="h-100 link-underline link-underline-opacity-0">
-                    <?= $next->getPageTitle() ?>
-                </a>
-            <?php endif; ?>
+        <!-- Add Button -->
+        <div class="position-absolute start-0 m-2">
+            <a href="./api.php">
+                <button class="btn btn-primary fw-bold px-5"> SWAPI </button>
+            </a>
         </div>
-        <div class="d-flex justify-content-center">
-            <form action="" class="w-50 d-flex justify-content-center gap-2">
-                <div class="input-group">
-                    <input
-                        type="text"
-                        name="search"
-                        class="form-control text-center"
-                        placeholder="Search for name here"
-                        id="search"
-                    />
-                    <button class="btn btn-outline-primary" id="searchBtn">
-                        <i class="bi-search"></i>
-                    </button>
+            <div class="d-flex justify-content-center align-items-center gap-2">
+                <?php if($prev !== null): ?>
+                    <a
+                        href="./monitor.php?page=<?= $prev->getPageName() ?>"
+                        class="h-100 link-underline link-underline-opacity-0">
+                        <?= $prev->getPageTitle() ?>
+                    </a>
+                <?php endif; ?>
+                <h1 class="text-center"><?=  $page->getPageTitle() ?></h1>
+                <?php if($next !== null): ?>
+                    <a
+                        href="./monitor.php?page=<?= $next->getPageName() ?>"
+                        class="h-100 link-underline link-underline-opacity-0">
+                        <?= $next->getPageTitle() ?>
+                    </a>
+                <?php endif; ?>
+            </div>
+            <div class="d-flex justify-content-center">
+                <div class="me-auto"></div>
+                <form action="" class="w-50 d-flex justify-content-center gap-2">
+                    <div class="input-group">
+                        <input
+                            type="text"
+                            name="search"
+                            class="form-control text-center"
+                            placeholder="Search for name here"
+                            id="search"
+                        />
+                        <button class="btn btn-outline-primary" id="searchBtn">
+                            <i class="bi-search"></i>
+                        </button>
+                    </div>
+                </form>
+                <div class="ms-auto d-flex justify-content-end gap-2 align-self-center pe-2">
+                    <a href="./download.php?table=<?= $page->getUrlTable() ?>&as=excel">
+                        <img
+                            class="img-fluid"
+                            height="24"
+                            width="24"
+                            src="../assets/excel.svg"
+                            alt="Export <?= $page->getPageName() ?> as excel file"
+                            title="Export <?= $page->getPageName() ?> as excel file"
+                        />
+                    </a>
+                    <a href="./download.php?table=<?= $page->getUrlTable() ?>&as=pdf">
+                        <img
+                            class="img-fluid"
+                            height="24"
+                            width="24"
+                            src="../assets/pdf.svg"
+                            alt="Export <?= $page->getPageName() ?> as pdf file"
+                            title="Export <?= $page->getPageName() ?> as pdf file"
+                        >
+                    </a>
+                    <i
+                        class="bi-trash-fill bg-danger rounded-1 text-light px-1"
+                        title="Delete selected <?= $page->getPageName() ?>"
+                        id="deleteSelected"
+                        data-bs-toggle="modal"
+                        data-bs-target="#modalDeleteMultiple"
+                    >
+                    </i>
                 </div>
-            </form>
-        </div>
+            </div>
+    </div>
 
         <div id="table">
 
@@ -157,6 +183,15 @@
 
     const searchBtnDefault = /*html*/`
         <i class="bi-search"></i>
+    `;
+
+    const modalDeleteButtonOnLoading = /*html*/`
+        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+        Deleting...
+    `;
+
+    const modalDeleteButtonDefault = /*html*/`
+        Yes, Delete It
     `;
 
     const selectId = [];
@@ -185,19 +220,17 @@
 
     $(() => {
         let timeout = null;
-        $("#table").load("<?= $page->getUrlTable() ?>", '', onTableLoaded);
+        $("#table").load("./table.php?table=<?= $page->getUrlTable() ?>", '', onTableLoaded);
         $('#deleteSelected').attr('hidden', selectId.length == 0);
 
         $("#btnConfirmDeleteMultiple").on("click", () => {
             $("#btnConfirmDeleteMultiple").attr("disabled", true);
-            $("#btnConfirmDeleteMultiple").html(/*html*/`
-                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                Deleting...
-            `);
+            $("#btnConfirmDeleteMultiple").html(modalDeleteButtonOnLoading);
 
             Promise.all(selectId.map((id) => {
                 return $.post("<?= $page->getDeleteUrl() ?>", { deleteId: id });
             })).finally(() => {
+                // reloads the page
                 location.reload();
             });
         });
@@ -207,7 +240,7 @@
             clearTimeout(timeout);
             $("#searchBtn").html(SearchBtnOnLoading);
             timeout = setTimeout(() => {
-                $("#table").load(`<?= $page->getUrlTable() ?>&search=${e.target.value}`, "", onTableLoaded);
+                $("#table").load(`./table.php?table=<?= $page->getUrlTable() ?>&search=${e.target.value}`, "", onTableLoaded);
             }, 1000);
         })
     })

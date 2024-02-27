@@ -8,8 +8,6 @@
     
     // session type is Base[]
     $peopleList = $_SESSION['peopleList'];
-
-    var_dump($peopleList);
     $vehicleList = $_SESSION['vehicleList'];
     $planetList = $_SESSION['planetList'];
 
