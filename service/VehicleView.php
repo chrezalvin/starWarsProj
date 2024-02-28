@@ -64,6 +64,7 @@
                 "Cargo Capacity" => array_map(fn(VehicleView $vehicle) => $vehicle->getCargoCapacity(), $vehicleView),
                 "Consumables" => array_map(fn(VehicleView $vehicle) => $vehicle->getConsumables(), $vehicleView),
                 "Vehicle Class" => array_map(fn(VehicleView $vehicle) => $vehicle->getVehicleClass(), $vehicleView),
+                "image" => array_map(fn(VehicleView $vehicle) => is_null($vehicle->getImgUrl()) ? null : "../public/vehicle/".$vehicle->getImgUrl(), $vehicleView),
             ];
         }
     }
