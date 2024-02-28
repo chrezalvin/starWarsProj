@@ -56,18 +56,6 @@
         </div>
     <?php endif; ?>
 
-    <div class="sticky-top bg-light py-2 ">
-        <!-- Add Button -->
-        <div class="position-absolute end-0 m-2">
-            <button
-                class="btn btn-outline-success fw-bold text-warning"
-                data-bs-toggle="modal"
-                data-bs-target="#addButton"
-                >
-                Add a New <?= $page->getPageName() ?>
-            </button>
-        </div>
-
         <!-- Add Button Modal -->
         <div class="modal" id="addButton" tabindex="-1" role="dialog">
             <div class="modal-dialog" role="document">
@@ -97,7 +85,19 @@
             </div>
         </div>
 
+    <div class="sticky-top bg-light py-2 ">
         <!-- Add Button -->
+        <div class="position-absolute end-0 m-2">
+            <button
+                class="btn btn-outline-success fw-bold text-warning"
+                data-bs-toggle="modal"
+                data-bs-target="#addButton"
+                >
+                Add a New <?= $page->getPageName() ?>
+            </button>
+        </div>
+
+        <!-- API Button -->
         <div class="position-absolute start-0 m-2">
             <a href="./api.php">
                 <button class="btn btn-primary fw-bold px-5"> SWAPI </button>

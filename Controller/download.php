@@ -184,74 +184,7 @@
             $fpdf->Row($row);
         }
 
-        // $cellWidth = 20;
-        // $cellHeight = 3;
-        // $imageHeight = 30;
-
-        // $fpdf = new FPDF();
-        // $fpdf->AddPage();
-        // $fpdf->SetAutoPageBreak(true, 20);
-        // $fpdf->SetFont('Arial','B',16);
-        // $fpdf->Cell(20,20, $title);
-        // $fpdf->Ln();
-
-        // $fpdf->SetFont('Arial','B',8);
-        // // Header
-        // foreach(array_keys($elements) as $col)
-        //     $fpdf->Cell($cellWidth, 10,$col,1);
-        // $fpdf->Ln();
-         
-        // $fpdf->SetFont('Arial','',8);
-        // $startX = $fpdf->GetX();
-        // $trackX = $fpdf->GetX();
-        // $trackY = $fpdf->GetY();
-        // $counterNextPage = 1;
-        // for($i = 0; $i < count($elements[array_keys($elements)[0]]); ++$i){
-        //     foreach($elements as $col){
-        //         if(str_ends_with($col[$i], ".png") || str_ends_with($col[$i], ".jpg"))
-        //             $fpdf->MultiCell($cellWidth, 64, $fpdf->Image("../public/people/7.png", null, null, 10, 18), 1);
-        //         else if(strlen($col[$i]) > 10){
-        //             if(str_ends_with($col[$i], ".png"))
-        //                 $fpdf->MultiCell($cellWidth, $cellHeight * 3 / 2, $fpdf->Image("file:///C:/Users/Lenovo/Pictures/hci banner.png", null, null, 10, 18), 1);
-        //             else
-        //                 $fpdf->MultiCell($cellWidth, $cellHeight * 3 / 2, $col[$i], 1);
-        //         }
-        //         else
-        //             $fpdf->MultiCell($cellWidth, $cellHeight * 3, $col[$i], 1);
-        //         $trackX += $cellWidth;
-        //         $fpdf->SetXY($trackX, $trackY);
-        //     }
-        //     $trackY += $imageHeight;
-        //     $trackX = $startX;
-        //     $fpdf->SetXY($trackX, $trackY);
-        //     ++$counterNextPage;
-        // }
-
         return $fpdf->Output();
-
-        // $fpdf = new FPDF2();
-        // $fpdf->AddPage();
-        // $fpdf->SetAutoPageBreak(true, 20);
-        // $fpdf->SetFont('Arial','B',16);
-        // $fpdf->Cell(20,20, $title);
-        // $fpdf->Ln();
-        // $fpdf->SetFont('Arial','',8);
-        
-        // $cellWidth = 17;
-
-        // // Header
-        // foreach(array_keys($elements) as $col)
-        //     $fpdf->MultiCell2($cellWidth,7,$col,1);
-        // $fpdf->Ln();
-        // // Data
-        
-        // for($i = 0; $i < count($elements[array_keys($elements)[0]]); $i++){
-        //     foreach($elements as $col)
-        //         $fpdf->MultiCell2($cellWidth,20,$col[$i],1);
-        //     $fpdf->Ln();
-        // }
-
-        // return $fpdf->Output();
     }
 
     $availableAs = ["pdf", "excel"];
