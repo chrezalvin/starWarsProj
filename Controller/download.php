@@ -1,4 +1,6 @@
 <?php
+    require_once('../include/session.php');
+
     require_once('../service/PeopleView.php');
     require_once('../service/PlanetView.php');
     require_once('../service/VehicleView.php');
@@ -7,131 +9,118 @@
     require_once('../include/fpdf.php');
     require_once('../include/library.php');
 
-    class FPDF2 extends FPDF{
-        function MultiCell2($w, $h, $txt, $border=0, $ln=0, $align='J', $fill=false)
-        {
-            // Custom Tomaz Ahlin
-            if($ln == 0) {
-                $current_y = $this->GetY();
-                $current_x = $this->GetX();
-            }
+    class PDF_MC_Table extends FPDF
+{
+    protected $widths;
+    protected $aligns;
 
-            // Output text with automatic or explicit line breaks
-            $cw = &$this->CurrentFont['cw'];
-            if($w==0)
-                $w = $this->w-$this->rMargin-$this->x;
-            $wmax = ($w-2*$this->cMargin)*1000/$this->FontSize;
-            $s = str_replace("\r",'',$txt);
-            $nb = strlen($s);
-            if($nb>0 && $s[$nb-1]=="\n")
-                $nb--;
-            $b = 0;
-            if($border)
-            {
-                if($border==1)
-                {
-                    $border = 'LTRB';
-                    $b = 'LRT';
-                    $b2 = 'LR';
-                }
-                else
-                {
-                    $b2 = '';
-                    if(strpos($border,'L')!==false)
-                        $b2 .= 'L';
-                    if(strpos($border,'R')!==false)
-                        $b2 .= 'R';
-                    $b = (strpos($border,'T')!==false) ? $b2.'T' : $b2;
-                }
-            }
-            $sep = -1;
-            $i = 0;
-            $j = 0;
-            $l = 0;
-            $ns = 0;
-            $nl = 1;
-            while($i<$nb)
-            {
-                // Get next character
-                $c = $s[$i];
-                if($c=="\n")
-                {
-                    // Explicit line break
-                    if($this->ws>0)
-                    {
-                        $this->ws = 0;
-                        $this->_out('0 Tw');
-                    }
-                    $this->Cell($w,$h,substr($s,$j,$i-$j),$b,2,$align,$fill);
-                    $i++;
-                    $sep = -1;
-                    $j = $i;
-                    $l = 0;
-                    $ns = 0;
-                    $nl++;
-                    if($border && $nl==2)
-                        $b = $b2;
-                    continue;
-                }
-                if($c==' ')
-                {
-                    $sep = $i;
-                    $ls = $l;
-                    $ns++;
-                }
-                $l += $cw[$c];
-                if($l>$wmax)
-                {
-                    // Automatic line break
-                    if($sep==-1)
-                    {
-                        if($i==$j)
-                            $i++;
-                        if($this->ws>0)
-                        {
-                            $this->ws = 0;
-                            $this->_out('0 Tw');
-                        }
-                        $this->Cell($w,$h,substr($s,$j,$i-$j),$b,2,$align,$fill);
-                    }
-                    else
-                    {
-                        if($align=='J')
-                        {
-                            $this->ws = ($ns>1) ?     ($wmax-$ls)/1000*$this->FontSize/($ns-1) : 0;
-                            $this->_out(sprintf('%.3F Tw',$this->ws*$this->k));
-                        }
-                        $this->Cell($w,$h,substr($s,$j,$sep-$j),$b,2,$align,$fill);
-                        $i = $sep+1;
-                    }
-                    $sep = -1;
-                    $j = $i;
-                    $l = 0;
-                    $ns = 0;
-                    $nl++;
-                    if($border && $nl==2)
-                        $b = $b2;
-                }
-                else
-                    $i++;
-            }
-            // Last chunk
-            if($this->ws>0)
-            {
-                $this->ws = 0;
-                $this->_out('0 Tw');
-            }
-            if($border && strpos($border,'B')!==false)
-                $b .= 'B';
-            $this->Cell($w,$h,substr($s,$j,$i-$j),$b,2,$align,$fill);
-            $this->x = $this->lMargin;
-
-            // Custom Tomaz Ahlin
-            if($ln == 0) {
-                $this->SetXY($current_x + $w, $current_y);
-            }
-        }
+    function SetWidths($w)
+    {
+        // Set the array of column widths
+        $this->widths = $w;
     }
+
+    function SetAligns($a)
+    {
+        // Set the array of column alignments
+        $this->aligns = $a;
+    }
+
+
+    protected $imageKey = '';
+
+    public function setImageKey($key){
+      $this->imageKey = $key;
+    }
+  
+    public function Row($data){
+      $nb=0;
+      for($i=0;$i<count($data);$i++)
+        $nb=max($nb,$this->NbLines($this->widths[$i],$data[$i]));
+        $h=5*$nb;
+        $this->CheckPageBreak($h);
+        for($i=0;$i<count($data);$i++){
+          $w=$this->widths[$i];
+          $a=isset($this->aligns[$i]) ? $this->aligns[$i] : 'L';
+          $x=$this->GetX();
+          $y=$this->GetY();
+          $this->Rect($x,$y,$w,$h);
+  
+          //modify functions for image 
+          if(!empty($this->imageKey) && in_array($i,$this->imageKey) && !empty($data[$i])){
+            $ih = $h - 0.5;
+            $iw = $w - 0.5;
+            $ix = $x + 0.25;
+            $iy = $y + 0.25;
+            $this->MultiCell($w,5,$this->Image ($data[$i],$ix,$iy,$iw,$ih),0,$a);
+          }
+          else
+            $this->MultiCell($w,5,$data[$i],0,$a);
+          $this->SetXY($x+$w,$y);
+        }
+        $this->Ln($h);
+      }
+
+    function CheckPageBreak($h)
+    {
+        // If the height h would cause an overflow, add a new page immediately
+        if($this->GetY()+$h>$this->PageBreakTrigger)
+            $this->AddPage($this->CurOrientation);
+    }
+
+    function NbLines($w, $txt)
+    {
+        // Compute the number of lines a MultiCell of width w will take
+        if(!isset($this->CurrentFont))
+            $this->Error('No font has been set');
+        $cw = $this->CurrentFont['cw'];
+        if($w==0)
+            $w = $this->w-$this->rMargin-$this->x;
+        $wmax = ($w-2*$this->cMargin)*1000/$this->FontSize;
+        $s = str_replace("\r",'',(string)$txt);
+        $nb = strlen($s);
+        if($nb>0 && $s[$nb-1]=="\n")
+            $nb--;
+        $sep = -1;
+        $i = 0;
+        $j = 0;
+        $l = 0;
+        $nl = 1;
+        while($i<$nb)
+        {
+            $c = $s[$i];
+            if($c=="\n")
+            {
+                $i++;
+                $sep = -1;
+                $j = $i;
+                $l = 0;
+                $nl++;
+                continue;
+            }
+            if($c==' ')
+                $sep = $i;
+            $l += $cw[$c];
+            if($l>$wmax)
+            {
+                if($sep==-1)
+                {
+                    if($i==$j)
+                        $i++;
+                }
+                else
+                    $i = $sep+1;
+                $sep = -1;
+                $j = $i;
+                $l = 0;
+                $nl++;
+            }
+            else
+                $i++;
+        }
+        return $nl;
+    }
+}
 
     /**
      * @template T
@@ -148,41 +137,95 @@
     }
 
     function generatePdfTable(array $elements, string $title = "", ){
-        $cellWidth = 20;
-        $cellHeight = 3;
+        $keys = array_keys($elements);
 
-        $fpdf = new FPDF();
+        $pdfOrientation = count($keys) > 10 ? "A3" : "A4";
+        $totalPdfWidth = 280;
+        switch($pdfOrientation){
+            case "A3":
+                $totalPdfWidth = 280;
+                break;
+            case "A4":
+                $totalPdfWidth = 190;
+                break;
+            default:
+                break;
+        }
+
+        
+        $fpdf = new PDF_MC_Table('P', 'mm', $pdfOrientation);
+
+
         $fpdf->AddPage();
         $fpdf->SetAutoPageBreak(true, 20);
-        $fpdf->SetFont('Arial','B',16);
-        $fpdf->Cell(20,20, $title);
-        $fpdf->Ln();
+        $fpdf->SetFont('Arial','B', 20);
+        
+        $fpdf->Cell($totalPdfWidth, 10, "$title database", 0, 1, 'C');
+        $fpdf->Ln(10);
+        $fpdf->SetFont('Arial','B', 12);
 
-        $fpdf->SetFont('Arial','B',8);
-        // Header
-        foreach(array_keys($elements) as $col)
-            $fpdf->Cell($cellWidth, 10,$col,1);
-        $fpdf->Ln();
-         
-        $fpdf->SetFont('Arial','',8);
-        $startX = $fpdf->GetX();
-        $trackX = $fpdf->GetX();
-        $trackY = $fpdf->GetY();
-        $counterNextPage = 1;
+        $fpdf->SetWidths(array_map(fn($_) => $totalPdfWidth / count($keys), $keys));
+
+        // header part
+        $fpdf->SetAligns(array_map(fn($_) => 'C', $keys));
+        $fpdf->Row($keys);
+
+        $imageCol = array_search("image", $keys);
+        if($imageCol !== false)
+            $fpdf->setImageKey([$imageCol]);
+        
+        // data part
+        $fpdf->SetFont('Arial','', 10);
+        $fpdf->SetAligns(array_map(fn($_) => 'L', $keys));
         for($i = 0; $i < count($elements[array_keys($elements)[0]]); ++$i){
-            foreach($elements as $col){
-                if(strlen($col[$i]) > 10)
-                    $fpdf->MultiCell($cellWidth, $cellHeight * 3 / 2, $col[$i], 1);
-                else
-                    $fpdf->MultiCell($cellWidth, $cellHeight * 3, $col[$i], 1);
-                $trackX += $cellWidth;
-                $fpdf->SetXY($trackX, $trackY);
-            }
-            $trackY += $cellHeight * 3;
-            $trackX = $startX;
-            $fpdf->SetXY($trackX, $trackY);
-            ++$counterNextPage;
+            $row = [];
+            foreach($elements as $col)
+                $row[] = $col[$i];
+            $fpdf->Row($row);
         }
+
+        // $cellWidth = 20;
+        // $cellHeight = 3;
+        // $imageHeight = 30;
+
+        // $fpdf = new FPDF();
+        // $fpdf->AddPage();
+        // $fpdf->SetAutoPageBreak(true, 20);
+        // $fpdf->SetFont('Arial','B',16);
+        // $fpdf->Cell(20,20, $title);
+        // $fpdf->Ln();
+
+        // $fpdf->SetFont('Arial','B',8);
+        // // Header
+        // foreach(array_keys($elements) as $col)
+        //     $fpdf->Cell($cellWidth, 10,$col,1);
+        // $fpdf->Ln();
+         
+        // $fpdf->SetFont('Arial','',8);
+        // $startX = $fpdf->GetX();
+        // $trackX = $fpdf->GetX();
+        // $trackY = $fpdf->GetY();
+        // $counterNextPage = 1;
+        // for($i = 0; $i < count($elements[array_keys($elements)[0]]); ++$i){
+        //     foreach($elements as $col){
+        //         if(str_ends_with($col[$i], ".png") || str_ends_with($col[$i], ".jpg"))
+        //             $fpdf->MultiCell($cellWidth, 64, $fpdf->Image("../public/people/7.png", null, null, 10, 18), 1);
+        //         else if(strlen($col[$i]) > 10){
+        //             if(str_ends_with($col[$i], ".png"))
+        //                 $fpdf->MultiCell($cellWidth, $cellHeight * 3 / 2, $fpdf->Image("file:///C:/Users/Lenovo/Pictures/hci banner.png", null, null, 10, 18), 1);
+        //             else
+        //                 $fpdf->MultiCell($cellWidth, $cellHeight * 3 / 2, $col[$i], 1);
+        //         }
+        //         else
+        //             $fpdf->MultiCell($cellWidth, $cellHeight * 3, $col[$i], 1);
+        //         $trackX += $cellWidth;
+        //         $fpdf->SetXY($trackX, $trackY);
+        //     }
+        //     $trackY += $imageHeight;
+        //     $trackX = $startX;
+        //     $fpdf->SetXY($trackX, $trackY);
+        //     ++$counterNextPage;
+        // }
 
         return $fpdf->Output();
 

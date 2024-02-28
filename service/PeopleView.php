@@ -63,7 +63,8 @@
                 "Eye Color" => array_map(fn(PeopleView $person) => $person->getEyeColor(), $peopleView),
                 "Birth Year" => array_map(fn(PeopleView $person) => $person->getBirthYear(), $peopleView),
                 "Gender" => array_map(fn(PeopleView $person) => $person->getGender(), $peopleView),
-                "Homeworld" => array_map(fn(PeopleView $person) => $person->getHomeworld(), $peopleView)
+                "Homeworld" => array_map(fn(PeopleView $person) => $person->getHomeworld(), $peopleView),
+                "image" => array_map(fn(PeopleView $person) => is_null($person->getImgUrl()) ? null :"../public/people/".$person->getImgUrl(), $peopleView),
             ];
         }
     }

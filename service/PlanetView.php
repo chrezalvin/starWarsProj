@@ -63,6 +63,7 @@
                 "Gravity" => array_map(fn(PlanetView $planet) => $planet->getGravity(), $planetView),
                 "Terrain" => array_map(fn(PlanetView $planet) => $planet->getTerrain(), $planetView),
                 "Surface Water" => array_map(fn(PlanetView $planet) => $planet->getSurfaceWater(), $planetView),
+                "image" => array_map(fn(PlanetView $planet) => is_null($planet->getImgUrl()) ? null :"../public/planet/".$planet->getImgUrl(), $planetView),
             ];
         }
     }
