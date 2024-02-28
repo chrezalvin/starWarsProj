@@ -48,9 +48,14 @@
   
           //modify functions for image 
           if(!empty($this->imageKey) && in_array($i,$this->imageKey) && !empty($data[$i])){
+            $imageSize = getimagesize($data[$i]);
+            $imageWidth = $imageSize[0];
+            $imageHeight = $imageSize[1];
+            $resolution = $imageWidth / $imageHeight;
+
             $ih = $h - 0.5;
-            $iw = $w - 0.5;
-            $ix = $x + 0.25;
+            $iw = $h * $resolution - 0.5;
+            $ix = $x + $w/2 - $iw/2 + 0.25;
             $iy = $y + 0.25;
             $this->MultiCell($w,5,$this->Image ($data[$i],$ix,$iy,$iw,$ih),0,$a);
           }
